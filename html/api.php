@@ -8,8 +8,9 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 	}
 	else
 	{
-		http_response_code(400);
-		echo "Invalid GET request.";
+		foreach($_GET as $k => $p) { echo htmlspecialchars($k) . ":" . htmlspecialchars($p) . "<br>"; }
+		//http_response_code(400);
+		//echo "Invalid GET request.";
 	}
 }
 else if ($_SERVER["REQUEST_METHOD"] === "POST")
@@ -20,8 +21,9 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 	}
 	else
 	{
-		http_response_code(400);
-		echo "Invalid POST request.";
+		foreach($_POST as $k => $p) { echo htmlspecialchars($k) . ":" . htmlspecialchars($p) . "<br>"; }
+		//http_response_code(400);
+		//echo "Invalid POST request.";
 	}
 }
 

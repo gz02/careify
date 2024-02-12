@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Care-ify</title>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/jpg" href="favicon.jpg">
+</head>
+<body>
+    <header>
+
+        <div class="main2">      
+            <div id="registration-container">
+                <div id="step-container">
+                    <div class="step" id="step1">
+                        <!-- Step 1 FONT SIZE-->
+                        <div class="signup-header">
+                            <h2>Your Display<br> Your Way</h2>
+                        </div>
+                        <div class="signup-p">
+                            <p>"Choose your text size"</p>
+                        </div>
+                        <br>
+                        <div class="reading-text">
+                            <p id="scroller">Reading Text</p>
+                        </div>
+                        <hr>
+                        <div class="slider-container"> 
+                            <div class="header-container">
+                                <h1>Extra Large</h1>
+                                <h2>Large</h2>
+                                <h3>Medium</h3>
+                                <h4>Small</h4>
+                            </div>        
+                            <input type="range" id="textSize" min="16" max="25" value="10" step="3" orient="vertical" /> 
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <button onclick="nextStep(2)">Continue</button>
+                      </div>  
+
+                      <div class="step" id="step2">
+                        <!-- Step 2 COLOUR BLIND-->
+                        <div class="signup-header">
+                            <h2>Your Colour<br>Your Way</h2>
+                        </div>
+                        <div class="signup-p">
+                            <label for="color">Choose your color theme</label>
+                            <div id="colorOptions">
+                                <button class="themeOption" onclick="changeThemeSet(1)">
+                                    <div class="colorCircle" style="background-color: #648FFF;"></div>
+                                    <div class="colorCircle" style="background-color: #785EF0;"></div>
+                                    <div class="colorCircle" style="background-color: #DC267F;"></div>
+                                    <div class="colorCircle" style="background-color: #FE6100;"></div>
+                                    <div class="colorCircle" style="background-color: #FFB000;"></div>
+                                </button>
+                                <button class="themeOption" onclick="changeThemeSet(2)">
+                                    <div class="colorCircle" style="background-color: #14471E;"></div>
+                                    <div class="colorCircle" style="background-color: #68904D;"></div>
+                                    <div class="colorCircle" style="background-color: #C8D2D1;"></div>
+                                    <div class="colorCircle" style="background-color: #EE9B01;"></div>
+                                    <div class="colorCircle" style="background-color: #DA6A00;"></div>
+                                </button>
+                                <button class="themeOption" onclick="changeThemeSet(3)">
+                                    <div class="colorCircle" style="background-color: #601A4A;"></div>
+                                    <div class="colorCircle" style="background-color: #EE442F;"></div>
+                                    <div class="colorCircle" style="background-color: #63ACBE;"></div>
+                                    <div class="colorCircle" style="background-color: #F9F4EC;"></div>
+                                    <div class="colorCircle" style="background-color: #FFC0CB;"></div>
+                                </button>
+                            </div>
+                        </div>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                        <div class="button-container">
+                            <button class="button backbutton" onclick="prevStep(1)">Back</button>
+                            <button class="button nextbutton" onclick="nextStep(3)">Next</button>
+                        </div>
+                      </div>
+
+                      <div class="step" id="step3">
+                        <!-- Step 3 FIRST NAME -->
+                        <div class="signup-header">
+                            <h2>Tell us a little<br>about<br>yourself</h2>
+                        </div>
+                        <div class="signup-p">
+                            <p>First Name:</p>
+                        </div>
+                        <input type="name" id="firstname" placeholder="First Name" required>
+                        <div class="button-container">
+                            <button class="button backbutton" onclick="prevStep(2)">Back</button>
+                            <button class="button nextbutton" onclick="nextStep(4)">Next</button>
+                        </div>
+                      </div>
+
+                      <div class="step" id="step4">
+                        <!-- Step 4 LAST NAME -->
+                        <div class="signup-header">
+                            <h2>Whats your<br>Last name...</h2>
+                        </div>
+                        <input type="name" id="lastname" placeholder="Last name">
+                        <div class="button-container">
+                            <button class="button backbutton" onclick="prevStep(3)">Back</button>
+                            <button class="button nextbutton" onclick="nextStep(5)">Next</button>
+                        </div>
+                      </div>
+
+                      <div class="step" id="step5">
+                        <!-- Step 5 Mobile/Landline -->
+                        <div class="signup-header">
+                            <h2>Mobile or<br>Landline</h2>
+                        </div>
+                        <input type="tel" id="phone" placeholder="">
+                        <div class="button-container">
+                            <button class="button backbutton" onclick="prevStep(4)">Back</button>
+                            <button class="button nextbutton" onclick="nextStep(6)">Next</button>
+                        </div>
+                      </div>
+
+                      <div class="step" id="step6">
+                        <!-- Step 6 Emergency First Name -->
+                        <div class="signup-header">
+                            <h2>We need an<br>emergency<br>contact...</h2>
+                        </div>
+                        <div class="signup-p">
+                            <p>First Name:</p>
+                        </div>
+                        <input type="name" id="emfirstname" placeholder="">
+                        <div class="button-container">
+                            <button class="button backbutton" onclick="prevStep(5)">Back</button>
+                            <button class="button nextbutton" onclick="nextStep(7)">Next</button>
+                        </div>
+                      </div>
+
+                      <div class="step" id="step7">
+                        <!-- Step 7 Emergency Last Name -->
+                        <div class="signup-header">
+                            <h2>Emergency<br>contanct<br>continued...</h2>
+                        </div>
+                        <div class="signup-p">
+                            <p>Last Name:</p>
+                        </div>
+                        <input type="name" id="emlastname" placeholder="">
+                        <div class="button-container">
+                            <button class="button backbutton" onclick="prevStep(6)">Back</button>
+                            <button class="button nextbutton" onclick="nextStep(8)">Next</button>
+                        </div>
+                      </div>
+
+                      <div class="step" id="step8">
+                        <!-- Step 8 Emergency Phone -->
+                        <div class="signup-header">
+                            <h2>Emergency<br>contanct<br>continued...</h2>
+                        </div>
+                        <div class="signup-p">
+                            <p>Phone Number:</p>
+                        </div>
+                        <input type="tel" id="emphone" placeholder="">
+                        <div class="button-container">
+                            <button class="button backbutton" onclick="prevStep(7)">Back</button>
+                            <button class="button nextbutton" onclick="nextStep(9)">Next</button>
+                        </div>
+                      </div>
+
+                      <div class="step" id="step9">
+                        <!-- Step 9 Email -->
+                        <div class="signup-header">
+                            <h2>Email<br>Address</h2>
+                        </div>
+                        <div class="signup-p">
+                            <p>Enter your email:</p>
+                        </div>
+                        <input type="email" id="email" placeholder="">
+                        <div class="button-container">
+                            <button class="button backbutton" onclick="prevStep(8)">Back</button>
+                            <button class="button nextbutton" onclick="nextStep(10)">Next</button>
+                        </div>
+                      </div>
+
+                      <div class="step" id="step10">
+                        <!-- Step 10 Password -->
+                        <div class="signup-header">
+                            <h2>Password</h2>
+                        </div>
+                        <div class="signup-p">
+                            <p>Enter your password:</p>
+                        </div>
+                        <input type="password" id="password" placeholder="">
+                        <p align="center">PIN OR PASSWORD?</p>
+                        <div class="button-container">
+                            <button class="button backbutton" onclick="prevStep(9)">Back</button>
+                            <button class="button nextbutton" onclick="nextStep(11)">Next</button>
+                        </div>
+                      </div>
+
+                      <div class="step" id="step11">
+                        <!-- Step 11 Allergies -->
+                        <div class="signup-header">
+                            <h2>Any Allergies</h2>
+                        </div>
+                        <input type="text" id="allergies" placeholder="">
+                        <div class="button-container">
+                            <button class="button backbutton" onclick="prevStep(10)">Back</button>
+                            <button class="button nextbutton" onclick="nextStep(12)">Next</button>
+                        </div>
+                      </div>
+
+                      <div class="step" id="step12">
+                        <!-- Step 12 Medical Conditions -->
+                           <div class="signup-header">
+                           <h2>Medical<br>Conditions</h2>
+                       </div>
+                       <div class="medical-container">
+                           <div class="label">
+                               <label for="condition1">
+                                   <p>Hypertension</p>
+                               </label>
+                               <input type="checkbox" name="condition1" id="hypertension" value="Condition 1">
+                           </div>
+                       
+                           <div class="label">
+                               <label for="condition2">
+                                   <p>Arthritis</p>
+                               </label>
+                               <input type="checkbox" name="condition2" id="arthritis" value="Condition 2">
+                           </div>
+                       
+                           <div class="label">
+                               <label for="condition3">
+                                   <p>Heart Disease</p>
+                               </label>
+                               <input type="checkbox" name="condition3" id="heartdisease" value="Condition 3">
+                           </div>
+                       
+                           <div class="label">
+                               <label for="condition4">
+                                   <p>Dementia</p>
+                               </label>
+                               <input type="checkbox" name="condition4" id="dementia" value="Condition 4">
+                           </div>
+                       
+                           <div class="label">
+                               <label for="condition5">
+                                   <p>Osteoporosis</p>
+                               </label>
+                               <input type="checkbox" name="condition5" id="osteoporosis" value="Condition 5">
+                           </div>
+                       </div>
+                       <div class="button-container">
+                           <button class="button backbutton" onclick="prevStep(11)">Back</button>
+                           <button class="button nextbutton" onclick="nextStep(13)">Next</button>
+                       </div>
+                     </div>
+
+                     <div class="step" id="step13">
+                        <!-- Step 13 Allergies -->
+                        <div class="signup-header">
+                            <h2>Medication</h2>
+                        </div>
+                        <div class="signup-p">
+                            <p>Select checkbox's</p>
+                        </div>
+                        <button type="button" class="collapsible">Hypertension</button>
+                        <div class="content">
+                            <p>Checkbox Here</p>
+                        </div>
+                        <div class="button-container">
+                            <button class="button backbutton" onclick="prevStep(12)">Back</button>
+                            <button class="button nextbutton" onclick="nextStep(14)">Next</button>
+                        </div>
+                      </div>
+
+                      <div class="step" id="step14">
+                        <!-- Step 14 Allergies -->
+                        <div class="signup-header">
+                            <h2>Carer ID</h2>
+                        </div>
+                        <div class="signup-p">
+                            <p>Add your carer's name:</p>
+                        </div>
+                        <input type="text" id="carename" placeholder="">
+                        <div class="button-container">
+                            <button class="button backbutton" onclick="prevStep(13)">Back</button>
+                            <button class="button nextbutton" type="submit">Submit</button>
+                        </div>
+                      </div>
+                     
+                </div>
+              </div>
+            
+        </div>
+    </header>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
