@@ -18,7 +18,7 @@ function prevStep(prev) {
 function submitForm() {
   // data collected for each element.
   const textSize = document.getElementById('textSize').value;
-  const color = document.getElementById('color').value;
+  const color = document.getElementById('colorOptions').value;
   const firstname = document.getElementById('firstname').value;
   const lastname = document.getElementById('lastname').value;
   const phone = document.getElementById('phone').value;
@@ -27,16 +27,17 @@ function submitForm() {
   const emphone = document.getElementById('emphone').value;
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
-  const hypertension = document.getElementById('hypertension').value;
-  const arthritis = document.getElementById('arthritis').value;
-  const heartdisease = document.getElementById('heartdisease').value;
-  const dementia = document.getElementById('dementia').value;
-  const osteoporosis = document.getElementById('osteoporosis').value;
+  const allergies=document.getElementById('allergies').value;
+  const hypertension = document.getElementById('hypertension').checked ;
+  const arthritis = document.getElementById('arthritis').checked ;
+  const heartdisease = document.getElementById('heartdisease').checked ;
+  const dementia = document.getElementById('dementia').checked ;
+  const osteoporosis = document.getElementById('osteoporosis').checked ;
 
   const carename = document.getElementById('carename').value;
 
   // fetch API placeholder below
-  fetch('/api/register', {
+  fetch('/api?register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -52,6 +53,7 @@ function submitForm() {
       emphone,
       email,
       password,
+      allergies,
       hypertension,
       arthritis,
       heartdisease,

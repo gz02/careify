@@ -18,13 +18,37 @@ body{
 	
 }
 .main2{
+	position: relative;
     width: 350px;
 	height: 700px;
 	background: #cad2d1;
 	overflow: hidden;
 	border-radius: 10px;
 	box-shadow: 5px 20px 50px #000;
+	overflow-x: hidden;
+	font-family: 'Verdana', sans-serif;
 }
+
+.mainLogin{
+	position: relative;
+    width: 350px;
+	height: 700px;
+	background: #cad2d1;
+	overflow: hidden;
+	border-radius: 10px;
+	box-shadow: 5px 20px 50px #000;
+	overflow-x: hidden;
+
+	background-image: url('data:image/svg+xml, <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V7.23C0,65.52,268.63,112.77,600,112.77S1200,65.52,1200,7.23V0Z" class="shape-fill"></path></svg>');
+	background-repeat: no-repeat;
+	background-position: top;
+	 
+
+	background-image: url('data:image/svg+xml, <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V7.23C0,65.52,268.63,112.77,600,112.77S1200,65.52,1200,7.23V0Z" class="shape-fill"></path></svg>');
+	background-repeat: no-repeat;
+	background-position: bottom;
+}
+
 #chk{
 	display: none;
 }
@@ -170,11 +194,14 @@ button:hover{
 .themeOption {
     cursor: pointer;
     border: none;
-    background-color: slategray;
+    background-color: aliceblue;
     display: flex;
     align-items: center;
     margin-bottom: 10px;
 	padding: 5px;
+}
+.themeOption:hover{
+	background: rgb(175, 193, 208);
 }
 
 .colorCircle {
@@ -388,3 +415,63 @@ input[type="checkbox"] {
 	overflow: hidden;
 	background-color: #f1f1f1;
   }
+
+
+
+.bubble{
+    content: '';
+    border-bottom-left-radius: 0% 100%;
+    border-bottom-right-radius: 100% 80%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background-color: #e39d2c;
+    height: 45%;
+	overflow: hidden;
+}
+
+.bubblebot {
+    content: '';
+    border-top-left-radius: 100% 80%;
+    border-top-right-radius: 0% 100%; 
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #4b6e22;
+    height: 45%;
+}
+
+.bubbletexttop{
+	padding: 62px;
+	text-align: center;
+	color: #eee;
+	font-weight:bold;
+	font-size:30px;
+}
+
+.bubbletextbottom{
+	padding: 102px;
+	text-align: center;
+	color: #eee;
+	font-weight:bold;
+	font-size:30px;
+}
+
+.centericon{
+	padding: 313px 150px;
+	
+}
+
+img.toptap {
+	position: relative;
+	left: -22px;
+	top: -50px; 
+	background: #718d52; border-radius: 50%;
+}
+
+img.bottomtap {
+	position: relative;
+	left: 230px;
+	top: -130px;
+	background: #718d52; border-radius: 50%;
+}

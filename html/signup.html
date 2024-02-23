@@ -10,7 +10,6 @@
 </head>
 <body>
     <header>
-
         <div class="main2">      
             <div id="registration-container">
                 <div id="step-container">
@@ -50,35 +49,38 @@
                             <h2>Your Colour<br>Your Way</h2>
                         </div>
                         <div class="signup-p">
-                            <label for="color">Choose your color theme</label>
+                            <label for="color">Choose your colour theme</label>
                             <div id="colorOptions">
                                 <button class="themeOption" onclick="changeThemeSet(1)">
-                                    <div class="colorCircle" style="background-color: #648FFF;"></div>
-                                    <div class="colorCircle" style="background-color: #785EF0;"></div>
-                                    <div class="colorCircle" style="background-color: #DC267F;"></div>
-                                    <div class="colorCircle" style="background-color: #FE6100;"></div>
-                                    <div class="colorCircle" style="background-color: #FFB000;"></div>
+                                    <div class="colorCircle" style="background-color: #008080;"></div>
+                                    <div class="colorCircle" style="background-color: #00FF00;"></div>
+                                    <div class="colorCircle" style="background-color: #000080;"></div>
+                                    <div class="colorCircle" style="background-color: #FFFF00;"></div>
+                                    <div class="colorCircle" style="background-color: #00FFFF;"></div>
                                 </button>
                                 <button class="themeOption" onclick="changeThemeSet(2)">
-                                    <div class="colorCircle" style="background-color: #14471E;"></div>
-                                    <div class="colorCircle" style="background-color: #68904D;"></div>
-                                    <div class="colorCircle" style="background-color: #C8D2D1;"></div>
-                                    <div class="colorCircle" style="background-color: #EE9B01;"></div>
-                                    <div class="colorCircle" style="background-color: #DA6A00;"></div>
+                                    <div class="colorCircle" style="background-color: #0000FF;"></div>
+                                    <div class="colorCircle" style="background-color: #FFA500;"></div>
+                                    <div class="colorCircle" style="background-color: #800080;"></div>
+                                    <div class="colorCircle" style="background-color: #40E0D0;"></div>
+                                    <div class="colorCircle" style="background-color: #FFFF00;"></div>
                                 </button>
                                 <button class="themeOption" onclick="changeThemeSet(3)">
-                                    <div class="colorCircle" style="background-color: #601A4A;"></div>
-                                    <div class="colorCircle" style="background-color: #EE442F;"></div>
-                                    <div class="colorCircle" style="background-color: #63ACBE;"></div>
-                                    <div class="colorCircle" style="background-color: #F9F4EC;"></div>
+                                    <div class="colorCircle" style="background-color: #FFFF00;"></div>
                                     <div class="colorCircle" style="background-color: #FFC0CB;"></div>
+                                    <div class="colorCircle" style="background-color: #FFA500;"></div>
+                                    <div class="colorCircle" style="background-color: #008000;"></div>
+                                    <div class="colorCircle" style="background-color: #A52A2A;"></div>
+                                </button>
+                                <button class="themeOption" onclick="changeThemeSet(4)">
+                                    <div class="colorCircle" style="background-color: #0000FF;"></div>
+                                    <div class="colorCircle" style="background-color: #FFFF00;"></div>
+                                    <div class="colorCircle" style="background-color: #008080;"></div>
+                                    <div class="colorCircle" style="background-color: #808080;"></div>
+                                    <div class="colorCircle" style="background-color: #A52A2A;"></div>
                                 </button>
                             </div>
                         </div>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
                             <br>
                             <br>
                             <br>
@@ -148,7 +150,7 @@
                       <div class="step" id="step7">
                         <!-- Step 7 Emergency Last Name -->
                         <div class="signup-header">
-                            <h2>Emergency<br>contanct<br>continued...</h2>
+                            <h2>Emergency<br>contact<br>continued...</h2>
                         </div>
                         <div class="signup-p">
                             <p>Last Name:</p>
@@ -163,7 +165,7 @@
                       <div class="step" id="step8">
                         <!-- Step 8 Emergency Phone -->
                         <div class="signup-header">
-                            <h2>Emergency<br>contanct<br>continued...</h2>
+                            <h2>Emergency<br>contact<br>continued...</h2>
                         </div>
                         <div class="signup-p">
                             <p>Phone Number:</p>
@@ -183,7 +185,7 @@
                         <div class="signup-p">
                             <p>Enter your email:</p>
                         </div>
-                        <input type="email" id="email" placeholder="">
+                        <input type="email" id="email" placeholder="someone@gmail.com">
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(8)">Back</button>
                             <button class="button nextbutton" onclick="nextStep(10)">Next</button>
@@ -294,7 +296,7 @@
                         <input type="text" id="carename" placeholder="">
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(13)">Back</button>
-                            <button class="button nextbutton" type="submit">Submit</button>
+                            <button class="button nextbutton" type="submit" onclick="submitForm()">Submit</button>
                         </div>
                       </div>
                      

@@ -11,29 +11,6 @@ header("Pragma: no-cache");
 
 require_once("/var/www/private/lib/vendor/autoload.php");
 
-require_once("/var/www/private/config.php"); // db connection definitions, rather keep it with others and not make it public
-
-// db test
-//$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
-//$result_tables = $db->query(" SHOW TABLES FROM careify") or trigger_error($db->error, E_USER_ERROR);
-//$tables = array_column($result_tables->fetch_all(), 0);
-//$result_tables->close();
-//echo "<div style=\"font-size:10px\">";
-//foreach ($tables as $table)
-//{
-//	$structure = $db->query("
-//		SHOW CREATE TABLE careify.{$table}
-//	") or trigger_error($db->error, E_USER_ERROR);
-//	
-//	while ($row = $structure->fetch_assoc())
-//	{
-//		echo "{$row["Table"]}<br>{$row["Create Table"]}<hr>";
-//	}
-//	$structure->close();
-//}
-//echo "</div>";
-//$db->close();
-
 $twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader(getcwd()));
 
 echo $twig->render("desktop.html");
