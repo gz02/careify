@@ -79,21 +79,7 @@ function get_post_json()
 	return $_POST;
 }
 
-
-if ($_SERVER["REQUEST_METHOD"] === "GET")
-{
-	if (isset($_GET["test"]))
-	{
-		echo json_encode(["test" => "ok"]);
-	}
-	else
-	{
-		foreach($_GET as $k => $p) { echo htmlspecialchars($k) . ":" . htmlspecialchars($p) . "<br>"; }
-		//http_response_code(400);
-		//echo "Invalid GET request.";
-	}
-}
-else if ($_SERVER["REQUEST_METHOD"] === "POST")
+if ($_SERVER["REQUEST_METHOD"] === "POST")
 {
 	$_POST = get_post_json(); // POST data is JSON encoded, store back into post
 	
@@ -101,6 +87,7 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 	if (isset($_GET["test"]))
 	{
 		echo json_encode(["test" => "ok"]);
+		http_response_code(200); exit;
 	}
 	else if (isset($_GET["register"]))
 	{
@@ -161,6 +148,8 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 				?
 			FROM
 				carer_details ca
+			WHERE
+				ca.first_name = ?
 		") or trigger_error($db->error, E_USER_ERROR);
 		$stmt->execute([
 			$firstname,
@@ -168,21 +157,29 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 			"2020-12-12",
 			$phone,
 			$email,
-			$emergency_contact_id
+			$emergency_contact_id,
+			$carename
 		]) or trigger_error($stmt->error, E_USER_ERROR);
 		$stmt->close();
 		
 		$db->close();
-		http_response_code(201);
+		http_response_code(201); exit;
 	}
 	else
 	{
 		foreach($_POST as $k => $p) { echo htmlspecialchars($k) . ":" . htmlspecialchars($p) . "<br>"; }
-		//http_response_code(400);
+		//http_response_code(404);
 		//echo "Invalid POST request.";
+		//exit;
+		http_response_code(200); exit;
 	}
 }
+else
+{
+	echo "405 Method Not Allowed";
+	http_response_code(405);
+	exit;
+}
 
-http_response_code(200);
-exit();
+http_response_code(400); exit; // request ignored
 ?>
