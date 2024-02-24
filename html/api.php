@@ -24,7 +24,7 @@ require_once("/var/www/private/config.php"); // db connection definitions, rathe
 //$db->close();
 
 // validate number positive
-function val_num_pos($var, $msg_fail = "no description.")
+function val_num_pos(&$var, &$msg_fail = "no description.")
 {
 	if (is_numeric($var) && $var > 0) { return $var; }
 	echo $msg_fail;
@@ -33,16 +33,16 @@ function val_num_pos($var, $msg_fail = "no description.")
 }
 
 // validate string
-function val_str($var, $msg_fail = "no description.")
+function val_str(&$var, &$msg_fail = "no description.")
 {
-	if (is_string($var)) { return $var; }
+	if (is_string($var) && strlen($var)) { return $var; }
 	echo $msg_fail;
 	http_response_code(400);
 	exit;
 }
 
 // validate phone number
-function val_phone($var, $msg_fail = "no description.")
+function val_phone(&$var, &$msg_fail = "no description.")
 {
 	if (is_numeric($var) && $var > 0) { return $var; }
 	echo $msg_fail;
@@ -51,7 +51,7 @@ function val_phone($var, $msg_fail = "no description.")
 }
 
 // validate email
-function val_email($var, $msg_fail = "no description.")
+function val_email(&$var, &$msg_fail = "no description.")
 {
 	if (is_string($var)) { return $var; }
 	echo $msg_fail;
@@ -60,13 +60,13 @@ function val_email($var, $msg_fail = "no description.")
 }
 
 // validate string allow empty
-function val_str_null($var, $msg_fail = "no description.")
+function val_str_null(&$var, &$msg_fail = "no description.")
 {
 	return $var;
 }
 
 // validate bool
-function val_bool($var, $msg_fail = "no description.")
+function val_bool(&$var, &$msg_fail = "no description.")
 {
 	return boolval($var);
 }
@@ -79,7 +79,22 @@ function get_post_json()
 	return $_POST;
 }
 
-if ($_SERVER["REQUEST_METHOD"] === "POST")
+if ($_SERVER["REQUEST_METHOD"] === "GET")
+{
+	if (isset($_GET["validate_firstname"])) { val_str($_GET["validate_firstname"]); }
+	else if (isset($_GET["validate_lastname"])) { val_str($_GET["validate_lastname"]); }
+	else if (isset($_GET["validate_phone"])) { val_phone($_GET["validate_phone"]); }
+	else if (isset($_GET["validate_emfirstname"])) { val_str($_GET["validate_emfirstname"]); }
+	else if (isset($_GET["validate_emlastname"])) { val_str($_GET["validate_emlastname"]); }
+	else if (isset($_GET["validate_emphone"])) { val_phone($_GET["validate_emphone"]); }
+	else if (isset($_GET["validate_email"])) { val_email($_GET["validate_email"]); }
+	else if (isset($_GET["validate_password"])) { val_str($_GET["validate_password"]); }
+	else if (isset($_GET["validate_allergies"])) { val_str_null($_GET["validate_allergies"]); }
+	else if (isset($_GET["validate_carename"])) { val_str($_GET["validate_carename"]); }
+	
+	http_response_code(200); exit;
+}
+else if ($_SERVER["REQUEST_METHOD"] === "POST")
 {
 	$_POST = get_post_json(); // POST data is JSON encoded, store back into post
 	
@@ -168,10 +183,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
 	else
 	{
 		foreach($_POST as $k => $p) { echo htmlspecialchars($k) . ":" . htmlspecialchars($p) . "<br>"; }
-		//http_response_code(404);
-		//echo "Invalid POST request.";
-		//exit;
 		http_response_code(200); exit;
+		//http_response_code(404); echo "Invalid POST request."; exit;
 	}
 }
 else

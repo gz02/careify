@@ -104,7 +104,14 @@
                         <input type="name" id="firstname" placeholder="First Name" required>
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(2)">Back</button>
-                            <button class="button nextbutton" onclick="nextStep(4)">Next</button>
+                            <button class="button nextbutton" onclick="
+								const field = document.getElementById('firstname').value;
+								fetch('/api?validate_firstname=' + field)
+								.then(ret => {
+									if (ret.status == 200) { nextStep(4); }
+									else { alert(field + 'is incorrect, try again.'); }
+								})
+							">Next</button>
                         </div>
                       </div>
 
@@ -116,7 +123,14 @@
                         <input type="name" id="lastname" placeholder="Last name">
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(3)">Back</button>
-                            <button class="button nextbutton" onclick="nextStep(5)">Next</button>
+                            <button class="button nextbutton" onclick="
+								const field = document.getElementById('lastname').value;
+								fetch('/api?validate_lastname=' + field)
+								.then(ret => {
+									if (ret.status == 200) { nextStep(5); }
+									else { alert(field + 'is incorrect, try again.'); }
+								})
+							">Next</button>
                         </div>
                       </div>
 
