@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Care-ify ToDo List</title>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="main2">      
+            <div class="button-top">
+                <button onclick="window.location.href='user-interface.html'" class="backbutton">Back</button>
+            </div>
+            
+
+            <!-- This is the todo list part -->
+            <div class="elements">
+                <div class="task-container">
+                    <div id="addTaskContainer">
+                        <div id="taskSubContainer">
+                            <select id="taskDay">
+                                <option value="Monday">Monday</option>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday">Sunday</option>
+                            </select>
+    
+                            
+                            <select id="taskTime">
+                                <!-- Add options dynamically using JavaScript -->
+                            </select>
+                            <button class="addbutton" onclick="addTask()"><b>+</b></button>
+
+                        </div>
+                        
+
+                        
+                        <input type="text" id="taskText" placeholder="Medication Name" required>
+
+                        
+                        
+                    </div>
+
+
+
+                    <div id="todoContainer">
+                        <ul id="todoList"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-bottom">
+                <button class="nextbutton">More</button>
+            </div>
+        </div>
+    </header>
+
+    <script src="todolist.js"></script>
+</body>
+</html>
