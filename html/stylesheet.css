@@ -624,3 +624,94 @@ li {
 	margin-top: 0px;
 	margin-left: 0px;
 }
+
+#greeting{
+	padding-left: 20px;
+	padding-top: 20px;
+}
+#mood p{
+	margin-left: 20px;
+	margin-top: 20px;
+	font-weight: bold;
+	color: darkslategrey;
+}
+.image-container{
+	height: 200px;
+	width: 90%;
+	border-radius: 10px;
+	position: relative;
+	background-color:tomato;
+	margin:auto;
+	overflow:hidden;
+}
+.boxImage{
+	padding-left: 20%;
+	position:absolute;
+}
+#features{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	gap: 20px;
+}
+.feature p{
+	margin-left: 20px;
+	font-weight: bold;
+	color: darkslategrey;
+}
+#todolist{
+	border-radius: 10px;
+	height:110px;
+	width: 140px;
+	margin-left: 20px;
+	background-color:#EE9B01 ;
+
+}
+.todolistImg{
+	padding-left: 35px;
+	padding-top: 10px;
+	width: 50%;
+	height: 60%;
+}
+#greenBar{
+	border-radius: 10px;
+	height: 30px;
+	background-color:#4b6e22;
+	margin-top: 10px;
+	text-align: center;
+	color: white;
+}
+
+#moodFeature{
+	border-radius: 10px;
+	height:110px;
+	width: 140px;
+	margin-right: 20px;
+	background-color:#EE9B01 ;
+}
+#moodImg1{
+	padding-left: 25px;
+	width: 60%;
+	height: 70%;
+}
+#profile{
+	border-radius: 10px;
+	height:110px;
+	width: 140px;
+	margin-left: 20px;
+	background-color:#EE9B01 ;
+}
+#profileImg{
+	padding-left: 25px;
+}
+#reminders{
+	border-radius: 10px;
+	height:110px;
+	width: 140px;
+	margin-right: 20px;
+	background-color:#EE9B01 ;
+}
+
+#reminderImg{
+	padding-left: 20px;
+}

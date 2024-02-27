@@ -124,8 +124,8 @@
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(3)">Back</button>
                             <button class="button nextbutton" onclick="
-								const field = document.getElementById('lastname').value;
-								fetch('/api?validate_lastname=' + field)
+								const field1 = document.getElementById('lastname').value;
+								fetch('/api?validate_lastname=' + field1)
 								.then(ret => {
 									if (ret.status == 200) { nextStep(5); }
 									else { alert(field + 'is incorrect, try again.'); }
@@ -310,7 +310,7 @@
                         <input type="text" id="carename" placeholder="">
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(13)">Back</button>
-                            <button class="button nextbutton" type="submit" onclick="submitForm()">Submit</button>
+                            <button class="button nextbutton" type="submit" onclick="submitForm()" onclick="window.location.href='user-interface.html'">Submit</button>
                         </div>
                       </div>
                      
