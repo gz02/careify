@@ -251,55 +251,143 @@
                        
                            <div class="label">
                                <label for="condition2">
-                                   <p>Arthritis</p>
+                                   <p>Cardiovascular</p>
                                </label>
-                               <input type="checkbox" name="condition2" id="arthritis" value="Condition 2">
+                               <input type="checkbox" name="condition2" id="cardiovascular" value="Condition 2">
                            </div>
                        
                            <div class="label">
                                <label for="condition3">
-                                   <p>Heart Disease</p>
+                                   <p>Diabetes</p>
                                </label>
-                               <input type="checkbox" name="condition3" id="heartdisease" value="Condition 3">
+                               <input type="checkbox" name="condition3" id="diabetes" value="Condition 3">
                            </div>
                        
                            <div class="label">
                                <label for="condition4">
-                                   <p>Dementia</p>
+                                   <p>Alzheimer's Disease</p>
                                </label>
-                               <input type="checkbox" name="condition4" id="dementia" value="Condition 4">
+                               <input type="checkbox" name="condition4" id="alzheimer" value="Condition 4">
                            </div>
                        
-                           <div class="label">
+                           <!-- <div class="label">
                                <label for="condition5">
                                    <p>Osteoporosis</p>
                                </label>
                                <input type="checkbox" name="condition5" id="osteoporosis" value="Condition 5">
-                           </div>
+                           </div> -->
                        </div>
                        <div class="button-container">
                            <button class="button backbutton" onclick="prevStep(11)">Back</button>
                            <button class="button nextbutton" onclick="nextStep(13)">Next</button>
                        </div>
                      </div>
-
                      <div class="step" id="step13">
-                        <!-- Step 13 Allergies -->
+                     <!-- Step 13 Allergies -->
                         <div class="signup-header">
                             <h2>Medication</h2>
                         </div>
                         <div class="signup-p">
                             <p>Select checkbox's</p>
                         </div>
-                        <button type="button" class="collapsible">Hypertension</button>
-                        <div class="content">
-                            <p>Checkbox Here</p>
+                        
+                        <div class="list-medication">
+                            <button type="button" class="collapsible accordion-trigger">Hypertension</button>
+                            <div class="collapsed accordion-panel">
+                                <div class="label-wrap">
+                                   <label for="medication1_1">
+                                    Paracetamol
+                                   </label>
+                                   <input type="checkbox" name="medication1_1" id="dementia" value="medication1_1">
+                               </div>
+                               <div class="label-wrap">
+                                    <label for="medication1_2">
+                                        Ibuprofen
+                                   </label>
+                                   <input type="checkbox" name="medication1_2" id="dementia" value="medication1_2">
+                               </div>
+                               <div class="label-wrap">
+                                    <label for="medication1_3">
+                                        Naproxen
+                                   </label>
+                                   <input type="checkbox" name="medication1_3" id="dementia" value="medication1_3">
+                               </div>
+                                                    
+                            </div>
+
+                            <button type="button" class="collapsible accordion-trigger">Cardio Vascular</button>
+                            <div class="collapsed accordion-panel">
+                                <div class="label-wrap">
+                                   <label for="medication2_1">
+                                      Statins
+                                   </label>
+                                   <input type="checkbox" name="medication2_1" id="dementia" value="medication2_1">
+                               </div>
+                               <div class="label-wrap">
+                                    <label for="medication2_2">
+                                       ACE Inhibitors
+                                   </label>
+                                   <input type="checkbox" name="medication2_2" id="dementia" value="medication2_2">
+                               </div>
+                               <div class="label-wrap">
+                                    <label for="medication2_3">
+                                       Antiplatelet
+                                   </label>
+                                   <input type="checkbox" name="medication2_3" id="dementia" value="medication2_3">
+                               </div>                    
+                            </div>
+
+
+                            <button type="button" class="collapsible accordion-trigger">Diabetes Medications</button>
+                            <div class="collapsed accordion-panel">
+                                <div class="label-wrap">
+                                   <label for="medication3_1">
+                                       Metformin
+                                   </label>
+                                   <input type="checkbox" name="medication3_1" id="dementia" value="medication3_1">
+                               </div>
+                               <div class="label-wrap">
+                                    <label for="medication3_2">
+                                       Sulfonylureas
+                                   </label>
+                                   <input type="checkbox" name="medication3_2" id="dementia" value="medication3_2">
+                               </div>
+                               <div class="label-wrap">
+                                    <label for="medication3_3">
+                                       Insulin
+                                   </label>
+                                   <input type="checkbox" name="medication3_3" id="dementia" value="medication3_3">
+                               </div>
+                               <div class="label-wrap">
+                                    <label for="medication3_4">
+                                       DPP-4
+                                   </label>
+                                   <input type="checkbox" name="medication3_4" id="dementia" value="medication1_4">
+                               </div>                     
+                            </div>
+
+                            <button type="button" class="collapsible accordion-trigger">Alzheimer's Disease</button>
+                            <div class="collapsed accordion-panel">
+                                <div class="label-wrap">
+                                   <label for="medication4_1">
+                                      Z-drugs
+                                   </label>
+                                   <input type="checkbox" name="medication4_1" id="dementia" value="medication4_1">
+                               </div>
+                               <div class="label-wrap">
+                                    <label for="medication4_2">
+                                       Benzodiazepines
+                                   </label>
+                                   <input type="checkbox" name="medication4_2" id="dementia" value="medication4_2">
+                               </div>
+                            </div>
                         </div>
+
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(12)">Back</button>
                             <button class="button nextbutton" onclick="nextStep(14)">Next</button>
                         </div>
-                      </div>
+                    </div>
 
                       <div class="step" id="step14">
                         <!-- Step 14 Allergies -->

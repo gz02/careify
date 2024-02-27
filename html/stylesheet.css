@@ -221,6 +221,11 @@ button:hover{
 	font-family: Arial;
 	font-size: 20px;
 }
+
+.list-medication {
+	width: 75%;
+	margin: 0 auto;
+}
 /*theme colors*/
 .themeOption {
     cursor: pointer;
@@ -419,26 +424,69 @@ hr {
     font-size: 16px; /* Adjust font size as needed */
 }
 
+.label-wrap {
+    display: flex;
+    align-items: center; /* Center items horizontally within each label */
+    /*justify-content: space-between;*/
+    /*margin-bottom: 20px; */
+	max-width: 20em;
+	width: 100%;
+}
+
+.label-wrap label {
+    margin-right: 10px; /* Add some spacing between label text and checkbox */
+    font-size: 18px; /* Adjust font size as needed */
+}
+
 input[type="checkbox"] {
     margin-left: 5px; /* Add some spacing to the left of the checkbox */
 	
+}
+
+.list-medication {
+	width: 75%;
+	margin: 0 auto;
 }
 
 .collapsible {
 	background-color: #718d52;
 	color: white;
 	cursor: pointer;
-	padding: 18px;
-	width: 75%;
 	border: none;
 	text-align: left;
 	outline: none;
-	font-size: 15px;
-  }
+	font-size: 16px;
+}
+
+.list-medication button {
+	width: 100%;
+	border-radius: 6px;
+	margin: 10px auto 0;
+	padding: 0 18px;
+	position: relative;
+	z-index: 1; /* overlap with panel */
+	max-width: none;
+}
   
-  .active, .collapsible:hover {
+.active, .collapsible:hover {
 	background-color: #3f4e2f;
-  }
+}
+
+.list-medication .accordion-panel {
+	/*padding: 24px 18px 18px;*/
+	display: none;
+	overflow: auto;
+	background-color: #a4bc94;
+	margin-top: -6px;
+}
+
+.list-medication .accordion-panel label {
+	font-size: 16px;
+}
+
+.list-medication .accordion-panel .label-wrap:last-child {
+	margin-bottom: 0;
+}
   
   .content {
 	padding: 0 18px;

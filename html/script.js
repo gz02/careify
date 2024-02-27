@@ -30,7 +30,7 @@ function submitForm() {
   const allergies=document.getElementById('allergies').value;
   const hypertension = document.getElementById('hypertension').checked ;
   const arthritis = document.getElementById('arthritis').checked ;
-  const heartdisease = document.getElementById('heartdisease').checked ;
+  const diabetes = document.getElementById('heartdisease').checked ;
   const dementia = document.getElementById('dementia').checked ;
   const osteoporosis = document.getElementById('osteoporosis').checked ;
 
@@ -56,7 +56,7 @@ function submitForm() {
       allergies,
       hypertension,
       arthritis,
-      heartdisease,
+      diabetes,
       dementia,
       osteoporosis,
       
@@ -78,6 +78,14 @@ $("#textSize").on("input", function () {
     const textSizeValue = $(this).val();
     console.log("Text Size:", textSizeValue);
     $('#scroller').css("font-size", textSizeValue + "px");
+});
+
+$(".accordion-trigger").click(function(){
+  $(this).next(".accordion-panel").slideToggle(300).siblings(".accordion-panel:visible").slideUp(300);
+});
+
+$(".label-wrap label").click(function(){
+  $(this).next('input[type="checkbox"]').trigger('click');
 });
 
 document.addEventListener("DOMContentLoaded", function () {
