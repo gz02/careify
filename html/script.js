@@ -79,3 +79,20 @@ $("#textSize").on("input", function () {
     console.log("Text Size:", textSizeValue);
     $('#scroller').css("font-size", textSizeValue + "px");
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Check if there's a user first name stored
+  const storedFirstName = sessionStorage.getItem("userFirstName");
+
+  if (storedFirstName) {
+      // If the user first name is stored, display the greeting
+      displayGreeting(storedFirstName);
+  }
+});
+
+function displayGreeting(firstName) {
+  const greetingElement = document.getElementById("greeting");
+
+  // Update the content of the greeting element
+  greetingElement.innerHTML = `<h2>Hello, ${firstName}!!</h2>`;
+}

@@ -108,7 +108,9 @@
 								const field = document.getElementById('firstname').value;
 								fetch('/api?validate_firstname=' + field)
 								.then(ret => {
-									if (ret.status == 200) { nextStep(4); }
+									if (ret.status == 200) {
+                                        sessionStorage.setItem('userFirstName', field);
+                                        nextStep(4); }
 									else { alert(field + 'is incorrect, try again.'); }
 								})
 							">Next</button>
