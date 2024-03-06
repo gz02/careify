@@ -24,7 +24,7 @@ require_once("/var/www/private/config.php"); // db connection definitions, rathe
 //$db->close();
 
 // validate number positive
-function val_num_pos(&$var, &$msg_fail = "no description.")
+function val_num_pos(&$var, &$msg_fail = "no description."): int
 {
 	if (is_numeric($var) && $var > 0) { return $var; }
 	echo $msg_fail;
@@ -32,7 +32,7 @@ function val_num_pos(&$var, &$msg_fail = "no description.")
 }
 
 // validate val_password, min 8 characters
-function val_password(&$password, &$msg_fail = "no description.")
+function val_password(&$password, &$msg_fail = "no description."): string
 {
 	if (is_string($password) && strlen($password) >= 8) { return $password; }
 	echo $msg_fail;
@@ -40,7 +40,7 @@ function val_password(&$password, &$msg_fail = "no description.")
 }
 
 // validate name, min 2 max 20 characters and no numbers
-function val_name(&$name, &$msg_fail = "no description.")
+function val_name(&$name, &$msg_fail = "no description."): string
 {
 	if (preg_match('/^[a-zA-Z]{2,20}+$/', $name)) { return $name; }
 	echo $msg_fail;
@@ -85,6 +85,28 @@ function val_bool($var, &$msg_fail = "no description.")
 	http_response_code(400); exit;
 }
 
+function get_carer_id(&$db, $carer_name): bool|int
+{	
+	$stmt = $db->prepare("
+		SELECT 
+			carer_id
+		FROM
+			carer_details
+		WHERE
+			LOWER(first_name) = LOWER(?)
+	") or trigger_error($db->error, E_USER_ERROR);
+	$stmt->execute([$carer_name]) or trigger_error($stmt->error, E_USER_ERROR);
+	$result = $stmt->get_result();
+	if (!$result->num_rows)
+	{
+		$stmt->close();
+		return false;
+	}
+	$ret = $result->fetch_array()[0];
+	$stmt->close();
+	return $ret;
+}
+
 // validate get JSON body from POST
 function get_post_json()
 {
@@ -104,7 +126,19 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 	else if (isset($_GET["validate_email"])) { val_email($_GET["validate_email"]); }
 	else if (isset($_GET["validate_password"])) { val_password($_GET["validate_password"]); }
 	else if (isset($_GET["validate_allergies"])) { val_str_null($_GET["validate_allergies"]); }
-	else if (isset($_GET["validate_carename"])) { val_name($_GET["validate_carename"]); }
+	else if (isset($_GET["validate_date_of_birth"])) { val_date_of_birth($_GET["validate_date_of_birth"]); }
+	else if (isset($_GET["validate_carename"]))
+	{
+		$name = val_name($_GET["validate_carename"]);
+		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
+		$carer_id = get_carer_id($db, $name);
+		$db->close();
+		if ($carer_id === false)
+		{
+			echo "Carer does not exist.";
+			http_response_code(400); exit;
+		}
+	}
 	
 	http_response_code(200); exit;
 }
@@ -139,6 +173,8 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		
+		$carer_id = get_carer_id($db, $carename);
+		
 		$stmt = $db->prepare("
 			INSERT INTO
 				emergency_contact_details (
@@ -167,18 +203,15 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 					carer_id,
 					emergency_contact_id
 				)
-			SELECT
+			VALUES (
 				?,
 				?,
 				?,
 				?,
 				?,
-				ca.carer_id,
+				?,
 				?
-			FROM
-				carer_details ca
-			WHERE
-				ca.first_name = ?
+			)
 		") or trigger_error($db->error, E_USER_ERROR);
 		$stmt->execute([
 			$firstname,
@@ -186,8 +219,8 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 			"2020-12-12",
 			$phone,
 			$email,
-			$emergency_contact_id,
-			$carename
+			$carer_id,
+			$emergency_contact_id
 		]) or trigger_error($stmt->error, E_USER_ERROR);
 		$stmt->close();
 		

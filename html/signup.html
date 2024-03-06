@@ -126,8 +126,8 @@
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(3)">Back</button>
                             <button class="button nextbutton" onclick="
-								const field1 = document.getElementById('lastname').value;
-								fetch('/api?validate_lastname=' + field1)
+								const field = document.getElementById('lastname').value;
+								fetch('/api?validate_lastname=' + field)
 								.then(ret => {
 									if (ret.status == 200) { nextStep(5); }
 									else { alert(field + 'is incorrect, try again.'); }
@@ -144,7 +144,14 @@
                         <input type="tel" id="phone" placeholder="">
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(4)">Back</button>
-                            <button class="button nextbutton" onclick="nextStep(6)">Next</button>
+                            <button class="button nextbutton" onclick="
+								const field = document.getElementById('phone').value;
+								fetch('/api?validate_phone=' + field)
+								.then(ret => {
+									if (ret.status == 200) { nextStep(6); }
+									else { alert(field + 'is incorrect, try again.'); }
+								})
+							">Next</button>
                         </div>
                       </div>
 
@@ -159,7 +166,14 @@
                         <input type="name" id="emfirstname" placeholder="">
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(5)">Back</button>
-                            <button class="button nextbutton" onclick="nextStep(7)">Next</button>
+                            <button class="button nextbutton" onclick="
+								const field = document.getElementById('emfirstname').value;
+								fetch('/api?validate_emfirstname=' + field)
+								.then(ret => {
+									if (ret.status == 200) { nextStep(7); }
+									else { alert(field + 'is incorrect, try again.'); }
+								})
+							">Next</button>
                         </div>
                       </div>
 
@@ -174,7 +188,14 @@
                         <input type="name" id="emlastname" placeholder="">
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(6)">Back</button>
-                            <button class="button nextbutton" onclick="nextStep(8)">Next</button>
+                            <button class="button nextbutton" onclick="
+								const field = document.getElementById('emlastname').value;
+								fetch('/api?validate_emlastname=' + field)
+								.then(ret => {
+									if (ret.status == 200) { nextStep(8); }
+									else { alert(field + 'is incorrect, try again.'); }
+								})
+							">Next</button>
                         </div>
                       </div>
 
@@ -189,7 +210,14 @@
                         <input type="tel" id="emphone" placeholder="">
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(7)">Back</button>
-                            <button class="button nextbutton" onclick="nextStep(9)">Next</button>
+                            <button class="button nextbutton" onclick="
+								const field = document.getElementById('emphone').value;
+								fetch('/api?validate_emphone=' + field)
+								.then(ret => {
+									if (ret.status == 200) { nextStep(9); }
+									else { alert(field + 'is incorrect, try again.'); }
+								})
+							">Next</button>
                         </div>
                       </div>
 
@@ -204,7 +232,14 @@
                         <input type="email" id="email" placeholder="someone@gmail.com">
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(8)">Back</button>
-                            <button class="button nextbutton" onclick="nextStep(10)">Next</button>
+                            <button class="button nextbutton" onclick="
+								const field = document.getElementById('email').value;
+								fetch('/api?validate_email=' + field)
+								.then(ret => {
+									if (ret.status == 200) { nextStep(10); }
+									else { alert(field + 'is incorrect, try again.'); }
+								})
+							">Next</button>
                         </div>
                       </div>
 
@@ -220,7 +255,14 @@
                         <p align="center">PIN OR PASSWORD?</p>
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(9)">Back</button>
-                            <button class="button nextbutton" onclick="nextStep(11)">Next</button>
+                            <button class="button nextbutton" onclick="
+								const field = document.getElementById('password').value;
+								fetch('/api?validate_password=' + field)
+								.then(ret => {
+									if (ret.status == 200) { nextStep(11); }
+									else { alert(field + 'is incorrect, try again.'); }
+								})
+							">Next</button>
                         </div>
                       </div>
 
@@ -400,7 +442,18 @@
                         <input type="text" id="carename" placeholder="">
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(13)">Back</button>
-                            <button class="button nextbutton" type="submit" onclick="submitForm()" onclick="window.location.href='user-interface.html'">Submit</button>
+                            <button class="button nextbutton" type="submit" onclick="
+								const field = document.getElementById('carename').value;
+								fetch('/api?validate_carename=' + field)
+								.then(ret => {
+									if (ret.status == 200)
+									{
+										submitForm();
+										window.location.href='user-interface.html';
+									}
+									else { alert(field + 'is incorrect, try again.'); }
+								})
+							">Submit</button>
                         </div>
                       </div>
                      
