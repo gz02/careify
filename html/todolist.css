@@ -76,6 +76,16 @@
 	margin: 0 0 8px;
 }
 
+.todo-item.done {
+    text-decoration: line-through;
+    opacity: 0.5; /* Adjust the opacity value as needed */
+}
+
+.btn-delete, .btn-delete:hover{
+	background: url('del.png') center center no-repeat;
+	background-size: contain;
+}
+
 .btn-edit,.btn-edit:hover {
 	background: url('edit.png') center center no-repeat;
 	background-size: contain;
@@ -86,7 +96,7 @@
 	background-size: contain;
 }
 
-.btn-delete, .btn-delete:hover{
+.btn-deleted, .btn-deleted:hover{
 	background: url('del.png') 5px center no-repeat;
 	background-size: contain;
 	width: auto;
