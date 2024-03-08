@@ -1,0 +1,121 @@
+.todolist .main {
+	background: #cad2d1;
+}
+
+.content-wrapper {
+	padding: 0 2rem;
+}
+
+.todo-item {
+	background-color: #718d52;
+	color: white;
+	padding: 8px 18px;
+	border-radius: 6px;
+	margin-bottom: 20px;
+	font-size: 15px;
+	position: relative;
+}
+
+.todo-items-list {
+	max-height: calc(95dvh - 246px);
+	overflow: auto;
+}
+
+.todo-item > * {
+	margin: 0 0 5px;
+	font-size: inherit;
+	font-weight: normal;
+	display: block;
+}
+
+.todo-item .todo-item-time {
+	margin-bottom: 0;
+}
+
+.todo-item .todo-item-date {
+	font-weight: bold;
+}
+
+.back-button-container {
+	text-align: left;
+}
+
+.backbutton{
+	margin: 2rem 0 0 2rem;
+}
+
+.todolist .signup-header {
+	padding: 0 2rem;
+	display: flex;
+	align-items: center;
+    justify-content: space-between;
+}
+
+.todolist .addbutton {
+	background: #e39d2c;
+	font-size: 14px;
+	width: auto;
+	padding-left: 16px;
+	padding-right: 16px;
+	margin: 0;
+}
+
+.todo-item-actions {
+	position: absolute;
+	right: 10px;
+	top: 8px;
+}
+
+.todo-item-actions button {
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	overflow: hidden;
+	text-indent: 40px;
+	background-color: #14471e;
+	margin: 0 0 8px;
+}
+
+.btn-edit,.btn-edit:hover {
+	background: url('edit.png') center center no-repeat;
+	background-size: contain;
+}
+
+.btn-done,.btn-done:hover {
+	background: url('done.png') center center no-repeat;
+	background-size: contain;
+}
+
+.btn-delete, .btn-delete:hover{
+	background: url('del.png') 5px center no-repeat;
+	background-size: contain;
+	width: auto;
+	background-color: #14471e;
+	padding: 10px 15px 10px 40px;
+	font-size: 14px;
+	margin: 0;
+}
+
+.todo-item-form input{
+	width: 100%;
+	text-align: left;
+	display: block;
+	font-family: inherit;
+	font-size: 15px;
+	margin-top: 10px;
+	background: #fff;
+	color: #000;
+}
+
+.todo-item-form input[type="date"],
+.todo-item-form input[type="datetime-local"]{
+	-webkit-min-logical-width: calc(100% - 16px);
+	-webkit-appearance: none;
+}
+
+/* desktop only styles */
+@media only screen and (min-width: 600px) {
+	.todo-items-list {
+		max-height: 400px;
+	}
+}

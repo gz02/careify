@@ -1,0 +1,441 @@
+html {
+    box-sizing: border-box;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+  
+  body{
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Verdana', sans-serif;
+      background: #fdfdfd;
+      overflow: hidden;
+  }
+  
+  .main {
+      height: 100dvh;
+      width: 100dvw;
+      position: relative;
+      box-sizing: border-box;
+      padding-bottom: calc(70px + 5dvh);
+      overflow: hidden;
+      background: #e39d2c;
+  }
+  
+  .sign-up .main{
+      background: #cad2d1;
+  }
+  
+  #chk{
+      display: none;
+  }
+  .signup{
+      position: relative;
+      width:100%;
+      height: 100%;
+  }
+  .signup form{
+      width: 100%;
+      margin: 0 auto;
+      margin-bottom: 50px;
+  }
+  .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+      margin-bottom: 50px;
+  }
+   /* Logo here */
+  .logo {
+      max-width: 40px;
+      max-height: 40px;
+      height: auto;
+      margin-right: 10px; 
+  }
+  
+  .logo-text {
+      color: white;
+      font-size: 1.5em; 
+      margin: 0;
+  }
+  .signup {
+      position: relative;
+      width: 100%;
+      height: 100%;
+  }
+  
+  input, select, textarea{
+      width: 65%;
+      background: #e0dede;
+      justify-content: center;
+      display: flex;
+      margin: 20px auto;
+      padding: 10px;
+      border: none;
+      outline: none;
+      border-radius: 5px;
+      font-size: inherit;
+  }
+  button{
+      width: 75%;
+      height: 40px;
+      margin: 10px auto;
+      justify-content: center;
+      display: block;
+      color: #fff;
+      background: #718d52;
+      font-size: 1em;
+      margin-top: 20px;
+      outline: none;
+      border: none;
+      border-radius: 20px;
+      transition: .2s ease-in;
+      cursor: pointer;
+      max-width: 300px;
+  }
+  button:hover{
+      background: #30421c;
+  }
+  
+  /* Back button style */
+  .backbutton {
+      width: 30%;
+      background: #e39d2c;
+  }
+  
+  .backbutton:hover {
+      background: #7e5718;
+      color: #fff; 
+  }
+  
+  /* Next button style */
+  .nextbutton {
+      width: 30%;
+      background: #718d52;
+  }
+  
+  .nextbutton:hover {
+      background: #30421c;
+      color: #fff; 
+  }
+  
+  /* container for the back/next buttons */
+  .button-container {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      position: absolute;
+      bottom: 5dvh;
+      left: 0;
+      width: 100%;
+  }
+  
+  .login{
+      height: 460px;
+      background: #eee;
+      border-radius: 60% / 10%;
+      transform: translateY(-180px);
+      transition: .8s ease-in-out;
+  }
+  .login label{
+      color: #573b8a;
+      transform: scale(.6);
+  }
+  
+  .center {
+      display: block;
+      margin-top: 15px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 30%;
+    }
+  
+  .center-character {
+      display: block;
+      padding-top: 0pt;
+      margin-left: auto;
+      margin-right: auto;
+      width: auto; /* restrict dimensions based on mobile's portrait height */
+      height: 40dvh;
+    }
+  
+  .unique-button {
+      margin-top: 10px;
+  }  
+  
+  .signup-header {
+      text-align: center;
+      color: #000000;
+      font-family: Arial;
+      font-size: 25px;
+      padding-top: 25px;
+  }
+  
+  .signup-p {
+      text-align: center;
+      color: #000000;
+      font-family: Arial;
+      font-size: 20px;
+  }
+  
+  /* Text fade-in effect - multi browser support */
+  .fade-in-text {
+      color: #ffffff;
+      text-align: center;
+      font-family: Verdana;
+      padding-top: 50px;
+      font-size: 30px;
+      opacity: 0;
+      animation: fadeIn 2s ease-in-out 0s forwards;
+      -webkit-animation: fadeIn 2s ease-in-out 0s forwards;
+      -moz-animation: fadeIn 2s ease-in-out 0s forwards;
+      -o-animation: fadeIn 2s ease-in-out 0s forwards;
+      -ms-animation: fadeIn 2s ease-in-out 0s forwards;
+     }
+    
+     .fade-in-text2 {
+      color: #ffffff;
+      text-align: center;
+      font-family: Verdana;
+      font-size: 20px;
+      opacity: 0;
+      animation: fadeIn 2s ease-in-out 1.5s forwards;
+      -webkit-animation: fadeIn 2s ease-in-out 1.5s forwards;
+      -moz-animation: fadeIn 2s ease-in-out 1.5s forwards;
+      -o-animation: fadeIn 2s ease-in-out 1.5s forwards;
+      -ms-animation: fadeIn 2s ease-in-out 1.5s forwards;
+  }
+    
+    .fade-in-image { /* Image fade-ineffect */
+      opacity: 0;
+      animation: fadeIn 3s ease-in-out 4s forwards;
+      -webkit-animation: fadeIn 3s ease-in-out 4s forwards;
+      -moz-animation: fadeIn 3s ease-in-out 4s forwards;
+      -o-animation: fadeIn 3s ease-in-out 4s forwards;
+      -ms-animation: fadeIn 3s ease-in-out 4s forwards;
+    } 
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    
+    @-moz-keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    
+    @-webkit-keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    
+    @-o-keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    
+    @-ms-keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    
+    
+  #registration-container {
+      width: 100%;
+      height: 100%;
+      margin: auto;
+      overflow: auto;
+    }
+    
+    .step {
+      display: none;
+    }
+  
+    .step h2 {
+      color: #333;
+    }
+    
+   /*This is for the vertical slider */
+   input[type=range][orient=vertical] {
+      accent-color: #718d52;
+      appearance: slider-vertical;
+      width: 8px;
+      height: 160px;
+      padding: 0 5px;
+      background: #718d52;
+  
+      
+  
+      -webkit-slider-thumb {
+          background: #718d52;
+      }
+  
+      -moz-range-thumb {
+          background: #718d52;
+      }
+  
+      -ms-thumb {
+          background: #718d52;
+      }
+  }
+  
+  .slider-container {
+      width: 75%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 auto;
+  }
+  
+  .header-container{
+      width: 50%;
+  }
+  
+  .header-container h1{
+      text-align: center;
+      font-size: larger;
+      font-family: Verdana;
+      margin-top: 10px;
+  }
+  
+  .header-container h2{
+      text-align: center;
+      font-size: large;
+      font-family: Verdana;
+  }
+  
+  .header-container h3{
+      text-align: center;
+      font-size: medium;
+      font-family: Verdana;
+  }
+  
+  .header-container h4{
+      text-align: center;
+      font-size: small;
+      font-family: Verdana;
+  }
+  
+  .reading-text{
+      height: 26px;
+  }
+  
+  .reading-text p{
+      margin: 0;
+      text-align: center;
+      vertical-align: bottom;
+  }
+  
+  hr {
+      border: 0;
+      border-bottom: 1px solid #718d52; 
+      align-content: center;
+      width: 75%; 
+  }
+  
+  .medical-container {
+      display: flex;
+      flex-direction: column; /* Stack items vertically */
+      align-items: center; /* Center items horizontally */
+      justify-content: center; /* Center items vertically */
+      margin-top: 20px; /* Add some margin for spacing between labels */
+  }
+  
+  .label-wrap {
+      display: flex;
+      align-items: center; /* Center items horizontally within each label */
+      justify-content: space-between;
+      margin-bottom: 20px;
+      max-width: 17em;
+      width: 100%;
+  }
+  
+  .label-wrap label {
+      margin-right: 10px; /* Add some spacing between label text and checkbox */
+      font-size: 18px; /* Adjust font size as needed */
+  }
+  
+  input[type="checkbox"] {
+      width: 22px;
+      height: 18px;
+      margin: 0;
+  }
+  
+  .list-medication {
+      width: 75%;
+      margin: 0 auto;
+  }
+  
+  .collapsible {
+      background-color: #718d52;
+      color: white;
+      cursor: pointer;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 16px;
+  }
+  
+  .list-medication button {
+      width: 100%;
+      border-radius: 6px;
+      margin: 10px auto 0;
+      padding: 0 18px;
+      position: relative;
+      z-index: 1; /* overlap with panel */
+      max-width: none;
+  }
+    
+  .active, .collapsible:hover {
+      background-color: #3f4e2f;
+  }
+  
+  .list-medication .accordion-panel {
+      padding: 24px 18px 18px;
+      display: none;
+      overflow: auto;
+      background-color: #a4bc94;
+      margin-top: -6px;
+  }
+  
+  .list-medication .accordion-panel label {
+      font-size: 16px;
+  }
+  
+  .list-medication .accordion-panel .label-wrap:last-child {
+      margin-bottom: 0;
+  }
+  
+  
+  /* desktop only styles */
+  @media only screen and (min-width: 600px) {
+      body{
+          padding: 40px;
+          overflow: auto;
+      }
+  
+      .main{
+          width: 350px;
+          height: 700px;
+          padding-bottom: 100px;
+          border-radius: 10px;
+          box-shadow: 5px 20px 50px #000;	
+      }
+  
+      .button-container {
+          bottom: 30px;
+      }
+  
+      .center-character {
+          height: 280px;
+      }
+  }
+  /* end desktop only styles */

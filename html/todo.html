@@ -3,63 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Care-ify ToDo List</title>
-    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <title>TodoList</title>
+    <link rel="stylesheet" type="text/css" href="stylesheet2.css">
+    <link rel="stylesheet" type="text/css" href="todolist.css">
+    
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
 </head>
-<body>
-    <header>
-        <div class="main2">      
-            <div class="button-top">
-                <button onclick="window.location.href='user-interface.html'" class="backbutton">Back</button>
-            </div>
-            
+<body class="todolist">
 
-            <!-- This is the todo list part -->
-            <div class="elements">
-                <div class="task-container">
-                    <div id="addTaskContainer">
-                        <div id="taskSubContainer">
-                            <select id="taskDay">
-                                <option value="Monday">Monday</option>
-                                <option value="Tuesday">Tuesday</option>
-                                <option value="Wednesday">Wednesday</option>
-                                <option value="Thursday">Thursday</option>
-                                <option value="Friday">Friday</option>
-                                <option value="Saturday">Saturday</option>
-                                <option value="Sunday">Sunday</option>
-                            </select>
-    
-                            
-                            <select id="taskTime">
-                                <!-- Add options dynamically using JavaScript -->
-                            </select>
-                            <button class="addbutton" onclick="addTask()"><b>+</b></button>
+        <div class="main">      
+            <div id="todolist-container">
+                <div id="step-container">
+                     <div class="step" id="step1">
+                        <!-- Step 1 To Do List -->
+                        <div class="back-button-container">
+                           <button class="button backbutton" onclick="prevStep(0)">Back</button>
+                       </div>
+                       <div class="signup-header">
+                         <h2>To Do List</h2>
+                         <button class="button addbutton" onclick="nextStep(2)">Add Task</button>
+                       </div>
+                       <div class="todo-items-list content-wrapper">
+                           <div class="todo-item">
+                                <time class="todo-item-date">Today</time>
+                                <h3 class="todo-item-title">Title of medication 1</h3>
+                                <time class="todo-item-time">9am</time>
+                                <div class="todo-item-actions">
+                                    <button class="btn-edit" onclick="nextStep(3)">Edit</button>
+                                    <button class="btn-done">Done</button>
+                                </div>
+                           </div>
+                           <div class="todo-item">
+                                <time class="todo-item-date">Today</time>
+                                <h3 class="todo-item-title">Title of medication 2</h3>
+                                <time class="todo-item-time">9am</time>
+                                <div class="todo-item-actions">
+                                    <button class="btn-edit" onclick="nextStep(3)">Edit</button>
+                                    <button class="btn-done">Done</button>
+                                </div>
+                           </div>
+                           <div class="todo-item">
+                                <time class="todo-item-date">Tomorrow</time>
+                                <h3 class="todo-item-title">Title of medication 3</h3>
+                                <time class="todo-item-time">9am</time>
+                                <div class="todo-item-actions">
+                                    <button class="btn-edit" onclick="nextStep(3)">Edit</button>
+                                    <button class="btn-done">Done</button>
+                                </div>
+                           </div>
+                           <div class="todo-item">
+                                <time class="todo-item-date">Wednesday</time>
+                                <h3 class="todo-item-title">Title of medication 4</h3>
+                                <time class="todo-item-time">9am</time>
+                                <div class="todo-item-actions">
+                                    <button class="btn-edit" onclick="nextStep(3)">Edit</button>
+                                    <button class="btn-done">Done</button>
+                                </div>
+                           </div>
+                           <div class="todo-item">
+                                <time class="todo-item-date">Wednesday</time>
+                                <h3 class="todo-item-title">Title of medication 5</h3>
+                                <time class="todo-item-time">9am</time>
+                                <div class="todo-item-actions">
+                                    <button class="btn-edit" onclick="nextStep(3)" >Edit</button>
+                                    <button class="btn-done">Done</button>
+                                </div>
+                           </div>
+                           <div class="todo-item">
+                                <time class="todo-item-date">Wednesday</time>
+                                <h3 class="todo-item-title">Title of medication 6</h3>
+                                <time class="todo-item-time">9am</time>
+                                <div class="todo-item-actions">
+                                    <button class="btn-edit" onclick="nextStep(3)">Edit</button>
+                                    <button class="btn-done">Done</button>
+                                </div>
+                           </div>
+                       </div>
+                       <div class="button-container">
+                           <button class="button nextbutton" onclick="lisPaginate(2)">MORE</button>
+                       </div>
+                     </div>
 
-                        </div>
-                        
+                     <div class="step" id="step2">
+                        <!--Add To Do Item screen -->
+                            <div class="back-button-container">
+                               <button class="button backbutton" onclick="nextStep(1)">Back</button>
+                           </div>
+                           <div class="signup-header">
+                             <h2>ADD</h2>
+                           </div>
+                           <div class="todo-item-form content-wrapper">
+                            <input
+                                  type="datetime-local"
+                                  id="todo-time"
+                                  name="todo-time"
+                                  value="2024-06-12T19:30"
+                                  min="2024-06-07T00:00"
+                                  max="2024-06-14T00:00" 
+                                  class="input-datetime"
+                                  />
+                              <label>Title</label>
+                              <input type="text" name="todo-title" class="input-text">
+                           </div>
+                            <div class="button-container">
+                               <button class="button nextbutton" onclick="nextStep(1)">ADD</button>
+                           </div>
+                     </div>
 
-                        
-                        <input type="text" id="taskText" placeholder="Medication Name" required>
-
-                        
-                        
-                    </div>
-
-
-
-                    <div id="todoContainer">
-                        <ul id="todoList"></ul>
-                    </div>
+                     <div class="step" id="step3">
+                        <!--Add To Do Item screen -->
+                            <div class="back-button-container">
+                               <button class="button backbutton" onclick="nextStep(1)">Back</button>
+                           </div>
+                           <div class="signup-header">
+                             <h2>EDIT</h2>
+                             <button class="btn-delete" onclick="nextStep(1)">Delete</button>
+                           </div>
+                           <div class="todo-item-form content-wrapper">
+                            <input
+                                  type="datetime-local"
+                                  id="todo-time"
+                                  name="todo-time"
+                                  value="2024-06-12T19:30"
+                                  min="2024-06-07T00:00"
+                                  max="2024-06-14T00:00" 
+                                  class="input-datetime"
+                                  />
+                              <label>Title</label>
+                              <input type="text" name="todo-title" class="input-text">
+                           </div>
+                            <div class="button-container">
+                               <button class="button nextbutton" onclick="nextStep(1)">UPDATE</button>
+                           </div>
+                     </div>
                 </div>
-            </div>
-
-            <div class="button-bottom">
-                <button class="nextbutton">More</button>
-            </div>
+              </div>
+            
         </div>
-    </header>
 
-    <script src="todolist.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
