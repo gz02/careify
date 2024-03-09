@@ -271,7 +271,42 @@
                         <div class="signup-header">
                             <h2>Any Allergies</h2>
                         </div>
-                        <input type="text" id="allergies" placeholder="">
+                        <div class="medical-container">
+                            <div class="label">
+                                <label for="allergies1">
+                                    <p>Pollen</p>
+                                </label>
+                                <input type="checkbox" name="condition1" id="pollen" value="allergies 1">
+                            </div>
+                        
+                            <div class="label">
+                                <label for="allergies2">
+                                    <p>Latex</p>
+                                </label>
+                                <input type="checkbox" name="allergies2" id="latex" value="allergies 2">
+                            </div>
+                        
+                            <div class="label">
+                                <label for="allergies3">
+                                    <p>Pencillin</p>
+                                </label>
+                                <input type="checkbox" name="allergies3" id="pencillin" value="allergies 3">
+                            </div>
+                        
+                            <div class="label">
+                                <label for="allergies4">
+                                    <p>Dust</p>
+                                </label>
+                                <input type="checkbox" name="allergies4" id="dust" value="allergies 4">
+                            </div>
+                        
+                            <div class="label">
+                                <label for="allergies5">
+                                    <p>Plasters</p>
+                                </label>
+                                <input type="checkbox" name="allergies5" id="plasters" value="allergies 5">
+                            </div>
+                        </div>
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(10)">Back</button>
                             <button class="button nextbutton" onclick="nextStep(12)">Next</button>
@@ -325,7 +360,7 @@
                        </div>
                      </div>
                      <div class="step" id="step13">
-                     <!-- Step 13 Allergies -->
+                     <!-- Step 13 Medication -->
                         <div class="signup-header">
                             <h2>Medication</h2>
                         </div>
@@ -432,7 +467,7 @@
                     </div>
 
                       <div class="step" id="step14">
-                        <!-- Step 14 Allergies -->
+                        <!-- Step 14 Carer ID -->
                         <div class="signup-header">
                             <h2>Carer ID</h2>
                         </div>
