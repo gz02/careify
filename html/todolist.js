@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Add a click event listener to the "ADD" button
   addButton.addEventListener("click", function () {
       // Get the values from the input fields
-      
       var todoTime = document.getElementById("todo-time").value;
       var todoDate = document.getElementById("todo-date").value;
       var todoTitle = document.querySelector(".step#step2 .input-text").value;
@@ -53,6 +52,8 @@ document.addEventListener("DOMContentLoaded", function () {
         month: 'long',
         day: 'numeric'
       });
+
+      save(todoTime, todoDate, todoTitle);
 
       // Create a new todo item HTML
       var newTodoItemHTML = `
@@ -73,6 +74,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Navigate back to step 1
       nextStep(1);
+
+      function save(time, date, title) {
+        
+        var apiUrl = "https://your-api-endpoint.com/save-todo"; //NEED API INFO HERE
+        var requestData = {
+            time: time,
+            date: date,
+            title: title
+        };
+
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('API response:', data);
+        })
+        .catch(error => {
+            console.error('Error during API call:', error);
+        });
+    }
 
       document.addEventListener("click", function (event) {
         if (event.target.classList.contains("btn-done")) {
