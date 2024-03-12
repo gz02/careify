@@ -46,12 +46,15 @@ function val_num_pos(&$var, &$msg_fail = "no description."): int
 	http_response_code(400); exit;
 }
 
-// validate val_password, min 8 characters
-function val_password(&$password, &$msg_fail = "no description."): string
+// validate pin number
+function val_pin(&$pin, &$msg_fail = "Invalid PIN: Please enter 4 numbers."): string
 {
-	if (is_string($password) && strlen($password) >= 8) { return $password; }
-	echo $msg_fail;
-	http_response_code(400); exit;
+    if (is_numeric($pin) && strlen($pin) === 4) {
+        return $pin;
+    }
+    echo $msg_fail;
+    http_response_code(400);
+    exit;
 }
 
 // validate name, min 2 max 20 characters and no numbers
