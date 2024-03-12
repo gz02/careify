@@ -1,6 +1,9 @@
 <?php
 
+require_once("/var/www/private/session.php"); // custom sessions
 require_once("/var/www/private/config.php"); // db connection definitions, rather keep it with others and not make it public
+
+session_start();
 
 // db test
 //$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
@@ -22,6 +25,16 @@ require_once("/var/www/private/config.php"); // db connection definitions, rathe
 //}
 //echo "</div>";
 //$db->close();
+
+function loggedin_or_exit(&$msg_fail = "not logged in."): void
+{
+	if (!isset($_SESSION["elderly_id"]))
+	{
+		header("Content-type: application/json");
+		echo json_encode(["error" => $msg_fail]);
+		http_response_code(403); exit;
+	}
+}
 
 // validate number positive
 function val_num_pos(&$var, &$msg_fail = "no description."): int
@@ -147,9 +160,36 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 	$_POST = get_post_json(); // POST data is JSON encoded, store back into post
 	
 	// action to do is stored in GET because of internal redirect
-	if (isset($_GET["test"]))
+	if (isset($_GET["save-todo"]))
 	{
-		echo json_encode(["test" => "ok"]);
+		loggedin_or_exit();
+		
+		$stmt = $db->prepare("
+			INSERT INTO
+				elderly_tasks (
+					elderly_id,
+					task_name,
+					completed,
+					todo_date, 
+					todo_time
+				)
+			VALUES (
+				?,
+				?,
+				?,
+				?,
+				?
+			);
+		") or trigger_error($db->error, E_USER_ERROR);
+		$stmt->execute([
+			$_SESSION["elderly_id"],
+			$_POST["title"],
+			0,
+			$_POST["date"],
+			$_POST["time"]
+		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$stmt->close();
+		
 		http_response_code(200); exit;
 	}
 	else if (isset($_GET["register"]))
@@ -163,7 +203,12 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$emphone = val_phone($_POST["emphone"], "emergency contact phone number is incorrect.");
 		$email = val_email($_POST["email"], "email is incorrect.");
 		$password = val_password($_POST["password"], "password is incorrect.");
-		$allergies = val_str_null($_POST["allergies"], "allergies are incorrect.");
+		
+		$pollen = val_bool($_POST["pollen"]);
+		$latex = val_bool($_POST["latex"]);
+		$penicillin = val_bool($_POST["penicillin"]);
+		$dust = val_bool($_POST["dust"]);
+		$plasters = val_bool($_POST["plasters"]);
 		$hypertension = val_bool($_POST["hypertension"]);
 		$arthritis = val_bool($_POST["arthritis"]);
 		$heartdisease = val_bool($_POST["heartdisease"]);
@@ -222,6 +267,9 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 			$carer_id,
 			$emergency_contact_id
 		]) or trigger_error($stmt->error, E_USER_ERROR);
+		
+		session_start(); $_SESSION["elderly_id"] = $stmt->insert_id;
+		
 		$stmt->close();
 		
 		$db->close();
