@@ -27,11 +27,11 @@ function submitForm() {
   const emphone = document.getElementById('emphone').value;
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
-  const pollen=document.getElementById('pollen').value;
-  const latex=document.getElementById('latex').value;
-  const penicillin=document.getElementById('penicillin').value;
-  const dust=document.getElementById('dust').value;
-  const plasters=document.getElementById('plasters').value;
+  const pollen=document.getElementById('pollen').checked;
+  const latex=document.getElementById('latex').checked;
+  const penicillin=document.getElementById('penicillin').checked;
+  const dust=document.getElementById('dust').checked;
+  const plasters=document.getElementById('plasters').checked;
   const hypertension = document.getElementById('hypertension').checked ;
   const arthritis = document.getElementById('arthritis').checked ;
   const diabetes = document.getElementById('heartdisease').checked ;
