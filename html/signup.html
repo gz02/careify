@@ -257,6 +257,10 @@
                             <button class="button backbutton" onclick="prevStep(9)">Back</button>
                             <button class="button nextbutton" onclick="
 								const field = document.getElementById('password').value;
+                                if(field.length !== 4) {
+                                    alert('PIN must be exactly 4 digits long.');
+                                    return;
+                                }
 								fetch('/api?validate_password=' + field)
 								.then(ret => {
 									if (ret.status == 200) { nextStep(11); }
