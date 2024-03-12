@@ -5,6 +5,8 @@ require_once("/var/www/private/config.php"); // db connection definitions, rathe
 
 session_start();
 
+$_SESSION["elderly_id"] = 9; // hardcoded for testing
+
 // db test
 //$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 //$result_tables = $db->query(" SHOW TABLES FROM careify") or trigger_error($db->error, E_USER_ERROR);
@@ -153,6 +155,35 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 		}
 	}
 	
+	else if (isset($_GET["all-todo"]))
+	{
+		loggedin_or_exit();
+		
+		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
+		
+		$stmt = $db->prepare("
+			SELECT
+				task_id AS id,
+				task_name AS name,
+				completed,
+				todo_date AS date,
+				todo_time AS time
+			FROM
+				elderly_tasks
+			WHERE
+				elderly_id = ?
+		") or trigger_error($db->error, E_USER_ERROR);
+		$stmt->execute([
+			$_SESSION["elderly_id"]
+		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$res = $stmt->get_result();
+		echo json_encode($res->fetch_all(MYSQLI_ASSOC));
+		$stmt->close();
+		$db->close();
+		
+		http_response_code(200); exit;
+	}
+	
 	http_response_code(200); exit;
 }
 else if ($_SERVER["REQUEST_METHOD"] === "POST")
@@ -163,6 +194,8 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 	if (isset($_GET["save-todo"]))
 	{
 		loggedin_or_exit();
+		
+		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		
 		$stmt = $db->prepare("
 			INSERT INTO
@@ -179,7 +212,7 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 				?,
 				?,
 				?
-			);
+			)
 		") or trigger_error($db->error, E_USER_ERROR);
 		$stmt->execute([
 			$_SESSION["elderly_id"],
@@ -189,9 +222,34 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 			$_POST["time"]
 		]) or trigger_error($stmt->error, E_USER_ERROR);
 		$stmt->close();
+		$db->close();
 		
 		http_response_code(200); exit;
 	}
+	
+	else if (isset($_GET["remove-todo"]))
+	{
+		loggedin_or_exit();
+		
+		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
+		
+		$stmt = $db->prepare("
+			DELETE FROM
+				elderly_tasks
+			WHERE
+				id = ?
+			)
+		") or trigger_error($db->error, E_USER_ERROR);
+		$stmt->execute([
+			$_SESSION["elderly_id"],
+			$_POST["task_id"]
+		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$stmt->close();
+		$db->close();
+		
+		http_response_code(200); exit;
+	}
+	
 	else if (isset($_GET["register"]))
 	{
 		$textSize = val_num_pos($_POST["textSize"], "test size is incorrect.");
