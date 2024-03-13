@@ -26,7 +26,7 @@ function submitForm() {
   const emlastname = document.getElementById('emlastname').value;
   const emphone = document.getElementById('emphone').value;
   const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
+  const pin = document.getElementById('pin').value;
   const pollen=document.getElementById('pollen').checked;
   const latex=document.getElementById('latex').checked;
   const penicillin=document.getElementById('penicillin').checked;
@@ -56,7 +56,7 @@ function submitForm() {
       emlastname,
       emphone,
       email,
-      password,
+      pin,
       pollen,
       latex,
       penicillin,

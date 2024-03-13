@@ -244,24 +244,24 @@
                       </div>
 
                       <div class="step" id="step10">
-                        <!-- Step 10 Password -->
+                        <!-- Step 10 pin -->
                         <div class="signup-header">
-                            <h2>Password</h2>
+                            <h2>PIN</h2>
                         </div>
                         <div class="signup-p">
                             <p>Enter your desired PIN:</p>
                         </div>
-                        <input type="password" id="password" placeholder="" maxlength="4">
+                        <input type="password" id="pin" placeholder="" minlength="4" maxlength="4">
                         
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(9)">Back</button>
                             <button class="button nextbutton" onclick="
-								const field = document.getElementById('password').value;
+								const field = document.getElementById('pin').value;
                                 if(field.length !== 4) {
                                     alert('PIN must be exactly 4 digits long.');
                                     return;
                                 }
-								fetch('/api?validate_password=' + field)
+								fetch('/api?validate_pin=' + field)
 								.then(ret => {
 									if (ret.status == 200) { nextStep(11); }
 									else { alert(field + 'is incorrect, try again.'); }
