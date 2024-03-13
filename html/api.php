@@ -7,27 +7,6 @@ session_start();
 
 $_SESSION["elderly_id"] = 9; // hardcoded for testing
 
-// db test
-//$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
-//$result_tables = $db->query(" SHOW TABLES FROM careify") or trigger_error($db->error, E_USER_ERROR);
-//$tables = array_column($result_tables->fetch_all(), 0);
-//$result_tables->close();
-//echo "<div style=\"font-size:10px\">";
-//foreach ($tables as $table)
-//{
-//	$structure = $db->query("
-//		SHOW CREATE TABLE careify.{$table}
-//	") or trigger_error($db->error, E_USER_ERROR);
-//	
-//	while ($row = $structure->fetch_assoc())
-//	{
-//		echo "{$row["Table"]}<br>{$row["Create Table"]}<hr>";
-//	}
-//	$structure->close();
-//}
-//echo "</div>";
-//$db->close();
-
 function loggedin_or_exit(&$msg_fail = "not logged in."): void
 {
 	if (!isset($_SESSION["elderly_id"]))
@@ -46,7 +25,15 @@ function val_num_pos(&$var, &$msg_fail = "no description."): int
 	http_response_code(400); exit;
 }
 
-// validate val_password, min 8 characters
+// validate pin, exactly 4 numbers
+function val_pin(&$password, &$msg_fail = "no description."): string
+{
+	if (preg_match("/^[0-9]{4}+$/", $name)) { return $name; }
+	echo $msg_fail;
+	http_response_code(400); exit;
+}
+
+// validate password, min 8 characters
 function val_password(&$password, &$msg_fail = "no description."): string
 {
 	if (is_string($password) && strlen($password) >= 8) { return $password; }
@@ -57,7 +44,7 @@ function val_password(&$password, &$msg_fail = "no description."): string
 // validate name, min 2 max 20 characters and no numbers
 function val_name(&$name, &$msg_fail = "no description."): string
 {
-	if (preg_match('/^[a-zA-Z]{2,20}+$/', $name)) { return $name; }
+	if (preg_match("/^[a-zA-Z]{2,20}+$/", $name)) { return $name; }
 	echo $msg_fail;
 	http_response_code(400); exit;
 }
@@ -65,7 +52,7 @@ function val_name(&$name, &$msg_fail = "no description."): string
 // validate date of birth, YYYY-MM-DD
 function val_date_of_birth(&$date_of_birth, &$msg_fail = "no description.")
 {
-	if (preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $date_of_birth)) { return $date_of_birth; }
+	if (preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/", $date_of_birth)) { return $date_of_birth; }
 	echo $msg_fail;
 	http_response_code(400); exit;
 }
@@ -73,7 +60,7 @@ function val_date_of_birth(&$date_of_birth, &$msg_fail = "no description.")
 // validate phone number, starts with 0 then 10 numbers after
 function val_phone(&$phone_number, &$msg_fail = "no description.")
 {
-	if (preg_match('/^0[0-9]{10}+$/', $phone_number)) { return $phone_number; }
+	if (preg_match("/^0[0-9]{10}+$/", $phone_number)) { return $phone_number; }
 	echo $msg_fail;
 	http_response_code(400); exit;
 }
@@ -139,6 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 	else if (isset($_GET["validate_emlastname"])) { val_name($_GET["validate_emlastname"]); }
 	else if (isset($_GET["validate_emphone"])) { val_phone($_GET["validate_emphone"]); }
 	else if (isset($_GET["validate_email"])) { val_email($_GET["validate_email"]); }
+	else if (isset($_GET["validate_pin"])) { val_pin($_GET["validate_pin"]); }
 	else if (isset($_GET["validate_password"])) { val_password($_GET["validate_password"]); }
 	else if (isset($_GET["validate_allergies"])) { val_str_null($_GET["validate_allergies"]); }
 	else if (isset($_GET["validate_date_of_birth"])) { val_date_of_birth($_GET["validate_date_of_birth"]); }
@@ -177,7 +165,13 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 			$_SESSION["elderly_id"]
 		]) or trigger_error($stmt->error, E_USER_ERROR);
 		$res = $stmt->get_result();
-		echo json_encode($res->fetch_all(MYSQLI_ASSOC));
+		
+		require_once("/var/www/private/lib/vendor/autoload.php");
+
+		$twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader(__DIR__ . "/templates"));
+
+		echo $twig->render("todo.html", ["tasks" => $res->fetch_all(MYSQLI_ASSOC)]);
+
 		$stmt->close();
 		$db->close();
 		
@@ -227,7 +221,32 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		http_response_code(200); exit;
 	}
 	
-	else if (isset($_GET["remove-todo"]))
+	else if (isset($_GET["completed-todo"]))
+	{
+		loggedin_or_exit();
+		
+		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
+		
+		$stmt = $db->prepare("
+			UPDATE
+				elderly_tasks
+			SET
+				completed = true
+			WHERE
+				task_id = ?
+				AND elderly_id = ?
+		") or trigger_error($db->error, E_USER_ERROR);
+		$stmt->execute([
+			$_POST["id"],
+			$_SESSION["elderly_id"]
+		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$stmt->close();
+		$db->close();
+		
+		http_response_code(200); exit;
+	}
+	
+	else if (isset($_GET["delete-todo"]))
 	{
 		loggedin_or_exit();
 		
@@ -237,12 +256,12 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 			DELETE FROM
 				elderly_tasks
 			WHERE
-				id = ?
-			)
+				task_id = ?
+				AND elderly_id = ?
 		") or trigger_error($db->error, E_USER_ERROR);
 		$stmt->execute([
-			$_SESSION["elderly_id"],
-			$_POST["task_id"]
+			$_POST["id"],
+			$_SESSION["elderly_id"]
 		]) or trigger_error($stmt->error, E_USER_ERROR);
 		$stmt->close();
 		$db->close();
@@ -260,7 +279,7 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$emlastname = val_name($_POST["emlastname"], "emergency contact last name is incorrect.");
 		$emphone = val_phone($_POST["emphone"], "emergency contact phone number is incorrect.");
 		$email = val_email($_POST["email"], "email is incorrect.");
-		$password = val_password($_POST["password"], "password is incorrect.");
+		$pin = val_pin($_POST["pin"], "pin is incorrect.");
 		
 		$pollen = val_bool($_POST["pollen"]);
 		$latex = val_bool($_POST["latex"]);

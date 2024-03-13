@@ -7,98 +7,96 @@
     <link rel="stylesheet" type="text/css" href="stylesheet2.css?v=12">
     <link rel="stylesheet" type="text/css" href="todolist.css?v=7">
     
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
 </head>
 <body class="todolist">
+	<div class="main">      
+		<div id="todolist-container">
+			<div id="step-container">
+				 <div class="step" id="step1">
+					<!-- Step 1 To Do List -->
+					<div class="back-button-container">
+						<button class="button backbutton" onclick="window.location.href='user-interface.html'">Back</button>
+				   </div>
+				   <div class="signup-header">
+					 <h2>To Do List</h2>
+					 <button class="button addbutton" onclick="nextStep(2)">Add Task</button>
+				   </div>
+				   <div class="todo-items-list content-wrapper">
+					   
+					   
+				   </div>
+				   <div class="button-container">
+					   <button class="button nextbutton" onclick="lisPaginate(2)">MORE</button>
+				   </div>
+				 </div>
 
-        <div class="main">      
-            <div id="todolist-container">
-                <div id="step-container">
-                     <div class="step" id="step1">
-                        <!-- Step 1 To Do List -->
-                        <div class="back-button-container">
-                            <button class="button backbutton" onclick="window.location.href='user-interface.html'">Back</button>
-                       </div>
-                       <div class="signup-header">
-                         <h2>To Do List</h2>
-                         <button class="button addbutton" onclick="nextStep(2)">Add Task</button>
-                       </div>
-                       <div class="todo-items-list content-wrapper">
-                           
-                           
-                       </div>
-                       <div class="button-container">
-                           <button class="button nextbutton" onclick="lisPaginate(2)">MORE</button>
-                       </div>
-                     </div>
+				 <div class="step" id="step2">
+					<!--Add To Do Item screen -->
+						<div class="back-button-container">
+						   <button class="button backbutton" onclick="nextStep(1)">Back</button>
+					   </div>
+					   <div class="signup-header">
+						 <h2>ADD</h2>
+					   </div>
+					   <div class="todo-item-form content-wrapper">
+						<label>Date</label>
+						<input
+							type="date"
+							id="todo-date"
+							name="todo-date"
+							min="2024-06-07"
+							max="2025-06-14"
+							class="input-date"
+							
+						/>
+						<label>Time</label>
+						<input
+							type="time"
+							id="todo-time"
+							name="todo-time"
+							value="19:30"
+							class="input-time"
+						/>                       
+						<label>Title</label>
+						<input type="text" name="todo-title" class="input-text" placeholder="Enter Task Here">
+					</div>
+						<div class="button-container">
+						   <button class="button nextbutton" onclick="nextStep(1)">ADD</button>
+					   </div>
+				 </div>
 
-                     <div class="step" id="step2">
-                        <!--Add To Do Item screen -->
-                            <div class="back-button-container">
-                               <button class="button backbutton" onclick="nextStep(1)">Back</button>
-                           </div>
-                           <div class="signup-header">
-                             <h2>ADD</h2>
-                           </div>
-                           <div class="todo-item-form content-wrapper">
-                            <label>Date</label>
-                            <input
-                                type="date"
-                                id="todo-date"
-                                name="todo-date"
-                                min="2024-06-07"
-                                max="2025-06-14"
-                                class="input-date"
-                                
-                            />
-                            <label>Time</label>
-                            <input
-                                type="time"
-                                id="todo-time"
-                                name="todo-time"
-                                value="19:30"
-                                class="input-time"
-                            />                       
-                            <label>Title</label>
-                            <input type="text" name="todo-title" class="input-text" placeholder="Enter Task Here">
-                        </div>
-                            <div class="button-container">
-                               <button class="button nextbutton" onclick="nextStep(1);save()">ADD</button>
-                           </div>
-                     </div>
-
-                     <div class="step" id="step3">
-                        <!--Edit To Do Item screen -->
-                            <div class="back-button-container">
-                               <button class="button backbutton" onclick="nextStep(1)">Back</button>
-                           </div>
-                           <div class="signup-header">
-                             <h2>EDIT</h2>
-                             <button class="btn-delete" onclick="nextStep(1)">Delete</button>
-                           </div>
-                           <div class="todo-item-form content-wrapper">
-                            <input
-                                  type="datetime-local"
-                                  id="todo-time"
-                                  name="todo-time"
-                                  value="2024-06-12T19:30"
-                                  min="2024-06-07T00:00"
-                                  max="2024-06-14T00:00" 
-                                  class="input-datetime"
-                                  />
-                              <label>Title</label>
-                              <input type="text" name="todo-title" class="input-text">
-                           </div>
-                            <div class="button-container">
-                               <button class="button nextbutton" onclick="nextStep(1)">UPDATE</button>
-                           </div>
-                     </div>
-                </div>
-              </div>
-            
-        </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="todolist.js?v=12"></script>
+				 <div class="step" id="step3">
+					<!--Edit To Do Item screen -->
+						<div class="back-button-container">
+						   <button class="button backbutton" onclick="nextStep(1)">Back</button>
+					   </div>
+					   <div class="signup-header">
+						 <h2>EDIT</h2>
+						 <button class="btn-delete" onclick="nextStep(1)">Delete</button>
+					   </div>
+					   <div class="todo-item-form content-wrapper">
+						<input
+							  type="datetime-local"
+							  id="todo-time"
+							  name="todo-time"
+							  value="2024-06-12T19:30"
+							  min="2024-06-07T00:00"
+							  max="2024-06-14T00:00" 
+							  class="input-datetime"
+							  />
+						  <label>Title</label>
+						  <input type="text" name="todo-title" class="input-text">
+					   </div>
+						<div class="button-container">
+						   <button class="button nextbutton" onclick="nextStep(1)">UPDATE</button>
+					   </div>
+				 </div>
+			</div>
+		  </div>
+		
+	</div>
+	<script src="todolist.js?v=12"></script>
 </body>
 </html>
