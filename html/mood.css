@@ -1,0 +1,57 @@
+.moodMessage{
+    display: flex;
+    justify-content: start;
+    padding-top: 50px;
+    padding-left: 10px;
+    position: relative;
+}
+.box{
+    position: absolute;
+    width: 300px; 
+    height: 20px;
+    background-color: #e3692c;
+    bottom: 23px;
+}
+.text {
+    position: relative;
+    z-index: 1; 
+}
+.moodOptions{
+    padding-top: 20px;
+    margin-left: 10px;
+}
+#happyOption,
+#fineOption,
+#sadOption
+{
+    display: flex;
+    width: 300px;
+    height: 125px;
+    align-items: center;
+}
+#happyImg,
+#fineImg,
+#sadImg{
+    width: 150px;
+    margin-right: 5px;
+}
+label{
+    font-weight: bold;
+    margin-right: 20px;
+}
+#tap{
+    margin-left: 11px;
+    width: 50px
+}
+#happy,
+#fine,
+#sad {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px; 
+    height: 50px;
+    border-radius: 50%; 
+    background-color: #718d52;
+}
+

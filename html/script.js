@@ -14,6 +14,11 @@ function prevStep(prev) {
   currentStep = prev;
   showStep(prev);
 }
+// Back button for mood feature
+const backButton = document.querySelector('.backbutton');
+backButton.addEventListener('click', () => {
+window.location.href = 'user-interface.html';
+});
 
 function submitForm() {
   // data collected for each element.
