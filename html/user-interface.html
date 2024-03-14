@@ -26,7 +26,7 @@
             <p>Features</p>
                 <div id="features">
                      <!--To do list-->
-                     <a href="todo.html">
+                     <a href="/index?todo">
                         <div id="todolist">
                             <img class="todolistImg" src="todolist.png" alt="to do list icon">
                             <div id="greenBar">
@@ -37,7 +37,7 @@
                      </a>
 
                      <!--Mood-->
-                     <a href="mood.html">
+                     <a href="/index?mood">
                         <div id="moodFeature">
                             <img id="moodImg1" src="mood.png" alt="mood icon" width="60%">
                             <div id="greenBar">
@@ -48,7 +48,7 @@
                      </a>
 
                      <!--Profile-->
-                     <a href="profile.html">
+                     <a href="/index?profile">
                         <div id="profile">
                             <img id="profileImg" src="profile.png" alt="profile icon" width="60%">
                             <div id="greenBar">
@@ -59,7 +59,7 @@
                      </a>
 
                     <!--Reminders-->
-                    <a href="reminder.html">
+                    <a href="/index?reminder">
                         <div id="reminders">
                             <img id="reminderImg" src="reminder.png" alt="bell icon" width="60%">
                             <div id="greenBar">
@@ -68,9 +68,16 @@
                             </div>
                         </div>
                     </a>
+					
+					<!--Log out-->
+					<div id="reminders">
+						<form action="/api?user-logout" method="post">
+							<input type="submit" value="logout" style="width:100%"/>
+						</form>
+					</div>
                 </div>       
         </section>
     </div>  
-    <script src="script.js"></script>  
+    <!--<script src="script.js"></script>-->
 </body>
 </html>

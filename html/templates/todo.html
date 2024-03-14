@@ -1,7 +1,7 @@
 {% for task in tasks %}
 	<div class="todo-item{% if task.completed %} done{% endif %}">
 		<time class="todo-item-date">{{ task.date }}</time>
-		<h3 class="todo-item-title">{{ task.title }}</h3>
+		<h3 class="todo-item-title">{{ task.name }}</h3>
 		<time class="todo-item-time">{{ task.time }}</time>
 		<span style="display:none" id="todo-item-id">{{ task.id }}</span>
 		<div class="todo-item-actions">

@@ -27,16 +27,16 @@ function submitForm() {
   const emphone = document.getElementById('emphone').value;
   const email = document.getElementById('email').value;
   const pin = document.getElementById('pin').value;
-  const pollen=document.getElementById('pollen').checked;
-  const latex=document.getElementById('latex').checked;
-  const penicillin=document.getElementById('penicillin').checked;
-  const dust=document.getElementById('dust').checked;
-  const plasters=document.getElementById('plasters').checked;
-  const hypertension = document.getElementById('hypertension').checked ;
-  const arthritis = document.getElementById('arthritis').checked ;
-  const diabetes = document.getElementById('heartdisease').checked ;
-  const dementia = document.getElementById('dementia').checked ;
-  const osteoporosis = document.getElementById('osteoporosis').checked ;
+  //const pollen=document.getElementById('pollen').checked;
+  //const latex=document.getElementById('latex').checked;
+  //const penicillin=document.getElementById('penicillin').checked;
+  //const dust=document.getElementById('dust').checked;
+  //const plasters=document.getElementById('plasters').checked;
+  //const hypertension = document.getElementById('hypertension').checked ;
+  //const arthritis = document.getElementById('arthritis').checked ;
+  //const diabetes = document.getElementById('heartdisease').checked ;
+  //const dementia = document.getElementById('dementia').checked ;
+  //const osteoporosis = document.getElementById('osteoporosis').checked ;
 
   const carename = document.getElementById('carename').value;
 
@@ -57,30 +57,27 @@ function submitForm() {
       emphone,
       email,
       pin,
-      pollen,
-      latex,
-      penicillin,
-      dust,
-      plasters,
-      hypertension,
-      arthritis,
-      diabetes,
-      dementia,
-      osteoporosis,
-      
+      //pollen,
+      //latex,
+      //penicillin,
+      //dust,
+      //plasters,
+      //hypertension,
+      //arthritis,
+      //diabetes,
+      //dementia,
+      //osteoporosis,
       carename,
     }),
   })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
+  .then(ret => { 
+	if (ret.status == 201) { window.location.href = '/index?user-interface'; }
+	else { alert("Something went wrong, try again."); }
   })
   .catch(error => {
     console.error('Error:', error);
   });
 }
-
-showStep(currentStep);
 
 $("#textSize").on("input", function () {
     const textSizeValue = $(this).val();
@@ -97,6 +94,7 @@ $(".label-wrap label").click(function(){
 });
 
 document.addEventListener("DOMContentLoaded", function () {
+	showStep(currentStep);
   // Check if there's a user first name stored
   const storedFirstName = sessionStorage.getItem("userFirstName");
 
@@ -107,8 +105,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function displayGreeting(firstName) {
-  const greetingElement = document.getElementById("greeting");
+  //const greetingElement = document.getElementById("greeting");
 
   // Update the content of the greeting element
-  greetingElement.innerHTML = `<h2>Hello, ${firstName}!!</h2>`;
+  //greetingElement.innerHTML = `<h2>Hello, ${firstName}!!</h2>`;
 }
