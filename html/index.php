@@ -18,7 +18,13 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 	if (isset($_GET["carer-login"])) { echo $twig->render("carer-login.html"); exit; }
 	if (isset($_GET["signup"])) { echo $twig->render("signup.html"); exit; }
 	
-	// pages requiring login
+	// pages requiring carer login
+	if (1)
+	{
+		if (isset($_GET["carer-interface"])) { echo $twig->render("carer-interface.html"); exit; }
+	}
+	
+	// pages requiring elderly login
 	if (isset($_SESSION["elderly_id"]))
 	{
 		if (isset($_GET["user-interface"])) { echo $twig->render("user-interface.html", ["moodImg" => $_GET["mood"] ?? ""]); exit; }
