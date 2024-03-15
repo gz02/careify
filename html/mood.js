@@ -20,3 +20,30 @@ fine.addEventListener('click', () => {
 sad.addEventListener('click', () => {
     window.location.href = '/index?user-interface&mood=sad.png';
 });
+
+function updateMood(mood) {
+    const apiUrl = //the api url goes here;
+
+    const payload = {
+        userId: 'user123', // Replace with the actual user ID fetched from the SQL table
+        mood: mood
+    };
+
+    fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Mood updated successfully.');
+        } else {
+            console.error('Failed to update mood.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
