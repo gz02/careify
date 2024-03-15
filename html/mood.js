@@ -10,13 +10,13 @@ const fine = document.getElementById('fine');
 const sad = document.getElementById('sad');
 
 happy.addEventListener('click', () => {
-    window.location.href = 'user-interface.html?mood=happy.png';
+    window.location.href = '/index?user-interface&mood=happy.png';
 });
 
 fine.addEventListener('click', () => {
-    window.location.href = 'user-interface.html?mood=fine.png';
+    window.location.href = '/index?user-interface&mood=fine.png';
 });
 
 sad.addEventListener('click', () => {
-    window.location.href = 'user-interface.html?mood=sad.png';
+    window.location.href = '/index?user-interface&mood=sad.png';
 });

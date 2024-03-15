@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 	// pages requiring login
 	if (isset($_SESSION["elderly_id"]))
 	{
-		if (isset($_GET["user-interface"])) { echo $twig->render("user-interface.html"); exit; }
+		if (isset($_GET["user-interface"])) { echo $twig->render("user-interface.html", ["moodImg" => $_GET["mood"] ?? ""]); exit; }
 		if (isset($_GET["todo"])) { echo $twig->render("todo.html"); exit; }
 		if (isset($_GET["mood"])) { echo $twig->render("mood.html"); exit; }
 		if (isset($_GET["profile"])) { echo "Not complete.";/*$twig->render("profile.html");*/ exit; }
