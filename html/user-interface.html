@@ -17,9 +17,17 @@
         <section id="mood">
             <p>Current Mood</p>
             <div class="image-container">
-                <img class="boxImage" src="moodImg.png" alt="mood image" width="60%" height="100%">
+                <img class="boxImage" id="moodImage" src="" alt="mood image" width="200px">
             </div>
         </section>
+        <script>
+            // Retrieve mood image URL from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const moodImage = urlParams.get('mood');
+    
+            // Update mood image source
+            document.getElementById('moodImage').src = moodImage;
+        </script>
 
         <!--Features-->
         <section class="feature">
