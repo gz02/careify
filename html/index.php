@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 	{
 		if (isset($_GET["user-interface"])) { echo $twig->render("user-interface.html"); exit; }
 		if (isset($_GET["todo"])) { echo $twig->render("todo.html"); exit; }
-		if (isset($_GET["mood"])) { echo "Not complete.";/*$twig->render("mood.html");*/ exit; }
+		if (isset($_GET["mood"])) { echo $twig->render("mood.html"); exit; }
 		if (isset($_GET["profile"])) { echo "Not complete.";/*$twig->render("profile.html");*/ exit; }
 		if (isset($_GET["reminder"])) { echo "Not complete.";/*$twig->render("reminder.html");*/ exit; }
 	}
