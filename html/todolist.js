@@ -63,18 +63,20 @@ document.addEventListener("DOMContentLoaded", function () {
 	loadTodoList();
 	
 	document.addEventListener("click", function (event) {
-		const nodes = event.target.closest('.todo-item').childNodes;
-			
-		for (let i = 0; i < nodes.length; i++) {
-			if (nodes[i].id == "todo-item-id") {
-				const id = nodes[i].innerText;
-				if (event.target.classList.contains("btn-done")) {
-					markAsDone(id);
-					loadTodoList();
-				}
-				else if (event.target.classList.contains("btn-delete")) {
-					deleteTodoItem(id); // Remove the todo item
-					loadTodoList();
+		const nodes = event.target.closest('.todo-item'); // what was clicked
+		if (nodes != null) { // correct button was clicked
+			for (let i = 0; i < nodes.childNodes.length; i++) { // check each child
+				if (nodes.childNodes[i].id == "todo-item-id") { // for item control
+					const id = nodes.childNodes[i].innerText; // get item id
+					// 2 actions allowed, done/delete
+					if (event.target.classList.contains("btn-done")) {
+						markAsDone(id);
+						loadTodoList();
+					}
+					else if (event.target.classList.contains("btn-delete")) {
+						deleteTodoItem(id); // Remove the todo item
+						loadTodoList();
+					}
 				}
 			}
 		}
