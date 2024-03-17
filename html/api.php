@@ -1,7 +1,7 @@
 <?php
 
 require_once("/var/www/private/session.php"); // custom sessions
-require_once("/var/www/private/config.php"); // db connection definitions, rather keep it with others and not make it public
+require_once("/var/www/private/config.php"); // db connection definitions
 
 session_start();
 
@@ -182,8 +182,44 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 else if ($_SERVER["REQUEST_METHOD"] === "POST")
 {
 	$_POST = get_post_json(); // POST data is JSON encoded, store back into post
+	// action to do is stored in GET
 	
-	// action to do is stored in GET because of internal redirect
+	if (isset($_GET["save-mood"]))
+	{
+		loggedin_or_exit();
+		
+		$mood = "";
+		switch ($_POST["mood"] ?? "") // validate and map input to what db expects
+		{
+			case "happy": $mood = "good"; break;
+			case "fine": $mood = "ok"; break;
+			case "sad": $mood = "bad"; break;
+			default: http_response_code(400); exit;
+		}
+		
+		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
+		
+		$stmt = $db->prepare("
+			INSERT INTO
+				mood_ratings (
+					elderly_id,
+					mood
+				)
+			VALUES (
+				?,
+				?
+			)
+		") or trigger_error($db->error, E_USER_ERROR);
+		$stmt->execute([
+			$_SESSION["elderly_id"],
+			$mood
+		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$stmt->close();
+		$db->close();
+		
+		http_response_code(200); exit;
+	}
+	
 	if (isset($_GET["save-todo"]))
 	{
 		loggedin_or_exit();

@@ -1,7 +1,7 @@
 // Back button for mood feature
 const backButton = document.querySelector('.backbutton');
-backButton.addEventListener('click', () => {
-window.location.href = '/index?user-interface';
+	backButton.addEventListener('click', () => {
+	window.location.href = '/index?user-interface';
 });
 
 //Mood Update Feature
@@ -10,39 +10,33 @@ const fine = document.getElementById('fine');
 const sad = document.getElementById('sad');
 
 happy.addEventListener('click', () => {
-    window.location.href = '/index?user-interface&mood=happy.png';
+	saveMood("happy");
+    
 });
 
 fine.addEventListener('click', () => {
-    window.location.href = '/index?user-interface&mood=fine.png';
+	saveMood("fine");
 });
 
 sad.addEventListener('click', () => {
-    window.location.href = '/index?user-interface&mood=sad.png';
+	saveMood("sad");
 });
 
-function updateMood(mood) {
-    const apiUrl = //the api url goes here;
-
+function saveMood(mood) {
     const payload = {
-        userId: 'user123', // Replace with the actual user ID fetched from the SQL table
         mood: mood
     };
 
-    fetch(apiUrl, {
+    fetch("/api?save-mood", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
     })
-    .then(response => {
-        if (response.ok) {
-            console.log('Mood updated successfully.');
-        } else {
-            console.error('Failed to update mood.');
-        }
-    })
+	.then(() => {
+		window.location.href = `/index?user-interface`;
+	})
     .catch(error => {
         console.error('Error:', error);
     });

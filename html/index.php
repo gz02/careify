@@ -3,7 +3,8 @@
 header("Cache-Control: no-store");
 header("Pragma: no-cache");
 
-require_once("/var/www/private/session.php");
+require_once("/var/www/private/config.php"); // db connection definitions
+require_once("/var/www/private/session.php"); // custom sessions
 require_once("/var/www/private/lib/vendor/autoload.php");
 
 session_start(); // check for login
@@ -24,7 +25,33 @@ else if (isset($_SESSION["elderly_id"])) // pages requiring elderly login
 	else if (isset($_GET["reminder"])) { echo "Not complete.";/*$twig->render("reminder.html");*/ }
 	else // default to interface
 	{
-		echo $twig->render("user-interface.html", ["moodImg" => $_GET["mood"] ?? ""]);
+		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
+		$stmt = $db->prepare("
+			SELECT
+				mood
+			FROM
+				mood_ratings
+			WHERE
+				elderly_id = ?
+			ORDER BY
+				rating_timestamp DESC
+		") or trigger_error($db->error, E_USER_ERROR);
+		$stmt->execute([
+			$_SESSION["elderly_id"]
+		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$res = $stmt->get_result()->fetch_array(MYSQLI_ASSOC);
+		$stmt->close();
+		$db->close();
+		
+		$moodImg = "";
+		switch ($res["mood"] ?? "") // validate and map input to what db expects
+		{
+			case "good": $moodImg = "happy.png"; break;
+			case "ok": $moodImg = "fine.png"; break;
+			case "bad": $moodImg = "sad.png"; break;
+		}
+		
+		echo $twig->render("user-interface.html", ["moodImg" => $moodImg]);
 	}
 }
 
