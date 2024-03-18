@@ -19,7 +19,7 @@
                             <h2>Your Display<br> Your Way</h2>
                         </div>
                         <div class="signup-p">
-                            <p>"Choose your text size"</p>
+                            <p>Choose your text size</p>
                         </div>
                         <br>
                         <div class="reading-text">
@@ -33,11 +33,8 @@
                                 <h3>Medium</h3>
                                 <h4>Small</h4>
                             </div>        
-                            <input type="range" id="textSize" min="16" max="25" value="10" step="3" orient="vertical" /> 
+                            <input type="range" id="textSize" min="16" max="25" value="10" step="3" orient="vertical" onchange="changeFontSize(this.value)" /> 
                         </div>
-                        <br>
-                        <br>
-                        <br>
                         <br>
                         <br>
                         <button onclick="nextStep(2)">Continue</button>
@@ -81,8 +78,6 @@
                                 </button>
                             </div>
                         </div>
-                            <br>
-                            <br>
                             <br>
                             <br>
                             <br>

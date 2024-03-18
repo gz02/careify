@@ -4,6 +4,8 @@
     --background-color: #c8d2d1; /* Default background color */
     --accent-color: #ee9b01; /* Default accent color */
     --highlight-color: #da6a00; /* Default highlight color */
+
+    --font-size: 16;
 }
 
 
@@ -72,7 +74,7 @@ html {
   
   .logo-text {
       color: white;
-      font-size: 1.5em; 
+      font-size: calc(var(--font-size) * 1.5);
       margin: 0;
   }
   .signup {
@@ -101,7 +103,7 @@ html {
       display: block;
       color: #fff;
       background: var(--secondary-color);
-      font-size: 1em;
+      font-size: calc(var(--font-size) * 1);
       margin-top: 20px;
       outline: none;
       border: none;
@@ -184,7 +186,7 @@ html {
       text-align: center;
       color: #000000;
       font-family: Arial;
-      font-size: 25px;
+      font-size: calc(var(--font-size) * 1.56);
       padding-top: 25px;
   }
   
@@ -192,7 +194,7 @@ html {
       text-align: center;
       color: #000000;
       font-family: Arial;
-      font-size: 20px;
+      font-size: calc(var(--font-size) * 1.25);
   }
   
   /* Text fade-in effect - multi browser support */
@@ -201,7 +203,7 @@ html {
       text-align: center;
       font-family: Verdana;
       padding-top: 50px;
-      font-size: 30px;
+      font-size: calc(var(--font-size) * 1.875);
       opacity: 0;
       animation: fadeIn 2s ease-in-out 0s forwards;
       -webkit-animation: fadeIn 2s ease-in-out 0s forwards;
@@ -214,7 +216,7 @@ html {
       color: #ffffff;
       text-align: center;
       font-family: Verdana;
-      font-size: 20px;
+      font-size: calc(var(--font-size) * 1.25);
       opacity: 0;
       animation: fadeIn 2s ease-in-out 1.5s forwards;
       -webkit-animation: fadeIn 2s ease-in-out 1.5s forwards;
@@ -310,26 +312,26 @@ html {
   
   .header-container h1{
       text-align: center;
-      font-size: larger;
+      font-size: calc(var(--font-size) * 1.25);
       font-family: Verdana;
       margin-top: 10px;
   }
   
   .header-container h2{
       text-align: center;
-      font-size: large;
+      font-size: calc(var(--font-size) * 1.20);
       font-family: Verdana;
   }
   
   .header-container h3{
       text-align: center;
-      font-size: medium;
+      font-size: calc(var(--font-size) * 1);
       font-family: Verdana;
   }
   
   .header-container h4{
       text-align: center;
-      font-size: small;
+      font-size: calc(var(--font-size) * 0.8);
       font-family: Verdana;
   }
   
@@ -369,7 +371,7 @@ html {
   
   .label-wrap label {
       margin-right: 10px; /* Add some spacing between label text and checkbox */
-      font-size: 18px; /* Adjust font size as needed */
+      font-size: calc(var(--font-size) * 1.125); /* Adjust font size as needed */
   }
   
   input[type="checkbox"] {
@@ -390,7 +392,7 @@ html {
       border: none;
       text-align: left;
       outline: none;
-      font-size: 16px;
+      font-size: calc(var(--font-size) * 1);
   }
   
   .list-medication button {
@@ -416,7 +418,7 @@ html {
   }
   
   .list-medication .accordion-panel label {
-      font-size: 16px;
+    font-size: calc(var(--font-size) * 1);
   }
   
   .list-medication .accordion-panel .label-wrap:last-child {

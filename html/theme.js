@@ -1,9 +1,9 @@
 function changeThemeSet(themeSet) {
     const colorSets = [
         ['#000080', '#008080', '#00FF00', '#FFFF00', '#00FFFF'],
-        ['#0000FF', '#FFA500', '#800080', '#40E0D0', '#FFFF00'],
-        ['#FFFF00', '#FFC0CB', '#FFA500', '#008000', '#A52A2A'],
-        ['#0000FF', '#FFFF00', '#008080', '#808080', '#A52A2A']
+        ['#0000FF', '#FFFF00', '#FFA500', '#40E0D0', '#800080'],
+        ['#FFFF00', '#FFA500', '#FFC0CB', '#008000', '#A52A2A'],
+        ['#0000FF', '#808080', '#FFFF00', '#008080', '#A52A2A']
     ];
 
     const selectedColors = colorSets[themeSet - 1]; // Arrays are 0-indexed
@@ -14,3 +14,11 @@ function changeThemeSet(themeSet) {
     document.documentElement.style.setProperty('--accent-color', selectedColors[3]);
     document.documentElement.style.setProperty('--highlight-color', selectedColors[4]);
 }
+
+
+//Function for changing font size
+function changeFontSize(size) {
+    const root = document.documentElement;
+    root.style.setProperty('--font-size', size + 'px');
+  }
+  

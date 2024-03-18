@@ -4,6 +4,8 @@
     --background-color: #c8d2d1; /* Default background color */
     --accent-color: #ee9b01; /* Default accent color */
     --highlight-color: #da6a00; /* Default highlight color */
+
+	--font-size: 16;
 }
 
 .todolist .main {
@@ -20,7 +22,7 @@
 	padding: 8px 18px;
 	border-radius: 6px;
 	margin-bottom: 20px;
-	font-size: 15px;
+	font-size: calc(var(--font-size) * 0.93);
 	position: relative;
 }
 
@@ -61,7 +63,7 @@
 
 .todolist .addbutton {
 	background: var(--accent-color);
-	font-size: 14px;
+	font-size: calc(var(--font-size) * 0.875);
 	width: auto;
 	padding-left: 16px;
 	padding-right: 16px;
@@ -110,7 +112,7 @@
 	width: auto;
 	background-color: var(--primary-color);
 	padding: 10px 15px 10px 40px;
-	font-size: 14px;
+	font-size: calc(var(--font-size) * 0.875);
 	margin: 0;
 }
 
@@ -119,7 +121,7 @@
 	text-align: left;
 	display: block;
 	font-family: inherit;
-	font-size: 15px;
+	font-size: calc(var(--font-size) * 0.93);
 	margin-top: 10px;
 	background: #fff;
 	color: #000;

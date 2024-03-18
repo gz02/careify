@@ -4,6 +4,8 @@
     --background-color: #c8d2d1; /* Default background color */
     --accent-color: #ee9b01; /* Default accent color */
     --highlight-color: #da6a00; /* Default highlight color */
+
+    --font-size: 16;
 }
 
 .moodMessage{
@@ -11,6 +13,7 @@
     justify-content: start;
     padding-top: 50px;
     padding-left: 10px;
+    font-size: var(--font-size);
     position: relative;
 }
 .box{
@@ -22,6 +25,7 @@
 }
 .text {
     position: relative;
+    font-size: var(--font-size);
     z-index: 1; 
 }
 .moodOptions{
@@ -44,6 +48,7 @@
     margin-right: 5px;
 }
 label{
+    font-size: var(--font-size);
     font-weight: bold;
     margin-right: 20px;
 }
