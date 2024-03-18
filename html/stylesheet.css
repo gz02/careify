@@ -432,7 +432,7 @@ hr {
 
 .label p {
     margin-right: 10px; /* Add some spacing between label text and checkbox */
-    font-size: calc(var(--font-size) * 0.8); /* Adjust font size as needed */
+    font-size: calc(var(--font-size) * 1); /* Adjust font size as needed */
 }
 
 .label-wrap {
@@ -446,7 +446,7 @@ hr {
 
 .label-wrap label {
     margin-right: 10px; /* Add some spacing between label text and checkbox */
-    font-size: calc(var(--font-size) * 0.9); /* Adjust font size as needed */
+    font-size: calc(var(--font-size) * 1.25); /* Adjust font size as needed */
 }
 
 input[type="checkbox"] {
@@ -466,7 +466,7 @@ input[type="checkbox"] {
 	border: none;
 	text-align: left;
 	outline: none;
-	font-size: calc(var(--font-size) * 1);
+	font-size: calc(var(--font-size) * 0.8);
 }
 
 .list-medication button {
