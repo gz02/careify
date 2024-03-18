@@ -1,3 +1,12 @@
+:root {
+    --primary-color: #14471e; /* Default primary color */
+    --secondary-color: #689040; /* Default secondary color */
+    --background-color: #c8d2d1; /* Default background color */
+    --accent-color: #ee9b01; /* Default accent color */
+    --highlight-color: #da6a00; /* Default highlight color */
+}
+
+
 html {
     box-sizing: border-box;
   }
@@ -26,11 +35,11 @@ html {
       box-sizing: border-box;
       padding-bottom: calc(70px + 5dvh);
       overflow: hidden;
-      background: #e39d2c;
+      background: var(--accent-color);
   }
   
   .sign-up .main{
-      background: #cad2d1;
+      background: var(--background-color);
   }
   
   #chk{
@@ -91,7 +100,7 @@ html {
       justify-content: center;
       display: block;
       color: #fff;
-      background: #718d52;
+      background: var(--secondary-color);
       font-size: 1em;
       margin-top: 20px;
       outline: none;
@@ -102,28 +111,28 @@ html {
       max-width: 300px;
   }
   button:hover{
-      background: #30421c;
+      background: var(--primary-color);
   }
   
   /* Back button style */
   .backbutton {
       width: 30%;
-      background: #e39d2c;
+      background: var(--accent-color);
   }
   
   .backbutton:hover {
-      background: #7e5718;
+      background: var(--highlight-color);
       color: #fff; 
   }
   
   /* Next button style */
   .nextbutton {
       width: 30%;
-      background: #718d52;
+      background: var(--secondary-color);
   }
   
   .nextbutton:hover {
-      background: #30421c;
+      background: var(--primary-color);
       color: #fff; 
   }
   
@@ -265,25 +274,25 @@ html {
     
    /*This is for the vertical slider */
    input[type=range][orient=vertical] {
-      accent-color: #718d52;
+      accent-color: var(--secondary-color);
       appearance: slider-vertical;
       width: 8px;
       height: 160px;
       padding: 0 5px;
-      background: #718d52;
+      background: var(--secondary-color);
   
       
   
       -webkit-slider-thumb {
-          background: #718d52;
+          background: var(--secondary-color);
       }
   
       -moz-range-thumb {
-          background: #718d52;
+          background: var(--secondary-color);
       }
   
       -ms-thumb {
-          background: #718d52;
+          background: var(--secondary-color);
       }
   }
   
@@ -336,7 +345,7 @@ html {
   
   hr {
       border: 0;
-      border-bottom: 1px solid #718d52; 
+      border-bottom: 1px solid var(--secondary-color); 
       align-content: center;
       width: 75%; 
   }
@@ -375,7 +384,7 @@ html {
   }
   
   .collapsible {
-      background-color: #718d52;
+      background-color: var(--secondary-color);
       color: white;
       cursor: pointer;
       border: none;
@@ -395,14 +404,14 @@ html {
   }
     
   .active, .collapsible:hover {
-      background-color: #3f4e2f;
+      background-color: var(--primary-color);
   }
   
   .list-medication .accordion-panel {
       padding: 24px 18px 18px;
       display: none;
       overflow: auto;
-      background-color: #a4bc94;
+      background-color: var(--secondary-color);
       margin-top: -6px;
   }
   

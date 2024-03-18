@@ -1,5 +1,13 @@
+:root {
+    --primary-color: #14471e; /* Default primary color */
+    --secondary-color: #689040; /* Default secondary color */
+    --background-color: #c8d2d1; /* Default background color */
+    --accent-color: #ee9b01; /* Default accent color */
+    --highlight-color: #da6a00; /* Default highlight color */
+}
+
 .todolist .main {
-	background: #cad2d1;
+	background: var(--background-color);
 }
 
 .content-wrapper {
@@ -7,7 +15,7 @@
 }
 
 .todo-item {
-	background-color: #718d52;
+	background-color: var(--secondary-color);
 	color: white;
 	padding: 8px 18px;
 	border-radius: 6px;
@@ -52,7 +60,7 @@
 }
 
 .todolist .addbutton {
-	background: #e39d2c;
+	background: var(--accent-color);
 	font-size: 14px;
 	width: auto;
 	padding-left: 16px;
@@ -72,7 +80,7 @@
 	height: 30px;
 	overflow: hidden;
 	text-indent: 40px;
-	background-color: #14471e;
+	background-color: var(--primary-color);
 	margin: 0 0 8px;
 }
 
@@ -100,7 +108,7 @@
 	background: url('del.png') 5px center no-repeat;
 	background-size: contain;
 	width: auto;
-	background-color: #14471e;
+	background-color: var(--primary-color);
 	padding: 10px 15px 10px 40px;
 	font-size: 14px;
 	margin: 0;

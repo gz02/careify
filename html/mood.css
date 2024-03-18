@@ -1,3 +1,11 @@
+:root {
+    --primary-color: #14471e; /* Default primary color */
+    --secondary-color: #689040; /* Default secondary color */
+    --background-color: #c8d2d1; /* Default background color */
+    --accent-color: #ee9b01; /* Default accent color */
+    --highlight-color: #da6a00; /* Default highlight color */
+}
+
 .moodMessage{
     display: flex;
     justify-content: start;
@@ -9,7 +17,7 @@
     position: absolute;
     width: 300px; 
     height: 20px;
-    background-color: #e3692c;
+    background-color: var(--highlight-color);
     bottom: 23px;
 }
 .text {
@@ -52,6 +60,6 @@ label{
     width: 50px; 
     height: 50px;
     border-radius: 50%; 
-    background-color: #718d52;
+    background-color: var(--secondary-color);
 }
 
