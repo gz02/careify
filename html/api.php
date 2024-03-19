@@ -5,6 +5,12 @@ require_once("/var/www/private/config.php"); // db connection definitions
 
 session_start();
 
+/* check if user (elderly) is logged in, exit with error message otherwise
+	*
+	* @param string $msg_fail  message to display on failure
+	* 
+	* @return void
+	*/
 function user_loggedin_or_exit($msg_fail = "not logged in."): void
 {
 	if (!isset($_SESSION["elderly_id"]))
@@ -15,6 +21,12 @@ function user_loggedin_or_exit($msg_fail = "not logged in."): void
 	}
 }
 
+/* check if carer is logged in, exit with error message otherwise
+	*
+	* @param string $msg_fail  message to display on failure
+	* 
+	* @return void
+	*/
 function carer_loggedin_or_exit($msg_fail = "not logged in."): void
 {
 	if (!isset($_SESSION["carer_id"]))
@@ -25,77 +37,132 @@ function carer_loggedin_or_exit($msg_fail = "not logged in."): void
 	}
 }
 
-// validate number positive
+/* display error caused by invalid user input
+	*
+	* @param string $msg_fail  message to display
+	* 
+	* @return void
+	*/
+function user_input_invalid($msg = "the entered value is not valid, try again."): void
+{
+	echo $msg;
+	http_response_code(400);
+	exit;
+}
+
+/* validate number positive
+	*
+	* @param any $var  input
+	* @param string $msg_fail  message to display on failure
+	* 
+	* @return int  $var if valid
+	*/
 function val_num_pos($var, $msg_fail = "no description."): int
 {
 	if (is_numeric($var) && $var > 0) { return $var; }
-	echo $msg_fail;
-	http_response_code(400); exit;
+	user_input_invalid($msg_fail);
 }
 
-// validate pin, exactly 4 numbers
+/* validate pin, exactly 4 numbers
+	*
+	* @param string $pin  PIN
+	* @param string $msg_fail  message to display on failure
+	* 
+	* @return string  $pin if valid
+	*/
 function val_pin(&$pin, $msg_fail = "pin is invalid."): string
 {
 	if (preg_match("/^[0-9]{4}+$/", $pin)) { return $pin; }
-	echo $msg_fail;
-	http_response_code(400); exit;
+	user_input_invalid($msg_fail);
 }
 
-// validate password, min 8 characters
+/* validate password, min 8 characters
+	*
+	* @param string $password  password
+	* @param string $msg_fail  message to display on failure
+	* 
+	* @return string  $password if valid
+	*/
 function val_password(&$password, $msg_fail = "no description."): string
 {
 	if (is_string($password) && strlen($password) >= 8) { return $password; }
-	echo $msg_fail;
-	http_response_code(400); exit;
+	user_input_invalid($msg_fail);
 }
 
-// validate name, min 2 max 20 characters and no numbers
+/* validate name, min 2 max 20 characters and no numbers
+	*
+	* @param string $name  name
+	* @param string $msg_fail  message to display on failure
+	* 
+	* @return string  $name if valid
+	*/
 function val_name(&$name, $msg_fail = "name is invalid."): string
 {
 	if (preg_match("/^[a-zA-Z]{2,20}+$/", $name)) { return $name; }
-	echo $msg_fail;
-	http_response_code(400); exit;
+	user_input_invalid($msg_fail);
 }
 
-// validate date of birth, YYYY-MM-DD
-function val_date_of_birth(&$date_of_birth, $msg_fail = "date is invalid.")
+/* validate date of birth
+	*
+	* @param string $date_of_birth  date of birth as DATE (YYYY-MM-DD)
+	* @param string $msg_fail  message to display on failure
+	* 
+	* @return string  $date_of_birth if valid
+	*/
+function val_date_of_birth(&$date_of_birth, $msg_fail = "date is invalid."): string
 {
 	if (preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/", $date_of_birth)) { return $date_of_birth; }
-	echo $msg_fail;
-	http_response_code(400); exit;
+	user_input_invalid($msg_fail);
 }
 
-// ############################################################################ check db if already in use!
-// validate phone number, starts with 0 then 10 numbers after
-function val_phone(&$phone_number, $msg_fail = "phone number is invalid.")
+/* validate phone number, starts with 0 then 10 numbers after
+	*
+	* @param string $phone_number  phone number
+	* @param string $msg_fail  message to display on failure
+	* 
+	* @return string  $phone_number if valid
+	*/
+// #################################################################################### check db if already in use!
+function val_phone(&$phone_number, $msg_fail = "phone number is invalid."): string
 {
 	if (preg_match("/^0[0-9]{10}+$/", $phone_number)) { return $phone_number; }
-	echo $msg_fail;
-	http_response_code(400); exit;
+	user_input_invalid($msg_fail);
 }
 
-// validate email
-function val_email(&$email, $msg_fail = "email is invalid.")
+/* validate email
+	*
+	* @param string $email  email
+	* @param string $msg_fail  message to display on failure
+	* 
+	* @return string  $email if valid
+	*/
+// 
+function val_email(&$email, $msg_fail = "email is invalid."): string
 {
 	if (filter_var($email, FILTER_VALIDATE_EMAIL) !== false) { return $email; }
-	echo $msg_fail;
-	http_response_code(400); exit;
+	user_input_invalid($msg_fail);
 }
 
-// validate string allow empty
-function val_str_null(&$var, $msg_fail = "no description.")
+/* validate bool
+	*
+	* @param string $var  SQL query
+	* @param string $msg_fail  message to display on failure
+	* 
+	* @return bool  $var if valid
+	*/
+function val_bool($var, $msg_fail = "no description."): bool
 {
-	return $var;
+	if ($var = filter_var($var, FILTER_VALIDATE_BOOLEAN) !== false) { return boolval($var); }
+	user_input_invalid($msg_fail);
 }
 
-// validate bool
-function val_bool($var, $msg_fail = "no description.")
-{
-	if ($var = filter_var($var, FILTER_VALIDATE_BOOLEAN) !== false) { return $var; }
-	echo $msg_fail;
-	http_response_code(400); exit;
-}
-
+/* get id of carer by their name
+	*
+	* @param object $db  mysqli database connection object
+	* @param string $carer_name  carer name
+	* 
+	* @return bool|int  fail OR carer id
+	*/
 function get_carer_id(&$db, $carer_name): bool|int
 {	
 	$stmt = $db->prepare("
@@ -108,50 +175,143 @@ function get_carer_id(&$db, $carer_name): bool|int
 	") or trigger_error($db->error, E_USER_ERROR);
 	$stmt->execute([$carer_name]) or trigger_error($stmt->error, E_USER_ERROR);
 	$result = $stmt->get_result();
-	if (!$result->num_rows)
+	if (!$result->num_rows) // if carer does not exist
 	{
 		$stmt->close();
 		return false;
 	}
-	$ret = $result->fetch_array()[0];
+	$ret = $result->fetch_array()[0]; // carer id
 	$stmt->close();
 	return $ret;
 }
 
-// validate get JSON body from POST
-function get_post_json()
+/* get either urlencoded POST body or decode JSON body if available
+	*
+	* 
+	* @return array  POST data
+	*/
+function get_post_json(): array
 {
+	// POST can be empty, so empty array "?? []" in that case
 	$json_input = @json_decode(file_get_contents('php://input'), true);
-	if ($json_input !== false) { return $json_input; }
-	return $_POST;
+	if ($json_input !== false) { return $json_input ?? []; }
+	return $_POST ?? [];
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "GET")
 {
+	/*  
+		*
+		* @param string GET  
+		* 
+		* @return 200|400  valid/invalid
+		*/
+	
+	/*  validate first name
+		*
+		* @param string GETvalidate_firstname  first name
+		* 
+		* @return 200|400  valid/invalid
+		*/
 	if (isset($_GET["validate_firstname"])) { val_name($_GET["validate_firstname"]); }
+	
+	/*  validate last name
+		*
+		* @param string GETvalidate_lastname  last name
+		* 
+		* @return 200|400  valid/invalid
+		*/
 	else if (isset($_GET["validate_lastname"])) { val_name($_GET["validate_lastname"]); }
+	
+	/*  validate phone number
+		*
+		* @param string GETvalidate_phone  phone number
+		* 
+		* @return 200|400  valid/invalid
+		*/
 	else if (isset($_GET["validate_phone"])) { val_phone($_GET["validate_phone"]); }
+	
+	/*  validate emergency contact first name
+		*
+		* @param string GETvalidate_emfirstname  emergency contact first name
+		* 
+		* @return 200|400  valid/invalid
+		*/
 	else if (isset($_GET["validate_emfirstname"])) { val_name($_GET["validate_emfirstname"]); }
+	
+	/*  validate emergency contact last name
+		*
+		* @param string GETvalidate_emlastname  emergency contact last name
+		* 
+		* @return 200|400  valid/invalid
+		*/
 	else if (isset($_GET["validate_emlastname"])) { val_name($_GET["validate_emlastname"]); }
+	
+	/*  validate emergency contact phone number
+		*
+		* @param string GETvalidate_emphone  emergency contact phone number
+		* 
+		* @return 200|400  valid/invalid
+		*/
 	else if (isset($_GET["validate_emphone"])) { val_phone($_GET["validate_emphone"]); }
+	
+	/*  validate email
+		*
+		* @param string GETvalidate_email  email
+		* 
+		* @return 200|400  valid/invalid
+		*/
 	else if (isset($_GET["validate_email"])) { val_email($_GET["validate_email"]); }
+	
+	/*  validate pin number
+		*
+		* @param string GETvalidate_pin  pin number
+		* 
+		* @return 200|400  valid/invalid
+		*/
 	else if (isset($_GET["validate_pin"])) { val_pin($_GET["validate_pin"]); }
+	
+	/*  validate password
+		*
+		* @param string GETvalidate_password  password
+		* 
+		* @return 200|400  valid/invalid
+		*/
 	else if (isset($_GET["validate_password"])) { val_password($_GET["validate_password"]); }
-	//else if (isset($_GET["validate_allergies"])) { val_str_null($_GET["validate_allergies"]); }
+	
+	/*  validate date of birth
+		*
+		* @param string GETvalidate_date_of_birth  date of birth
+		* 
+		* @return 200|400  valid/invalid
+		*/
 	else if (isset($_GET["validate_date_of_birth"])) { val_date_of_birth($_GET["validate_date_of_birth"]); }
+	
+	/*  validate carer name
+		*
+		* @param string GETvalidate_carename  carer name
+		* 
+		* @return 200|400  valid/invalid
+		*/
 	else if (isset($_GET["validate_carename"]))
 	{
 		$name = val_name($_GET["validate_carename"]);
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		$carer_id = get_carer_id($db, $name);
 		$db->close();
-		if ($carer_id === false)
+		if ($carer_id === false) // 0 and false is not the same
 		{
 			echo "Carer does not exist.";
 			http_response_code(400); exit;
 		}
 	}
 	
+	/*  todo list html formatted
+		*
+		* @param null GETall-todo
+		* 
+		* @return string  todo list
+		*/
 	else if (isset($_GET["all-todo"]))
 	{
 		loggedin_or_exit();
@@ -175,9 +335,9 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 		]) or trigger_error($stmt->error, E_USER_ERROR);
 		$res = $stmt->get_result();
 		
-		require_once("/var/www/private/lib/vendor/autoload.php");
-		$twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader(__DIR__ . "/templates"));
-		echo $twig->render("todo.html", ["tasks" => $res->fetch_all(MYSQLI_ASSOC)]);
+		require_once("/var/www/private/lib/vendor/autoload.php"); // include twig
+		$twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader(__DIR__ . "/templates")); // set template dir
+		echo $twig->render("todo.html", ["tasks" => $res->fetch_all(MYSQLI_ASSOC)]); // render
 
 		$stmt->close();
 		$db->close();
@@ -185,6 +345,12 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 		http_response_code(200); exit;
 	}
 	
+	/*  mood list html formatted
+		*
+		* @param null GETall-mood
+		* 
+		* @return string  mood list
+		*/
 	else if (isset($_GET["all-mood"]))
 	{
 		carer_loggedin_or_exit();
@@ -212,19 +378,20 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 		$stmt->execute([]) or trigger_error($stmt->error, E_USER_ERROR);
 		$res = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 		
-		$replace = [
+		$replace = [ // image name conversions
 			'good' => 'happy',
 			'ok' => 'fine',
 			"bad" => "sad"
 		];
-		foreach ($res as &$user)
+		foreach ($res as &$user) // each user
 		{
+			// convert csv encoded moods into array and convert their names
 			$user["moods"] = str_replace(array_keys($replace), $replace, explode(",", $user["moods"]));
 		}
 		
-		require_once("/var/www/private/lib/vendor/autoload.php");
-		$twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader(__DIR__ . "/templates"));
-		echo $twig->render("mood.html", ["users" => $res]);
+		require_once("/var/www/private/lib/vendor/autoload.php"); // include twig
+		$twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader(__DIR__ . "/templates")); // set template dir
+		echo $twig->render("mood.html", ["users" => $res]); // render
 		
 		$stmt->close();
 		$db->close();
@@ -239,6 +406,13 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 	$_POST = get_post_json(); // POST data is JSON encoded, store back into post
 	// action to do is stored in GET
 	
+	/*  save current mood of user
+		*
+		* @param null GETsave-mood
+		* @param string POSTmood  users current mood
+		* 
+		* @return null
+		*/
 	if (isset($_GET["save-mood"]))
 	{
 		loggedin_or_exit();
@@ -275,6 +449,15 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		http_response_code(200); exit;
 	}
 	
+	/*  save todo item
+		*
+		* @param null GETsave-todo
+		* @param string POSTtitle  todo title
+		* @param string POSTdate  todo date
+		* @param string POSTtime  todo time
+		* 
+		* @return null
+		*/
 	if (isset($_GET["save-todo"]))
 	{
 		loggedin_or_exit();
@@ -311,6 +494,13 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		http_response_code(200); exit;
 	}
 	
+	/*  mark todo item as completed
+		*
+		* @param null GETcompleted-todo
+		* @param string POSTid  todo id
+		* 
+		* @return null
+		*/
 	else if (isset($_GET["completed-todo"]))
 	{
 		loggedin_or_exit();
@@ -336,6 +526,13 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		http_response_code(200); exit;
 	}
 	
+	/*  delete todo item
+		*
+		* @param null GETdelete-todo
+		* @param string POSTid  todo id
+		* 
+		* @return null
+		*/
 	else if (isset($_GET["delete-todo"]))
 	{
 		loggedin_or_exit();
@@ -359,6 +556,14 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		http_response_code(200); exit;
 	}
 	
+	/*  user login
+		*
+		* @param null GETuser-login
+		* @param string POSTpin  PIN number
+		* @param string POSTemail  email
+		* 
+		* @return null
+		*/
 	else if (isset($_GET["user-login"]))
 	{
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
@@ -389,15 +594,23 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$stmt->close();
 		$db->close();
 		
-		if (password_verify($pin, $res["hashed_pin"]) ?? null)
+		if (password_verify($pin, $res["hashed_pin"]) ?? null) // check password hash matches
 		{
-			$_SESSION["elderly_id"] = $res["elderly_id"];
+			$_SESSION["elderly_id"] = $res["elderly_id"]; // save user id for session
 			http_response_code(200); exit;
 		}
 		
 		http_response_code(403); exit;
 	}
 	
+	/*  carer login
+		*
+		* @param null GETcarer-login
+		* @param string POSTpassword  password
+		* @param string POSTemail  email
+		* 
+		* @return null
+		*/
 	else if (isset($_GET["carer-login"]))
 	{
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
@@ -428,15 +641,21 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$stmt->close();
 		$db->close();
 		
-		if (password_verify($password, $res["hashed_password"] ?? null))
+		if (password_verify($password, $res["hashed_password"] ?? null)) // check password hash matches
 		{
-			$_SESSION["carer_id"] = $res["carer_id"];
+			$_SESSION["carer_id"] = $res["carer_id"]; // save carer id for session
 			http_response_code(200); exit;
 		}
 		
 		http_response_code(403); exit;
 	}
 	
+	/*  logout current user/carer
+		*
+		* @param null GETlogout
+		* 
+		* @return null
+		*/
 	else if (isset($_GET["logout"]))
 	{
 		if (isset($_SESSION["elderly_id"])) { unset($_SESSION["elderly_id"]); };
@@ -445,9 +664,24 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		http_response_code(302); exit;
 	}
 	
+	/*  user register
+		*
+		* @param null GETregister
+		* @param string POSTtextSize  text size
+		* @param string POSTfirstname  first name
+		* @param string POSTlastname  last name
+		* @param string POSTphone  phone number
+		* @param string POSTemfirstname  emergency contact first name
+		* @param string POSTemlastname  emergency contact last name
+		* @param string POSTemphone  emergency contact phone number
+		* @param string POSTemail  email
+		* @param string POSTpin  pin number
+		* 
+		* @return 201|500  success/fail
+		*/
 	else if (isset($_GET["register"]))
 	{
-		$textSize = val_num_pos($_POST["textSize"], "test size is incorrect.");
+		$textSize = val_num_pos($_POST["textSize"], "text size is incorrect.");
 		$firstname = val_name($_POST["firstname"], "first name is incorrect.");
 		$lastname = val_name($_POST["lastname"], "last name is incorrect.");
 		$phone = val_phone($_POST["phone"], "phone number is incorrect.");
@@ -470,8 +704,8 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$carename = val_name($_POST["carename"], "carer name is incorrect.");
 		
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
-		$db->autocommit(false);
-		$db->begin_transaction();
+		$db->autocommit(false); // dont commit changes
+		$db->begin_transaction(); // all or nothing!
 		
 		$carer_id = get_carer_id($db, $carename);
 		
@@ -544,10 +778,9 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		]) or trigger_error($stmt->error, E_USER_ERROR);
 		$stmt->close();
 		
-		if (!$db->commit())
-		{
-			echo "DB error: {$db->error}";
-			$db->rollback();
+		if (!$db->commit()) // commit changes and check if worked
+		{ // didnt work
+			$db->rollback(); // not needed, left for clarity
 			$db->close();
 			http_response_code(500); exit;
 		}
@@ -557,17 +790,15 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 	}
 	else
 	{
-		foreach($_POST as $k => $p) { echo htmlspecialchars($k) . ":" . htmlspecialchars($p) . "<br>"; }
-		http_response_code(200); exit;
-		//http_response_code(404); echo "Invalid POST request."; exit;
+		http_response_code(404); echo "Invalid POST request."; exit;
 	}
 }
-else
+else // only GET/POST allowed, ignore other methods
 {
 	echo "405 Method Not Allowed";
 	http_response_code(405);
 	exit;
 }
 
-http_response_code(400); exit; // request ignored
+http_response_code(400); exit; // request ignored completely for some rason
 ?>
