@@ -5,9 +5,19 @@ require_once("/var/www/private/config.php"); // db connection definitions
 
 session_start();
 
-function loggedin_or_exit($msg_fail = "not logged in."): void
+function user_loggedin_or_exit($msg_fail = "not logged in."): void
 {
 	if (!isset($_SESSION["elderly_id"]))
+	{
+		header("Content-type: application/json");
+		echo json_encode(["error" => $msg_fail]);
+		http_response_code(403); exit;
+	}
+}
+
+function carer_loggedin_or_exit($msg_fail = "not logged in."): void
+{
+	if (!isset($_SESSION["carer_id"]))
 	{
 		header("Content-type: application/json");
 		echo json_encode(["error" => $msg_fail]);
@@ -177,7 +187,8 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 	
 	else if (isset($_GET["all-mood"]))
 	{
-		//echo json_encode([0 => ["name" => "test", "moodImage" => "happy.png"]]);exit;
+		carer_loggedin_or_exit();
+		
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		
 		$stmt = $db->prepare("
