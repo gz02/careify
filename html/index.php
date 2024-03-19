@@ -55,13 +55,9 @@ else if (isset($_SESSION["elderly_id"])) // pages requiring elderly login
 	}
 }
 
-else if (0) // pages requiring carer login
+else if (isset($_SESSION["carer_id"])) // pages requiring carer login
 {
-	if (0) { echo $twig->render(""); }
-	else // default to interface
-	{
-		echo $twig->render("carer-interface.html");
-	}
+	echo $twig->render("carer-interface.html");
 }
 else { echo $twig->render("desktop.html"); } // always respond with index
 

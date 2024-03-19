@@ -166,11 +166,55 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 		$res = $stmt->get_result();
 		
 		require_once("/var/www/private/lib/vendor/autoload.php");
-
 		$twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader(__DIR__ . "/templates"));
-
 		echo $twig->render("todo.html", ["tasks" => $res->fetch_all(MYSQLI_ASSOC)]);
 
+		$stmt->close();
+		$db->close();
+		
+		http_response_code(200); exit;
+	}
+	
+	else if (isset($_GET["all-mood"]))
+	{
+		//echo json_encode([0 => ["name" => "test", "moodImage" => "happy.png"]]);exit;
+		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
+		
+		$stmt = $db->prepare("
+			SELECT
+				mr.elderly_id AS id,
+				CONCAT(ed.first_name, \" \", ed.last_name) as name,
+				GROUP_CONCAT(
+					mr.mood
+					ORDER BY mr.rating_timestamp DESC
+					LIMIT 3
+				) as moods
+			FROM
+				mood_ratings mr
+			INNER JOIN
+				elderly_details ed
+			ON
+				mr.elderly_id = ed.elderly_id
+			GROUP BY
+				ed.elderly_id
+		") or trigger_error($db->error, E_USER_ERROR);
+		$stmt->execute([]) or trigger_error($stmt->error, E_USER_ERROR);
+		$res = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+		
+		$replace = [
+			'good' => 'happy',
+			'ok' => 'fine',
+			"bad" => "sad"
+		];
+		foreach ($res as &$user)
+		{
+			$user["moods"] = str_replace(array_keys($replace), $replace, explode(",", $user["moods"]));
+		}
+		
+		require_once("/var/www/private/lib/vendor/autoload.php");
+		$twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader(__DIR__ . "/templates"));
+		echo $twig->render("mood.html", ["users" => $res]);
+		
 		$stmt->close();
 		$db->close();
 		
@@ -334,7 +378,7 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$stmt->close();
 		$db->close();
 		
-		if (password_verify($pin, $res["hashed_pin"]))
+		if (password_verify($pin, $res["hashed_pin"]) ?? null)
 		{
 			$_SESSION["elderly_id"] = $res["elderly_id"];
 			http_response_code(200); exit;
@@ -343,9 +387,49 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		http_response_code(403); exit;
 	}
 	
-	else if (isset($_GET["user-logout"]))
+	else if (isset($_GET["carer-login"]))
+	{
+		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
+		
+		$password = val_password($_POST["password"], "password is incorrect.");
+		$email = val_email($_POST["email"], "email is incorrect.");
+		
+		$stmt = $db->prepare("
+			SELECT
+				cp.carer_id,
+				cp.hashed_password
+			FROM
+				carer_password cp
+			WHERE
+				cp.carer_id IN (
+					SELECT
+						cd.carer_id
+					FROM
+						carer_details cd
+					WHERE
+						cd.email = ?
+				)
+		") or trigger_error($db->error, E_USER_ERROR);
+		$stmt->execute([
+			$email
+		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$res = $stmt->get_result()->fetch_array(MYSQLI_ASSOC);
+		$stmt->close();
+		$db->close();
+		
+		if (password_verify($password, $res["hashed_password"] ?? null))
+		{
+			$_SESSION["carer_id"] = $res["carer_id"];
+			http_response_code(200); exit;
+		}
+		
+		http_response_code(403); exit;
+	}
+	
+	else if (isset($_GET["logout"]))
 	{
 		if (isset($_SESSION["elderly_id"])) { unset($_SESSION["elderly_id"]); };
+		if (isset($_SESSION["carer_id"])) { unset($_SESSION["carer_id"]); };
 		header("Location: https://careify.kunfucle.com/index");
 		http_response_code(302); exit;
 	}

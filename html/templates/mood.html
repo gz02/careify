@@ -1,0 +1,8 @@
+{% for user in users %}
+	<div id="userID">
+		{{ user.name }}
+		{% for mood in user.moods %}
+				<img id="tapImg" src="{{ mood }}.png" width="40px">
+		{% endfor %}
+	</div>
+{% endfor %}

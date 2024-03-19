@@ -15,15 +15,16 @@
         </header>
 
         <section class="ClientInfo">
-        <p>Clients</p>
-        <div id="userID">
-        </div>
-        <div id="userID">
-        </div>
-        <div id="userID">
-        </div>
+			<p>Clients</p>
+			<span id="usersMood"></span>
         </section>
-
+		
+		<!--Log out-->
+		<form action="/api?logout" method="post">
+			<input type="submit" value="logout" style="width:100%"/>
+		</form>
     </div>
+	
     <script src="theme.js"></script>
+    <script src="carer-interface.js"></script>
 </body>
