@@ -314,7 +314,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 		*/
 	else if (isset($_GET["all-todo"]))
 	{
-		loggedin_or_exit();
+		user_loggedin_or_exit();
 		
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		
@@ -415,7 +415,7 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		*/
 	if (isset($_GET["save-mood"]))
 	{
-		loggedin_or_exit();
+		user_loggedin_or_exit();
 		
 		$mood = "";
 		switch ($_POST["mood"] ?? "") // validate and map input to what db expects
@@ -460,7 +460,7 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		*/
 	if (isset($_GET["save-todo"]))
 	{
-		loggedin_or_exit();
+		user_loggedin_or_exit();
 		
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		
@@ -503,7 +503,7 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		*/
 	else if (isset($_GET["completed-todo"]))
 	{
-		loggedin_or_exit();
+		user_loggedin_or_exit();
 		
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		
@@ -535,7 +535,7 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		*/
 	else if (isset($_GET["delete-todo"]))
 	{
-		loggedin_or_exit();
+		user_loggedin_or_exit();
 		
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		
