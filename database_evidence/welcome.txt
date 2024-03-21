@@ -1,0 +1,9 @@
+Hello, 
+
+Within this folder, you will find:
+  - Contribution to design ideas powerpoint
+  - Datebase powerpoint
+  - SQL Queries to be used
+  - Screenshots of Database
+
+Kim Richards 2111532
