@@ -579,9 +579,14 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$stmt = $db->prepare("
 			SELECT
 				ep.elderly_id,
-				ep.hashed_pin
+				ep.hashed_pin,
+				pa.pin_attempts
 			FROM
 				elderly_pin ep
+			INNER JOIN
+				pin_attempts pa
+			ON
+				ep.elderly_id = pa.elderly_id
 			WHERE
 				ep.elderly_id IN (
 					SELECT
@@ -592,18 +597,50 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 						ed.email = ?
 				)
 		") or trigger_error($db->error, E_USER_ERROR);
-		$stmt->execute([
-			$email
-		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$stmt->execute([$email]) or trigger_error($stmt->error, E_USER_ERROR);
 		$res = $stmt->get_result()->fetch_array(MYSQLI_ASSOC);
 		$stmt->close();
-		$db->close();
+		
+		if ($res["pin_attempts"] > 9) // max 10 login attempts allowed
+		{
+			$db->close();
+			header("Content-type: application/json");
+			echo json_encode(["error" => "login attempts limit reached."]);
+			http_response_code(403); exit; // login failed
+		}
+		
+		$elderly_id = $res["elderly_id"];
 		
 		if (password_verify($pin, $res["hashed_pin"]) ?? null) // check password hash matches
 		{
-			$_SESSION["elderly_id"] = $res["elderly_id"]; // save user id for session
-			http_response_code(200); exit;
+			$_SESSION["elderly_id"] = $elderly_id; // save user id for session
+			
+			// reset login attempts to 0
+			$stmt = $db->prepare("
+				UPDATE
+					pin_attempts
+				SET
+					pin_attempts = 0
+				WHERE
+					elderly_id = ?
+			") or trigger_error($db->error, E_USER_ERROR);
+			$stmt->execute([$elderly_id]) or trigger_error($stmt->error, E_USER_ERROR);
+			$stmt->close();
+			$db->close();
+			
+			http_response_code(200); exit; // login accepted, exit
 		}
+		
+		$stmt = $db->prepare("
+			UPDATE
+				pin_attempts
+			SET
+				pin_attempts = pin_attempts + 1
+			WHERE
+				elderly_id = ?
+		") or trigger_error($db->error, E_USER_ERROR);
+		$stmt->execute([$elderly_id]) or trigger_error($stmt->error, E_USER_ERROR);
+		$stmt->close();
 		
 		http_response_code(403); exit;
 	}
@@ -772,6 +809,20 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 			$elderly_id,
 			password_hash($pin, PASSWORD_DEFAULT)
 		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$stmt->close();
+		
+		$stmt = $db->prepare("
+			INSERT INTO
+				pin_attempts (
+					elderly_id,
+					pin_attempts
+				)
+			VALUES (
+				?,
+				0
+			)
+		") or trigger_error($db->error, E_USER_ERROR);
+		$stmt->execute([$elderly_id]) or trigger_error($stmt->error, E_USER_ERROR);
 		$stmt->close();
 		
 		{ // allergies
