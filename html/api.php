@@ -690,18 +690,11 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$emphone = val_phone($_POST["emphone"], "emergency contact phone number is incorrect.");
 		$email = val_email($_POST["email"], "email is incorrect.");
 		$pin = val_pin($_POST["pin"], "pin is incorrect.");
-		
-		//$pollen = val_bool($_POST["pollen"]);
-		//$latex = val_bool($_POST["latex"]);
-		//$penicillin = val_bool($_POST["penicillin"]);
-		//$dust = val_bool($_POST["dust"]);
-		//$plasters = val_bool($_POST["plasters"]);
-		//$hypertension = val_bool($_POST["hypertension"]);
-		//$arthritis = val_bool($_POST["arthritis"]);
-		//$heartdisease = val_bool($_POST["heartdisease"]);
-		//$dementia = val_bool($_POST["dementia"]);
-		//$osteoporosis = val_bool($_POST["osteoporosis"]);
 		$carename = val_name($_POST["carename"], "carer name is incorrect.");
+		
+		$allergies = $_POST["allergies"];
+		$medical_conditions = $_POST["medical_conditions"];
+		$medication = $_POST["medication"];
 		
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		$db->autocommit(false); // dont commit changes
@@ -759,8 +752,6 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$elderly_id = $stmt->insert_id;
 		$stmt->close();
 		
-		$_SESSION["elderly_id"] = $elderly_id;
-		
 		$stmt = $db->prepare("
 			INSERT INTO
 				elderly_pin (
@@ -778,12 +769,79 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		]) or trigger_error($stmt->error, E_USER_ERROR);
 		$stmt->close();
 		
+		{ // allergies
+			$stmt = $db->prepare("
+				INSERT INTO
+					elderly_allergies (
+						elderly_id,
+						allergy_id
+					)
+				SELECT
+					?,
+					allergy_id
+				FROM
+					allergies
+				WHERE
+					allergy_name = ?
+			") or trigger_error($db->error, E_USER_ERROR);
+			foreach ($allergies as $allergy => $val)
+			{
+				if ($val) { $stmt->execute([$elderly_id, $allergy]) or trigger_error($stmt->error, E_USER_ERROR); }
+			}
+			$stmt->close();
+		}
+		{ // medical conditions
+			$stmt = $db->prepare("
+				INSERT INTO
+					elderly_medical_conditions (
+						elderly_id,
+						medical_condition_id
+					)
+				SELECT
+					?,
+					medical_condition_id
+				FROM
+					medical_conditions
+				WHERE
+					condition_name = ?
+			") or trigger_error($db->error, E_USER_ERROR);
+			foreach ($medical_conditions as $condition => $val)
+			{
+				if ($val) { $stmt->execute([$elderly_id, $condition]) or trigger_error($stmt->error, E_USER_ERROR); }
+			}
+			$stmt->close();
+		}
+		{ // medication
+			$stmt = $db->prepare("
+				INSERT INTO
+					elderly_medication (
+						elderly_id,
+						medication_id
+					)
+				SELECT
+					?,
+					medication_id
+				FROM
+					medication
+				WHERE
+					medication_name = ?
+			") or trigger_error($db->error, E_USER_ERROR);
+			foreach ($medication as $med => $val)
+			{
+				if ($val) { $stmt->execute([$elderly_id, $med]) or trigger_error($stmt->error, E_USER_ERROR); }
+			}
+			$stmt->close();
+		}
+		
+		
 		if (!$db->commit()) // commit changes and check if worked
 		{ // didnt work
 			$db->rollback(); // not needed, left for clarity
 			$db->close();
 			http_response_code(500); exit;
 		}
+		
+		$_SESSION["elderly_id"] = $elderly_id; // elderly now logged in
 		
 		$db->close();
 		http_response_code(201); exit;

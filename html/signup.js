@@ -27,18 +27,37 @@ function submitForm() {
   const emphone = document.getElementById('emphone').value;
   const email = document.getElementById('email').value;
   const pin = document.getElementById('pin').value;
-  //const pollen=document.getElementById('pollen').checked;
-  //const latex=document.getElementById('latex').checked;
-  //const penicillin=document.getElementById('penicillin').checked;
-  //const dust=document.getElementById('dust').checked;
-  //const plasters=document.getElementById('plasters').checked;
-  //const hypertension = document.getElementById('hypertension').checked ;
-  //const arthritis = document.getElementById('arthritis').checked ;
-  //const diabetes = document.getElementById('heartdisease').checked ;
-  //const dementia = document.getElementById('dementia').checked ;
-  //const osteoporosis = document.getElementById('osteoporosis').checked ;
-
   const carename = document.getElementById('carename').value;
+  
+  const allergies = {
+	"Pollen": document.getElementById('Pollen').checked,
+	"Latex": document.getElementById('Latex').checked,
+	"Penicillin": document.getElementById('Penicillin').checked,
+	"Dust": document.getElementById('Dust').checked,
+	"Plasters": document.getElementById('Plasters').checked
+  };
+  
+  const medical_conditions = {
+	"Hypertension": document.getElementById('Hypertension').checked,
+	"Cardiovascular": document.getElementById('Cardiovascular').checked,
+	"Diabetes": document.getElementById('Diabetes').checked,
+	"Alzheimer's Disease": document.getElementById("Alzheimer's Disease").checked
+  };
+  
+  const medication = {
+	"Paracetamol": document.getElementById('Paracetamol').checked,
+	"Ibuprofen": document.getElementById('Ibuprofen').checked,
+	"Naproxen": document.getElementById('Naproxen').checked,
+	"Statins": document.getElementById('Statins').checked,
+	"ACE-Inhibitors": document.getElementById('ACE Inhibitors').checked,
+	"Antiplatelet": document.getElementById('Antiplatelet').checked,
+	"Metformin": document.getElementById('Metformin').checked,
+	"Sulfonylureas": document.getElementById('Sulfonylureas').checked,
+	"Insulin": document.getElementById('Insulin').checked,
+	"DPP-4": document.getElementById('DPP-4').checked,
+	"Z-drugs": document.getElementById('Z-drugs').checked,
+	"Benzodiazepines": document.getElementById('Benzodiazepines').checked
+  };
 
   // fetch API placeholder below
   fetch('/api?register', {
@@ -57,17 +76,11 @@ function submitForm() {
       emphone,
       email,
       pin,
-      //pollen,
-      //latex,
-      //penicillin,
-      //dust,
-      //plasters,
-      //hypertension,
-      //arthritis,
-      //diabetes,
-      //dementia,
-      //osteoporosis,
-      carename,
+	  carename,
+	  
+      allergies,
+      medical_conditions,
+      medication
     }),
   })
   .then(ret => { 
