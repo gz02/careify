@@ -43,15 +43,7 @@ else if (isset($_SESSION["elderly_id"])) // pages requiring elderly login
 		$stmt->close();
 		$db->close();
 		
-		$moodImg = "";
-		switch ($res["mood"] ?? "") // validate and map input to what db expects
-		{
-			case "good": $moodImg = "happy.png"; break;
-			case "ok": $moodImg = "fine.png"; break;
-			case "bad": $moodImg = "sad.png"; break;
-		}
-		
-		echo $twig->render("user-interface.html", ["moodImg" => $moodImg]);
+		echo $twig->render("user-interface.html", ["moodImg" => "images/mood/{$res["mood"]}.png"]);
 	}
 }
 

@@ -145,7 +145,7 @@ function val_email(&$email, $msg_fail = "email is invalid."): string
 
 /* validate bool
 	*
-	* @param string $var  SQL query
+	* @param string $var  value
 	* @param string $msg_fail  message to display on failure
 	* 
 	* @return bool  $var if valid
@@ -153,6 +153,19 @@ function val_email(&$email, $msg_fail = "email is invalid."): string
 function val_bool($var, $msg_fail = "no description."): bool
 {
 	if ($var = filter_var($var, FILTER_VALIDATE_BOOLEAN) !== false) { return boolval($var); }
+	user_input_invalid($msg_fail);
+}
+
+/* validate mood name
+	*
+	* @param string $mood  mood name as string
+	* @param string $msg_fail  message to display on failure
+	* 
+	* @return bool  $mood if valid
+	*/
+function val_mood(string $mood, string $msg_fail = "no description."): string
+{
+	if (in_array($mood, ["good", "ok", "bad", ""])) { return $mood; }
 	user_input_invalid($msg_fail);
 }
 
@@ -360,33 +373,31 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 		$stmt = $db->prepare("
 			SELECT
 				mr.elderly_id AS id,
-				CONCAT(ed.first_name, \" \", ed.last_name) as name,
-				GROUP_CONCAT(
-					mr.mood
-					ORDER BY mr.rating_timestamp DESC
-					LIMIT 3
-				) as moods
+				CONCAT(ed.first_name, \" \", ed.last_name) AS name,
+				MAX(CASE WHEN mr.rank = 1 THEN mr.mood END) AS mood1,
+				MAX(CASE WHEN mr.rank = 2 THEN mr.mood END) AS mood2,
+				MAX(CASE WHEN mr.rank = 3 THEN mr.mood END) AS mood3
 			FROM
-				mood_ratings mr
+				(SELECT
+					mr.*,
+					ROW_NUMBER() OVER (PARTITION BY mr.elderly_id ORDER BY mr.rating_timestamp DESC) AS rank
+				FROM
+					mood_ratings mr) mr
 			INNER JOIN
 				elderly_details ed
 			ON
 				mr.elderly_id = ed.elderly_id
+			WHERE
+				mr.rank <= 3
 			GROUP BY
-				ed.elderly_id
+				mr.elderly_id, ed.first_name, ed.last_name;
 		") or trigger_error($db->error, E_USER_ERROR);
 		$stmt->execute([]) or trigger_error($stmt->error, E_USER_ERROR);
 		$res = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 		
-		$replace = [ // image name conversions
-			'good' => 'happy',
-			'ok' => 'fine',
-			"bad" => "sad"
-		];
-		foreach ($res as &$user) // each user
+		foreach ($res as &$user)
 		{
-			// convert csv encoded moods into array and convert their names
-			$user["moods"] = str_replace(array_keys($replace), $replace, explode(",", $user["moods"]));
+			$user["moods"] = [$user["mood1"], $user["mood2"], $user["mood3"]];
 		}
 		
 		require_once("/var/www/private/lib/vendor/autoload.php"); // include twig
@@ -417,14 +428,8 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 	{
 		user_loggedin_or_exit();
 		
-		$mood = "";
-		switch ($_POST["mood"] ?? "") // validate and map input to what db expects
-		{
-			case "happy": $mood = "good"; break;
-			case "fine": $mood = "ok"; break;
-			case "sad": $mood = "bad"; break;
-			default: http_response_code(400); exit;
-		}
+		$mood = val_mood($_POST["mood"]);
+		var_dump($mood);
 		
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		

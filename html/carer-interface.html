@@ -12,17 +12,16 @@
     <div class="main2">
         <header class="carerMessage">
             <h1>Carer<br>Dashboard</h1>
+			<!--Log out-->
+			<form action="/api?logout" method="post">
+				<input type="submit" value="logout" style="width:100%"/>
+			</form>
         </header>
 
         <section class="ClientInfo">
 			<p>Clients</p>
 			<span id="usersMood"></span>
         </section>
-		
-		<!--Log out-->
-		<form action="/api?logout" method="post">
-			<input type="submit" value="logout" style="width:100%"/>
-		</form>
     </div>
 	
     <script src="theme.js"></script>

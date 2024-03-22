@@ -10,16 +10,15 @@ const fine = document.getElementById('fine');
 const sad = document.getElementById('sad');
 
 happy.addEventListener('click', () => {
-	saveMood("happy");
-    
+	saveMood("good");
 });
 
 fine.addEventListener('click', () => {
-	saveMood("fine");
+	saveMood("ok");
 });
 
 sad.addEventListener('click', () => {
-	saveMood("sad");
+	saveMood("bad");
 });
 
 function saveMood(mood) {
@@ -34,7 +33,8 @@ function saveMood(mood) {
         },
         body: JSON.stringify(payload)
     })
-	.then(() => {
+	.then((res) => {
+		console.log(res);
 		window.location.href = `/index?user-interface`;
 	})
     .catch(error => {

@@ -2,7 +2,9 @@
 	<div id="userID">
 		{{ user.name }}
 		{% for mood in user.moods %}
-				<img id="tapImg" src="{{ mood }}.png" width="40px">
+			{% if mood is not empty %}
+				<img id="tapImg" src="images/mood/{{ mood }}.png" width="40px">
+			{% endif %}
 		{% endfor %}
 	</div>
 {% endfor %}
