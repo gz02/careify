@@ -261,7 +261,6 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		user_loggedin_or_exit();
 		
 		$mood = val_mood($_POST["mood"]);
-		var_dump($mood);
 		
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		
