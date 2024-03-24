@@ -1,4 +1,4 @@
-![Design](https://github.com/gz02/careify/blob/master/Design/mobile_app_.pdf?raw=true)
+![Design](https://github.com/gz02/careify/blob/master/Design/mobile_app_.pdf)
 
 <details>
   <summary>Hardware/Networking</summary>
