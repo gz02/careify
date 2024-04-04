@@ -7,8 +7,6 @@ require_once("/var/www/private/config.php"); // db connection definitions
 require_once("/var/www/private/session.php"); // custom sessions
 require_once("/var/www/private/lib/vendor/autoload.php");
 
-session_start(); // check for login
-
 $twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader(getcwd()));
 
 // pages allowed for everyone
