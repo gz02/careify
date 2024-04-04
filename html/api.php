@@ -5,8 +5,6 @@ require_once("/var/www/private/config.php"); // db connection definitions
 
 require_once("validations.php");
 
-session_start();
-
 
 /* get id of carer by their name
 	*
