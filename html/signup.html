@@ -132,38 +132,36 @@
                       </div>
 
                       <div class="step" id="step5">
+                        <!-- Step 4 DOB -->
+                        <div class="signup-header">
+                            <h2>Enter your Date of<br>Birth</h2>
+                        </div>
+                        <input type="date" id="DOB">
+                        <div class="button-container">
+                            <button class="button backbutton" onclick="prevStep(4)">Back</button>
+                            <!--Dont know what to do here exactly, replaced lastname w dob. Need help-->
+                            <button class="button nextbutton" onclick="
+                                  const field = document.getElementById('dob').value;
+                                  fetch('/api?validate_dob=' + field)
+                                  .then(ret => {
+                                      if (ret.status == 200) { nextStep(6); }
+                                      else { alert(field + 'is incorrect, try again.'); }
+                                  })
+                              ">Next</button>
+                        </div>
+                      </div>
+
+                      <div class="step" id="step6">
                         <!-- Step 5 Mobile/Landline -->
                         <div class="signup-header">
                             <h2>Mobile or<br>Landline</h2>
                         </div>
                         <input type="tel" id="phone" placeholder="">
                         <div class="button-container">
-                            <button class="button backbutton" onclick="prevStep(4)">Back</button>
+                            <button class="button backbutton" onclick="prevStep(5)">Back</button>
                             <button class="button nextbutton" onclick="
 								const field = document.getElementById('phone').value;
 								fetch('/api?validate_phone=' + field)
-								.then(ret => {
-									if (ret.status == 200) { nextStep(6); }
-									else { alert(field + 'is incorrect, try again.'); }
-								})
-							">Next</button>
-                        </div>
-                      </div>
-
-                      <div class="step" id="step6">
-                        <!-- Step 6 Emergency First Name -->
-                        <div class="signup-header">
-                            <h2>We need an<br>emergency<br>contact...</h2>
-                        </div>
-                        <div class="signup-p">
-                            <p>First Name:</p>
-                        </div>
-                        <input type="name" id="emfirstname" placeholder="">
-                        <div class="button-container">
-                            <button class="button backbutton" onclick="prevStep(5)">Back</button>
-                            <button class="button nextbutton" onclick="
-								const field = document.getElementById('emfirstname').value;
-								fetch('/api?validate_emfirstname=' + field)
 								.then(ret => {
 									if (ret.status == 200) { nextStep(7); }
 									else { alert(field + 'is incorrect, try again.'); }
@@ -173,19 +171,19 @@
                       </div>
 
                       <div class="step" id="step7">
-                        <!-- Step 7 Emergency Last Name -->
+                        <!-- Step 6 Emergency First Name -->
                         <div class="signup-header">
-                            <h2>Emergency<br>contact<br>continued...</h2>
+                            <h2>We need an<br>emergency<br>contact...</h2>
                         </div>
                         <div class="signup-p">
-                            <p>Last Name:</p>
+                            <p>First Name:</p>
                         </div>
-                        <input type="name" id="emlastname" placeholder="">
+                        <input type="name" id="emfirstname" placeholder="">
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(6)">Back</button>
                             <button class="button nextbutton" onclick="
-								const field = document.getElementById('emlastname').value;
-								fetch('/api?validate_emlastname=' + field)
+								const field = document.getElementById('emfirstname').value;
+								fetch('/api?validate_emfirstname=' + field)
 								.then(ret => {
 									if (ret.status == 200) { nextStep(8); }
 									else { alert(field + 'is incorrect, try again.'); }
@@ -195,19 +193,19 @@
                       </div>
 
                       <div class="step" id="step8">
-                        <!-- Step 8 Emergency Phone -->
+                        <!-- Step 7 Emergency Last Name -->
                         <div class="signup-header">
                             <h2>Emergency<br>contact<br>continued...</h2>
                         </div>
                         <div class="signup-p">
-                            <p>Phone Number:</p>
+                            <p>Last Name:</p>
                         </div>
-                        <input type="tel" id="emphone" placeholder="">
+                        <input type="name" id="emlastname" placeholder="">
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(7)">Back</button>
                             <button class="button nextbutton" onclick="
-								const field = document.getElementById('emphone').value;
-								fetch('/api?validate_emphone=' + field)
+								const field = document.getElementById('emlastname').value;
+								fetch('/api?validate_emlastname=' + field)
 								.then(ret => {
 									if (ret.status == 200) { nextStep(9); }
 									else { alert(field + 'is incorrect, try again.'); }
@@ -217,19 +215,19 @@
                       </div>
 
                       <div class="step" id="step9">
-                        <!-- Step 9 Email -->
+                        <!-- Step 8 Emergency Phone -->
                         <div class="signup-header">
-                            <h2>Email<br>Address</h2>
+                            <h2>Emergency<br>contact<br>continued...</h2>
                         </div>
                         <div class="signup-p">
-                            <p>Enter your email:</p>
+                            <p>Phone Number:</p>
                         </div>
-                        <input type="email" id="email" placeholder="someone@gmail.com">
+                        <input type="tel" id="emphone" placeholder="">
                         <div class="button-container">
                             <button class="button backbutton" onclick="prevStep(8)">Back</button>
                             <button class="button nextbutton" onclick="
-								const field = document.getElementById('email').value;
-								fetch('/api?validate_email=' + field)
+								const field = document.getElementById('emphone').value;
+								fetch('/api?validate_emphone=' + field)
 								.then(ret => {
 									if (ret.status == 200) { nextStep(10); }
 									else { alert(field + 'is incorrect, try again.'); }
@@ -239,6 +237,28 @@
                       </div>
 
                       <div class="step" id="step10">
+                        <!-- Step 9 Email -->
+                        <div class="signup-header">
+                            <h2>Email<br>Address</h2>
+                        </div>
+                        <div class="signup-p">
+                            <p>Enter your email:</p>
+                        </div>
+                        <input type="email" id="email" placeholder="someone@gmail.com">
+                        <div class="button-container">
+                            <button class="button backbutton" onclick="prevStep(9)">Back</button>
+                            <button class="button nextbutton" onclick="
+								const field = document.getElementById('email').value;
+								fetch('/api?validate_email=' + field)
+								.then(ret => {
+									if (ret.status == 200) { nextStep(11); }
+									else { alert(field + 'is incorrect, try again.'); }
+								})
+							">Next</button>
+                        </div>
+                      </div>
+
+                      <div class="step" id="step11">
                         <!-- Step 10 pin -->
                         <div class="signup-header">
                             <h2>PIN</h2>
@@ -249,7 +269,7 @@
                         <input type="password" id="pin" placeholder="" minlength="4" maxlength="4">
                         
                         <div class="button-container">
-                            <button class="button backbutton" onclick="prevStep(9)">Back</button>
+                            <button class="button backbutton" onclick="prevStep(10)">Back</button>
                             <button class="button nextbutton" onclick="
 								const field = document.getElementById('pin').value;
                                 if(field.length !== 4) {
@@ -258,14 +278,14 @@
                                 }
 								fetch('/api?validate_pin=' + field)
 								.then(ret => {
-									if (ret.status == 200) { nextStep(11); }
+									if (ret.status == 200) { nextStep(12); }
 									else { alert(field + 'is incorrect, try again.'); }
 								})
 							">Next</button>
                         </div>
                       </div>
 
-                      <div class="step" id="step11">
+                      <div class="step" id="step12">
                         <!-- Step 11 Allergies -->
                         <div class="signup-header">
                             <h2>Any Allergies</h2>
@@ -307,12 +327,12 @@
                             </div>
                         </div>
                         <div class="button-container">
-                            <button class="button backbutton" onclick="prevStep(10)">Back</button>
-                            <button class="button nextbutton" onclick="nextStep(12)">Next</button>
+                            <button class="button backbutton" onclick="prevStep(11)">Back</button>
+                            <button class="button nextbutton" onclick="nextStep(13)">Next</button>
                         </div>
                       </div>
 
-                      <div class="step" id="step12">
+                      <div class="step" id="step13">
                         <!-- Step 12 Medical Conditions -->
                            <div class="signup-header">
                            <h2>Medical<br>Conditions</h2>
@@ -354,11 +374,11 @@
                            </div> -->
                        </div>
                        <div class="button-container">
-                           <button class="button backbutton" onclick="prevStep(11)">Back</button>
-                           <button class="button nextbutton" onclick="nextStep(13)">Next</button>
+                           <button class="button backbutton" onclick="prevStep(12)">Back</button>
+                           <button class="button nextbutton" onclick="nextStep(14)">Next</button>
                        </div>
                      </div>
-                     <div class="step" id="step13">
+                     <div class="step" id="step14">
                      <!-- Step 13 Medication -->
                         <div class="signup-header">
                             <h2>Medication</h2>
@@ -460,12 +480,12 @@
                         </div>
 
                         <div class="button-container">
-                            <button class="button backbutton" onclick="prevStep(12)">Back</button>
-                            <button class="button nextbutton" onclick="nextStep(14)">Next</button>
+                            <button class="button backbutton" onclick="prevStep(13)">Back</button>
+                            <button class="button nextbutton" onclick="nextStep(15)">Next</button>
                         </div>
                     </div>
 
-                      <div class="step" id="step14">
+                      <div class="step" id="step15">
                         <!-- Step 14 Carer ID -->
                         <div class="signup-header">
                             <h2>Carer ID</h2>
@@ -475,7 +495,7 @@
                         </div>
                         <input type="text" id="carename" placeholder="">
                         <div class="button-container">
-                            <button class="button backbutton" onclick="prevStep(13)">Back</button>
+                            <button class="button backbutton" onclick="prevStep(14)">Back</button>
                             <button class="button nextbutton" type="submit" onclick="
 								const field = document.getElementById('carename').value;
 								fetch('/api?validate_carename=' + field)

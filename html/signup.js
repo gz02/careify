@@ -21,6 +21,7 @@ function submitForm() {
   const color = document.getElementById('colorOptions').value;
   const firstname = document.getElementById('firstname').value;
   const lastname = document.getElementById('lastname').value;
+  const DateOfBirth = document.getElementById('dob').value;
   const phone = document.getElementById('phone').value;
   const emfirstname = document.getElementById('emfirstname').value;
   const emlastname = document.getElementById('emlastname').value;
