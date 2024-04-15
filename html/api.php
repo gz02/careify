@@ -541,6 +541,7 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		* @param string POSTtextSize  text size
 		* @param string POSTfirstname  first name
 		* @param string POSTlastname  last name
+		* @param string POSTDateOfBirth  date of birth
 		* @param string POSTphone  phone number
 		* @param string POSTemfirstname  emergency contact first name
 		* @param string POSTemlastname  emergency contact last name
@@ -555,6 +556,7 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$textSize = val_num_pos($_POST["textSize"], "text size is incorrect.");
 		$firstname = val_name($_POST["firstname"], "first name is incorrect.");
 		$lastname = val_name($_POST["lastname"], "last name is incorrect.");
+		$DateOfBirth = val_date_of_birth($_POST["DateOfBirth"], "date of birth is incorrect.");
 		$phone = val_phone($_POST["phone"], "phone number is incorrect.");
 		$emfirstname = val_name($_POST["emfirstname"], "emergency contact first name is incorrect.");
 		$emlastname = val_name($_POST["emlastname"], "emergency contact last name is incorrect.");
@@ -614,7 +616,7 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$stmt->execute([
 			$firstname,
 			$lastname,
-			"2020-12-12",
+			$DateOfBirth,
 			$phone,
 			$email,
 			$carer_id,
