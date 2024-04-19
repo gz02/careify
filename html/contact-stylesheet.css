@@ -842,8 +842,8 @@ li {
     overflow-x: hidden;
     background-color: #eee;
     height: 200px;
-    border-bottom-left-radius: 5px; /* Adjust as needed */
-    border-bottom-right-radius: 5px; /* Adjust as needed */
+    border-bottom-left-radius: 5px; 
+    border-bottom-right-radius: 5px; 
   }
 
 .faq-slides p{
@@ -859,7 +859,7 @@ li {
 }
   
 .faq-slide {
-    width: 100%; /* Adjusted to 100% */
+    width: 100%; 
     padding: 15px;
     height: 150px;
     box-sizing: border-box;
