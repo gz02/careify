@@ -14,6 +14,7 @@ if (isset($_GET["login"])) { echo $twig->render("login.html"); }
 else if (isset($_GET["user-login"])) { echo $twig->render("user-login.html"); }
 else if (isset($_GET["carer-login"])) { echo $twig->render("carer-login.html"); }
 else if (isset($_GET["signup"])) { echo $twig->render("signup.html"); }
+else if (isset($_GET["contact-us"])) { echo $twig->render("contact-us.html"); }
 
 else if (isset($_SESSION["elderly_id"])) // pages requiring elderly login
 {
