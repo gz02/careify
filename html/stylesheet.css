@@ -329,6 +329,12 @@ button:hover{
 	height: 100%;
     margin: auto;
   }
+
+#contactus-container {
+    width: 100%;
+	height: 100%;
+    margin: auto;
+  }
   
   .step {
     display: none;
@@ -775,4 +781,19 @@ li {
 
 #reminderImg{
 	padding-left: 20px;
+}
+
+#emailBox{
+    text-align: center;
+    margin-top: 0px;
+    padding: 25px;
+}
+
+.contactus-header {
+	padding: 2rem 3rem;
+	display: grid;
+	align-items: center;
+	grid-template-columns: 1fr 1fr 1fr;
+	column-gap: 70px;
+    justify-content: space-between;
 }
