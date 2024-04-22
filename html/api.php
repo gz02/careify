@@ -328,6 +328,62 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		http_response_code(200); exit;
 	}
 	
+	/*  reveive contact form
+		*
+		* @param null GETcontact
+		* @param string POSTfullname  sender full name
+		* @param string POSTphoneNumber  sender phone number
+		* @param string POSTemail  sender email
+		* @param string POSTemailMessage  message
+		* 
+		* @return null
+		*/
+	if (isset($_GET["contact"]))
+	{
+		if (!isset($_POST["fullname"])) { echo "Full name is required."; http_response_code(400); exit; }
+		$name_parts = explode(" ", $_POST["fullname"], 3);
+		if (count($name_parts) != 2) { echo "Full name is required."; http_response_code(400); exit; }
+		
+		$first_name = val_name($name_parts[0], "first name is incorrect.");
+		$last_name = val_name($name_parts[1], "last name is incorrect.");
+		$phoneNumber = val_phone($_POST["phoneNumber"], "phone number is incorrect.");
+		$email = val_email($_POST["email"], "email is incorrect.");
+		$emailMessage = htmlentities($_POST["emailMessage"]);
+		
+		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
+		
+		$stmt = $db->prepare("
+			INSERT INTO
+				contact_us (
+					first_name,
+					last_name,
+					phone_number,
+					email,
+					message
+				)
+			VALUES (
+				?,
+				?,
+				?,
+				?,
+				?
+			)
+		") or trigger_error($db->error, E_USER_ERROR);
+		$stmt->execute([
+			$first_name,
+			$last_name,
+			$phoneNumber,
+			$email,
+			$emailMessage
+		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$stmt->close();
+		$db->close();
+		
+		echo "Message sent.";
+		
+		http_response_code(200); exit;
+	}
+	
 	/*  mark todo item as completed
 		*
 		* @param null GETcompleted-todo
@@ -601,9 +657,11 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 					phone_number,
 					email,
 					carer_id,
-					emergency_contact_id
+					emergency_contact_id,
+					text_size
 				)
 			VALUES (
+				?,
 				?,
 				?,
 				?,
@@ -620,7 +678,8 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 			$phone,
 			$email,
 			$carer_id,
-			$emergency_contact_id
+			$emergency_contact_id,
+			$textSize
 		]) or trigger_error($stmt->error, E_USER_ERROR);
 		$elderly_id = $stmt->insert_id;
 		$stmt->close();
