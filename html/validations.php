@@ -45,6 +45,32 @@ function user_input_invalid($msg = "the entered value is not valid, try again.")
 	exit;
 }
 
+/* validate font size
+	*
+	* @param any $var  input
+	* @param string $msg_fail  message to display on failure
+	* 
+	* @return string  $var if valid
+	*/
+function val_font_size($var, $msg_fail = "Invalid font size."): string
+{
+	if (in_array($var, ["Extra Large", "Large", "Medium", "Small"])) { return $var; }
+	user_input_invalid($msg_fail);
+}
+
+/* validate theme set
+	*
+	* @param any $var  input
+	* @param string $msg_fail  message to display on failure
+	* 
+	* @return int  $var if valid
+	*/
+function val_theme_set($var, $msg_fail = "Invalid theme set."): int
+{
+	if ($var >= 1 && $var <= 4) { return $var; }
+	user_input_invalid($msg_fail);
+}
+
 /* validate number positive
 	*
 	* @param any $var  input

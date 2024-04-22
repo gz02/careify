@@ -609,7 +609,8 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		*/
 	else if (isset($_GET["register"]))
 	{
-		$textSize = val_num_pos($_POST["textSize"], "text size is incorrect.");
+		$textSize = val_font_size($_POST["textSize"], "text size is incorrect.");
+		$themeSet = val_theme_set($_POST["themeSet"], "theme set is incorrect.");
 		$firstname = val_name($_POST["firstname"], "first name is incorrect.");
 		$lastname = val_name($_POST["lastname"], "last name is incorrect.");
 		$DateOfBirth = val_date_of_birth($_POST["DateOfBirth"], "date of birth is incorrect.");
@@ -658,9 +659,11 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 					email,
 					carer_id,
 					emergency_contact_id,
+					colour_theme,
 					text_size
 				)
 			VALUES (
+				?,
 				?,
 				?,
 				?,
@@ -679,6 +682,7 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 			$email,
 			$carer_id,
 			$emergency_contact_id,
+			$themeSet,
 			$textSize
 		]) or trigger_error($stmt->error, E_USER_ERROR);
 		$elderly_id = $stmt->insert_id;

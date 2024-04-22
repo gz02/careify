@@ -1,4 +1,8 @@
+var gFontSize = "Small";
+var gThemeSet = 1;
+
 function changeThemeSet(themeSet) {
+	gThemeSet = themeSet;
     const colorSets = [
         ['#000080', '#008080', '#00FF00', '#FFFF00', '#00FFFF'],
         ['#0000FF', '#FFFF00', '#FFA500', '#40E0D0', '#800080'],
@@ -18,6 +22,11 @@ function changeThemeSet(themeSet) {
 
 //Function for changing font size
 function changeFontSize(size) {
+	if (size == 19) { gFontSize = "Medium"; }
+	else if (size == 22) { gFontSize = "Large"; }
+	else if (size == 15) { gFontSize = "Extra Large"; }
+	else { gFontSize = "Small"; } // 16 default
+	
     const root = document.documentElement;
     root.style.setProperty('--font-size', size + 'px');
   }

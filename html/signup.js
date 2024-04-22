@@ -17,7 +17,8 @@ function prevStep(prev) {
 
 function submitForm() {
   // data collected for each element.
-  const textSize = document.getElementById('textSize').value;
+  const textSize = gFontSize;
+  const themeSet = gThemeSet;
   const color = document.getElementById('colorOptions').value;
   const firstname = document.getElementById('firstname').value;
   const lastname = document.getElementById('lastname').value;
@@ -68,6 +69,7 @@ function submitForm() {
     },
     body: JSON.stringify({
       textSize,
+	  themeSet,
       color,  
       firstname,
       lastname,
