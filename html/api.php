@@ -149,6 +149,41 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 		}
 	}
 	
+	/*  
+		*
+		* @param null GETall-todo
+		* 
+		* @return string  todo list
+		*/
+	else if (isset($_GET["theme"]))
+	{
+		user_loggedin_or_exit();
+		
+		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
+		
+		$stmt = $db->prepare("
+			SELECT
+				colour_theme,
+				text_size,
+				elderly_id
+			FROM
+				elderly_details
+			WHERE
+				elderly_id = ?
+		") or trigger_error($db->error, E_USER_ERROR);
+		$stmt->execute([
+			$_SESSION["elderly_id"]
+		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$res = $stmt->get_result()->fetch_assoc();
+		
+		echo json_encode($res);
+		
+		$stmt->close();
+		$db->close();
+		
+		http_response_code(200); exit;
+	}
+	
 	/*  todo list html formatted
 		*
 		* @param null GETall-todo
