@@ -1,0 +1,68 @@
+:root {
+    --primary-color: #14471e; /* Default primary color */
+    --secondary-color: #689040; /* Default secondary color */
+    --background-color: #c8d2d1; /* Default background color */
+    --accent-color: #ee9b01; /* Default accent color */
+    --highlight-color: #da6a00; /* Default highlight color */
+
+	--font-size: 16;
+    }
+    .main2{
+        display: flex;
+        flex-direction: column;
+    }
+    .backbutton{
+        margin-left: 40px;
+        margin-top: 40px;
+    }
+    h1{
+        margin-left: 40px ;
+        color: var(--primary-color);
+        font-weight: bolder;
+    }
+    .addTask{
+        margin-right: 15px;
+        width: 30%;
+	    height: 30px;
+        background-color: var(--accent-color);
+    }
+    .addTask:hover{
+        background-color: var(--highlight-color);
+    }
+    .add{
+        background-color: var(--accent-color);
+    }
+    .add:hover{
+        background-color: var(--highlight-color);
+    }
+    .medication-item{
+        width: 85%;
+        margin: auto;
+        margin-bottom: 10px;
+        background-color: var(--secondary-color);
+        color: white;
+        border-radius: 10px ;
+        padding: 10px;
+        position: relative;
+
+    }
+    .medication-list{
+        overflow-y: scroll;
+    }
+    .taken-select-container {
+    display: inline-block;
+    vertical-align: middle;  
+    width: 200px;
+    }
+
+    .medication-icons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    }
+
+    .edit-icon,
+    .delete-icon {
+    cursor: pointer;
+    margin-left: 5px;
+    }

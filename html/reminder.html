@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Care-ify</title>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="reminder.css">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="main2">
+        <button class="backbutton" onclick="window.location.href='/index?user-interface'">Back</button>
+        <h1>Medication Reminder List.</h1>
+        <button class="addTask">Add task</button>
+
+        <div class="medication-list">
+        </div>
+    <div id="addTaskModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add Medication Task</h2>
+            <form id="addTaskForm">
+                <label for="medicationType">Select Medication Type:</label>
+                <select id="medicationType">
+                    <option value="Ibuprofen">Ibuprofen</option>
+                    <option value="AntiPlatelet">AntiPlatelet</option>
+                    <option value="Metformin">Metformin</option>
+                    <option value="Sulfonylureas">Sulfonylureas</option>
+                    <option value="DPP-4">DPP-4</option>
+                    <option value="Z-drugs">Z-drugs</option>
+                </select>
+
+                <label for="frequency">How often is this medicine taken?</label>
+                <select id="frequency">
+                    <option value="Once daily">Once daily</option>
+                    <option value="Twice daily">Twice daily</option>
+                    <option value="Three times daily">Three times daily</option>
+                </select>
+
+                <label for="dosage">How much?</label>
+                <select id="dosage">
+                    <option value="5mg">5mg</option>
+                    <option value="10mg">10mg</option>
+                    <option value="20mg">20mg</option>
+                </select>
+
+                <label for="time">and at what time? </label>
+                <select id="time">
+                    <option value="Morning">Morning</option>
+                    <option value="Afternoon">Afternoon</option>
+                    <option value="Evening">Evening</option>
+                </select>
+
+                <button type="submit" class="add">Add Task</button>
+            </form>
+</body>
+<script src="reminder.js"></script>
+</html>
