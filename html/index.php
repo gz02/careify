@@ -21,7 +21,7 @@ else if (isset($_SESSION["elderly_id"])) // pages requiring elderly login
 	if (isset($_GET["todo"])) { echo $twig->render("todo.html"); }
 	else if (isset($_GET["mood"])) { echo $twig->render("mood.html"); }
 	else if (isset($_GET["profile"])) { echo "Not complete.";/*$twig->render("profile.html");*/ }
-	else if (isset($_GET["reminder"])) { echo "Not complete.";/*$twig->render("reminder.html");*/ }
+	else if (isset($_GET["reminder"])) { echo $twig->render("reminder.html"); }
 	else // default to interface
 	{
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
