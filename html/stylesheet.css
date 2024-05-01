@@ -147,6 +147,12 @@ button:hover{
     background: var(--secondary-color);
 }
 
+.logoutbutton{
+	margin-left: 20px;
+	width: 100%;
+	background: var(--secondary-color);
+}
+
 .nextbutton:hover {
     background: var(--primary-color);
     color: #fff; 
