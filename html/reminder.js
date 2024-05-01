@@ -25,13 +25,32 @@ window.onclick = function(event) {
 document.getElementById("addTaskForm").addEventListener("submit", function(event) {
     event.preventDefault(); 
 
-    var medicationType = document.getElementById("medicationType").value;
+    var medication = document.getElementById("medicationType").value;
     var frequency = document.getElementById("frequency").value;
     var dosage = document.getElementById("dosage").value;
     var time = document.getElementById("time").value;
 
-
-    addMedicationItem(medicationType, frequency, dosage, time, false);
+	// fetch API placeholder below
+	fetch('/api?save-medication-reminder', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			medication,
+			frequency,
+			dosage
+		}),
+	})
+	.then(ret => {
+		if (!ret.ok) { return ret.text().then(text => { throw new Error(text); }); }
+	})
+	.then(() => {
+		addMedicationItem(medication, frequency, dosage, time, false);
+	})
+	.catch(error => {
+		console.error('Error:', error);
+	});
 
     modal.style.display = "none";
 });

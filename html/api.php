@@ -363,6 +363,48 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		http_response_code(200); exit;
 	}
 	
+	/*  save medication reminder
+		*
+		* @param null GETsave-todo
+		* @param string POSTtitle  todo title
+		* @param string POSTdate  todo date
+		* @param string POSTtime  todo time
+		* 
+		* @return null
+		*/
+	if (isset($_GET["save-medication-reminder"]))
+	{
+		user_loggedin_or_exit();
+		
+		$medication = val_medication($_POST["medication"]);
+		$dosage = val_medication_dosage($_POST["dosage"]);
+		$frequency = val_medication_frequency($_POST["frequency"]);
+		
+		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
+		
+		$stmt = $db->prepare("
+			INSERT INTO elderly_medication (elderly_id, medication_id, dosage, frequency)
+			SELECT ?, m.medication_id, ?, ?
+			FROM medication m
+			WHERE m.medication_name = ?
+			ON DUPLICATE KEY UPDATE
+				elderly_id = VALUES(elderly_id),
+				medication_id = VALUES(medication_id),
+				dosage = VALUES(dosage),
+				frequency = VALUES(frequency);
+		") or trigger_error($db->error, E_USER_ERROR);
+		$stmt->execute([
+			$_SESSION["elderly_id"],
+			$dosage,
+			$frequency,
+			$medication
+		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$stmt->close();
+		$db->close();
+		
+		http_response_code(200); exit;
+	}
+	
 	/*  reveive contact form
 		*
 		* @param null GETcontact

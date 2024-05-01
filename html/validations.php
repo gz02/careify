@@ -179,15 +179,72 @@ function val_bool($var, $msg_fail = "no description."): bool
 
 /* validate mood name
 	*
-	* @param string $mood  mood name as string
+	* @param string $mood  mood name
 	* @param string $msg_fail  message to display on failure
 	* 
 	* @return bool  $mood if valid
 	*/
-function val_mood(string $mood, string $msg_fail = "no description."): string
+function val_mood(string $mood, string $msg_fail = "invalid mood."): string
 {
 	if (in_array($mood, ["good", "ok", "bad", ""])) { return $mood; }
 	user_input_invalid($msg_fail);
 }
 
+/* validate medication name
+	*
+	* @param string $medication  medication name
+	* @param string $msg_fail  message to display on failure
+	* 
+	* @return bool  $medication if valid
+	*/
+function val_medication(string $medication, string $msg_fail = "invalid medication name."): string
+{
+	$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
+	// does the database have a medication with the given name?
+	$stmt = $db->prepare("
+		SELECT 1
+		FROM medication
+		WHERE medication_name = ?
+	") or trigger_error($db->error, E_USER_ERROR);
+	$stmt->execute([$medication]) or trigger_error($stmt->error, E_USER_ERROR);
+	$result = $stmt->get_result();
+	$num_rows = $result->num_rows;
+	$stmt->close();
+	$db->close();
+	
+	if ($num_rows) { return $medication; } // valid
+	user_input_invalid($msg_fail); // invalid
+}
+
+/* validate medication dosage
+	*
+	* @param string $frequency  medication dosage
+	* @param string $msg_fail  message to display on failure
+	* 
+	* @return bool  $dosage if valid
+	*/
+function val_medication_dosage(string $dosage, string $msg_fail = "invalid medication dosage."): string
+{
+	if (in_array($dosage, [
+		'5 mg', '10 mg', '20 mg', '50 mg', '100 mg', '250 mg', '500 mg', '1 g'
+	])) { return $dosage; }
+	user_input_invalid($msg_fail);
+}
+
+/* validate medication name
+	*
+	* @param string $frequency  medication frequency
+	* @param string $msg_fail  message to display on failure
+	* 
+	* @return bool  $frequency if valid
+	*/
+function val_medication_frequency(string $frequency, string $msg_fail = "invalid medication frequency."): string
+{
+	if (in_array($frequency, [
+		'Once Daily', 'Twice Daily', 'Three Times Daily',
+		'Four Times Daily', 'Every 6 Hours', 'Every 4 Hours',
+		'Every 3 Hours', 'Every 2 Hours', 'Every Hour'
+	])) { return $frequency; }
+	user_input_invalid($msg_fail);
+}
 ?>
