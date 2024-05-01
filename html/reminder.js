@@ -113,3 +113,15 @@ function addMedicationItem(name, frequency, dosage, time, taken) {
     
     
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+	fetch("/api?medication-reminders")
+	.then(ret => ret.json())
+	.then(ret => {
+		if (Object.keys(ret).length) {
+			ret.forEach((reminder) => {
+				addMedicationItem(reminder.medication_name, reminder.frequency, reminder.dosage);
+			});
+		}
+	});
+});

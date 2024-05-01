@@ -149,11 +149,12 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 		}
 	}
 	
-	/*  
+	/*  user preferences
 		*
-		* @param null GETall-todo
+		* @param null GETtheme
 		* 
-		* @return string  todo list
+		* @return int  colour_theme
+		* @return int  text_size
 		*/
 	else if (isset($_GET["theme"]))
 	{
@@ -178,6 +179,36 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 		
 		echo json_encode($res);
 		
+		$stmt->close();
+		$db->close();
+		
+		http_response_code(200); exit;
+	}
+	
+	/*  medication reminders
+		*
+		* @param null GETmedication-reminders
+		* 
+		* @return array(string medication_name, string dosage, string frequency)  
+		*/
+	if (isset($_GET["medication-reminders"]))
+	{
+		user_loggedin_or_exit();
+		
+		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
+		
+		$stmt = $db->prepare("
+			SELECT m.medication_name, em.dosage, em.frequency
+			FROM elderly_medication em
+			JOIN medication m ON em.medication_id = m.medication_id
+			JOIN elderly_details e ON em.elderly_id = e.elderly_id
+			WHERE e.elderly_id = ?
+		") or trigger_error($db->error, E_USER_ERROR);
+		$stmt->execute([
+			$_SESSION["elderly_id"]
+		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$result = $stmt->get_result();
+		echo json_encode($result->fetch_all(MYSQLI_ASSOC));
 		$stmt->close();
 		$db->close();
 		
