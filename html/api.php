@@ -306,6 +306,39 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 		http_response_code(200); exit;
 	}
 	
+	/*  details of current user
+		*
+		* @param null GETprofile
+		* 
+		* @return string  mood list
+		*/
+	if (isset($_GET["profile"]))
+	{
+		user_loggedin_or_exit();
+		
+		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
+		
+		$stmt = $db->prepare("
+			SELECT
+				ed.first_name, ed.last_name, ed.date_of_birth, ed.age, ed.phone_number, ed.email,
+				CONCAT(cd.first_name, ' ', cd.last_name) as carer_name,
+				CONCAT(ecd.first_name, ' ', ecd.last_name) as emergency_name
+			FROM elderly_details ed
+			INNER JOIN carer_details cd ON ed.carer_id = cd.carer_id
+			INNER JOIN emergency_contact_details ecd ON ed.emergency_contact_id = ecd.emergency_contact_id
+			WHERE ed.elderly_id = ?
+		") or trigger_error($db->error, E_USER_ERROR);
+		$stmt->execute([
+			$_SESSION["elderly_id"]
+		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$result = $stmt->get_result();
+		echo json_encode($result->fetch_assoc());
+		$stmt->close();
+		$db->close();
+		
+		http_response_code(200); exit;
+	}
+	
 	http_response_code(200); exit;
 }
 else if ($_SERVER["REQUEST_METHOD"] === "POST")

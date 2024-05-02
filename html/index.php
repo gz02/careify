@@ -20,7 +20,7 @@ else if (isset($_SESSION["elderly_id"])) // pages requiring elderly login
 {
 	if (isset($_GET["todo"])) { echo $twig->render("todo.html"); }
 	else if (isset($_GET["mood"])) { echo $twig->render("mood.html"); }
-	else if (isset($_GET["profile"])) { echo "Not complete.";/*$twig->render("profile.html");*/ }
+	else if (isset($_GET["profile"])) { echo $twig->render("profile.html"); }
 	else if (isset($_GET["reminder"])) { echo $twig->render("reminder.html"); }
 	else // default to interface
 	{
