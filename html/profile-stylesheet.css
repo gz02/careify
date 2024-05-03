@@ -341,7 +341,7 @@ button:hover{
   }
 
   .step h2 {
-    color: #ffffff;
+    color: #000000;
 	font-size: calc(var(--font-size) * 1.5);
   }
   
@@ -415,7 +415,7 @@ li {
 	grid-template-columns: 1fr 1fr;;
 	column-gap: 100px;
     justify-content: space-between;
-    color: #ffffff;
+    color: #000000;
 }
 
 #emailSend {
