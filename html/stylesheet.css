@@ -153,6 +153,10 @@ button:hover{
 	background: var(--secondary-color);
 }
 
+.morebutton{
+	width: 30%
+}
+
 .nextbutton:hover {
     background: var(--primary-color);
     color: #fff; 

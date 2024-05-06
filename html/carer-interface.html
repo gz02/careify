@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Care-ify</title>
-    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="stylesheet3.css">
     <link rel="stylesheet" type="text/css" href="carer.css">
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
 </head>
@@ -14,16 +14,115 @@
             <h1>Carer<br>Dashboard</h1>
 			<!--Log out-->
 			<form action="/api?logout" method="post">
-				<input type="submit" value="logout" style="width:100%"/>
+                <button class="button logoutbutton" value="logout">Logout</button>
+				<!-- <input type="submit" value="logout" style="width:100%"/> -->
 			</form>
         </header>
 
+
+        <!--
         <section class="ClientInfo">
 			<p>Clients</p>
 			<span id="usersMood"></span>
         </section>
     </div>
-	
+	-->
+    <div class="elderly-container">
+        <!-- Modal Here:-->
+        <div id="addTaskModal" class="modal">
+            <div class="modal-content">
+              <button class="closebutton">Close</button>
+              <div class="green-block">
+                <p class="white-text">Name: Jeffrey Patel</p>
+                <p class="white-text">Age: 72</p>
+                <p class="white-text">Diagnosis: Bad breath</p>
+                <p class="white-text">Symptoms: Bad back, heart attack, broken nose</p>
+                <p class="white-text">Mood: Average</p>
+                <p class="white-text">Current Medication: paractemol, ibuprofen, steriods, cough syrup</p>
+              </div> <!-- This is the clear green block -->
+            </div>
+          </div>
+        <!-- Modal Ends.-->
+        <div class="elderly-container-inner">
+            <div class="column left">
+                <p><b>Mary McSmith  <span id="fName"></span><span id="lName"></span></b></p>
+            </div>
+            <div class="column right">
+                <img src="images/mood/good.png" width="50%"/>
+            </div>
+            
+        </div>
+        <div class="elderly-container-inner">
+            <div class="column left3">
+                <p>Medical Reminders:  <span id="fName"></span><span id="lName"></span></p>
+            </div>
+            <div class="column right3">
+                <p><b>4<span id="fName"></span><span id="medicationNumber"></span></b></p>
+            </div>
+            
+        </div>
+        <div class="elderly-container-inner">
+            <div class="column left2">
+                <p><b>Last 3 moods:  <span id="fName"></span><span id="lName"></span></b></p>
+            </div>
+            <div class="column right2">
+                <img src="images/mood/good.png" width="25%"/><img src="images/mood/bad.png" width="25%"/><img src="images/mood/ok.png" width="25%"/>
+            </div>  
+        </div>
+        <!-- HERE -->
+        <div class="elderly-container-inner">
+            <div class="column left4">  
+            </div>
+            <div class="center4">
+                
+            </div>
+            <div class="column right4">
+                <button class="button morebutton">More</button>
+            </div>
+            
+        </div>
+        
+    </div>
+
+    <div class="elderly-container">
+        <div class="elderly-container-inner">
+            <div class="column left">
+                <p><b>Hiran Ting  <span id="fName"></span><span id="lName"></span></b></p>
+            </div>
+            <div class="column right">
+                <img src="images/mood/good.png" width="50%"/>
+            </div>
+            
+        </div>
+        <div class="elderly-container-inner">
+            <div class="column left3">
+                <p>Medical Reminders:  <span id="fName"></span><span id="lName"></span></p>
+            </div>
+            <div class="column right3">
+                <p><b>2<span id="fName"></span><span id="medicationNumber"></span></b></p>
+            </div>
+            
+        </div>
+        <div class="elderly-container-inner">
+            <div class="column left2">
+                <p><b>Last 3 moods:  <span id="fName"></span><span id="lName"></span></b></p>
+            </div>
+            <div class="column right2">
+                <img src="images/mood/bad.png" width="25%"/><img src="images/mood/bad.png" width="25%"/><img src="images/mood/ok.png" width="25%"/>
+            </div>
+            
+        </div>
+    </div>
+
+
+
     <script src="theme.js"></script>
     <script src="carer-interface.js"></script>
 </body>
+
+
+<!-- 
+Each box has: patient name, avg mood, last mood medication reminders they have?
+
+
+-->
