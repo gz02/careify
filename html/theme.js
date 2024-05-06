@@ -4,10 +4,10 @@ var gThemeSet = 1;
 function changeThemeSet(themeSet) {
 	gThemeSet = themeSet;
     const colorSets = [
-        ['#000080', '#008080', '#00FF00', '#FFFF00', '#00FFFF'],
-        ['#0000FF', '#FFFF00', '#FFA500', '#40E0D0', '#800080'],
-        ['#FFFF00', '#FFA500', '#FFC0CB', '#008000', '#A52A2A'],
-        ['#0000FF', '#808080', '#FFFF00', '#008080', '#A52A2A']
+        ['#00FF00', '#000080', '#FFFF00', '#008080', '#00FFFF'],
+        ['#40E0D0', '#800080', '#FFA500', '#0000FF', '#FFFF00'],
+        ['#FFFF00', '#FFA500', '#A52A2A', '#008000', '#FFC0CB'],
+        ['#808080', '#0000FF', '#FFFF00', '#A52A2A', '#008080']
     ];
 	
     const selectedColors = colorSets[themeSet - 1]; // Arrays are 0-indexed
