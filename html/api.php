@@ -260,7 +260,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 		* 
 		* @return string  mood list
 		*/
-	else if (isset($_GET["all-mood"]))
+	else if (isset($_GET["carer-users"]))
 	{
 		carer_loggedin_or_exit();
 		
@@ -268,37 +268,48 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 		
 		$stmt = $db->prepare("
 			SELECT
-				mr.elderly_id AS id,
+				mr.elderly_id AS id, ed.age, emed.reminder_count, mc.medical_conditions, med.medications,
 				CONCAT(ed.first_name, \" \", ed.last_name) AS name,
 				MAX(CASE WHEN mr.rank = 1 THEN mr.mood END) AS mood1,
 				MAX(CASE WHEN mr.rank = 2 THEN mr.mood END) AS mood2,
 				MAX(CASE WHEN mr.rank = 3 THEN mr.mood END) AS mood3
-			FROM
-				(SELECT
-					mr.*,
-					ROW_NUMBER() OVER (PARTITION BY mr.elderly_id ORDER BY mr.rating_timestamp DESC) AS rank
-				FROM
-					mood_ratings mr) mr
-			INNER JOIN
-				elderly_details ed
-			ON
-				mr.elderly_id = ed.elderly_id
-			WHERE
-				mr.rank <= 3
-			GROUP BY
-				mr.elderly_id, ed.first_name, ed.last_name;
+			FROM (
+					SELECT mr.*, ROW_NUMBER() OVER (PARTITION BY mr.elderly_id ORDER BY mr.rating_timestamp DESC) AS rank
+					FROM mood_ratings mr
+				) mr
+				
+			INNER JOIN elderly_details ed ON mr.elderly_id = ed.elderly_id
+			INNER JOIN (
+					SELECT elderly_id, COUNT(*) as reminder_count
+					FROM elderly_medication
+					GROUP BY elderly_id
+			) emed ON emed.elderly_id = ed.elderly_id
+			INNER JOIN (
+					SELECT emc.elderly_id, GROUP_CONCAT(mc.condition_name SEPARATOR \", \") AS medical_conditions
+					FROM medical_conditions mc
+					INNER JOIN elderly_medical_conditions emc ON mc.medical_condition_id = emc.medical_condition_id
+					GROUP BY emc.elderly_id
+			) mc ON mc.elderly_id = ed.elderly_id
+			INNER JOIN (
+					SELECT em.elderly_id, GROUP_CONCAT(m.medication_name SEPARATOR \", \") AS medications
+					FROM elderly_medication em
+					INNER JOIN medication m ON em.medication_id = m.medication_id
+					GROUP BY em.elderly_id
+			) med ON med.elderly_id = ed.elderly_id
+			WHERE mr.rank <= 3
+			GROUP BY mr.elderly_id, ed.first_name, ed.last_name;
 		") or trigger_error($db->error, E_USER_ERROR);
 		$stmt->execute([]) or trigger_error($stmt->error, E_USER_ERROR);
-		$res = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+		$users = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 		
-		foreach ($res as &$user)
+		foreach ($users as &$user)
 		{
 			$user["moods"] = [$user["mood1"], $user["mood2"], $user["mood3"]];
 		}
 		
 		require_once("/var/www/private/lib/vendor/autoload.php"); // include twig
 		$twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader(__DIR__ . "/templates")); // set template dir
-		echo $twig->render("mood.html", ["users" => $res]); // render
+		echo $twig->render("user_block_for_carer.thtml", ["users" => $users]); // render
 		
 		$stmt->close();
 		$db->close();

@@ -657,7 +657,7 @@ li {
     color: #fff; 
 }
 
-#addTaskModal {
+.modal {
     background-color: var(--secondary-color);
     width: 280px;
     z-index: 2;

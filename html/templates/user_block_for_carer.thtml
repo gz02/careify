@@ -1,0 +1,54 @@
+{% for user in users %}
+	{% set modal_uid = "modal_uid" ~ loop.index %}
+	<div class="elderly-container">
+		{# Modal Here: #}
+		<div id="{{ modal_uid }}" class="modal">
+			<div class="modal-content">
+				<button class="closebutton" onclick="document.getElementById('{{ modal_uid }}').style.display = 'none'">Close</button>
+				<div class="green-block">
+					<p class="white-text">Name: {{ user.name }}</p>
+					<p class="white-text">Age: {{ user.age }}</p>
+					<p class="white-text">Medical conditions: {{ user.medical_conditions }}</p>
+					<p class="white-text">Current Medication: {{ user.medications }}</p>
+				</div> {# This is the clear green block #}
+			</div>
+		</div>
+		{# Modal Ends. #}
+		<div class="elderly-container-inner">
+			<div class="column left">
+				<p><b>{{ user.name }}</b></p>
+			</div>
+			<div class="column right">
+				<img src="images/mood/{{ user.moods[0] }}.png" width="50%"/>
+			</div>
+		</div>
+		<div class="elderly-container-inner">
+			<div class="column left3">
+				<p>Medical Reminders:</p>
+			</div>
+			<div class="column right3">
+				<p><b>{{ user.reminder_count }}</b></p>
+			</div>
+		</div>
+		<div class="elderly-container-inner">
+			<div class="column left2">
+				<p><b>Last 3 moods:</b></p>
+			</div>
+			<div class="column right2">
+				{% for mood in user.moods %}
+					{% if mood is not empty %}
+						<img width="25%" src="images/mood/{{ mood }}.png" width="40px">
+					{% endif %}
+				{% endfor %}
+			</div>  
+		</div>
+		{# HERE #}
+		<div class="elderly-container-inner">
+			<div class="column left4"></div>
+			<div class="center4"></div>
+			<div class="column right4">
+				<button class="button morebutton" onclick="document.getElementById('{{ modal_uid }}').style.display = 'block'">More</button>
+			</div>
+		</div>
+	</div>
+{% endfor %}
