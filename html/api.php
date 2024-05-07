@@ -279,18 +279,18 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 				) mr
 				
 			INNER JOIN elderly_details ed ON mr.elderly_id = ed.elderly_id
-			INNER JOIN (
+			LEFT JOIN (
 					SELECT elderly_id, COUNT(*) as reminder_count
 					FROM elderly_medication
 					GROUP BY elderly_id
 			) emed ON emed.elderly_id = ed.elderly_id
-			INNER JOIN (
+			LEFT JOIN (
 					SELECT emc.elderly_id, GROUP_CONCAT(mc.condition_name SEPARATOR \", \") AS medical_conditions
 					FROM medical_conditions mc
 					INNER JOIN elderly_medical_conditions emc ON mc.medical_condition_id = emc.medical_condition_id
 					GROUP BY emc.elderly_id
 			) mc ON mc.elderly_id = ed.elderly_id
-			INNER JOIN (
+			LEFT JOIN (
 					SELECT em.elderly_id, GROUP_CONCAT(m.medication_name SEPARATOR \", \") AS medications
 					FROM elderly_medication em
 					INNER JOIN medication m ON em.medication_id = m.medication_id

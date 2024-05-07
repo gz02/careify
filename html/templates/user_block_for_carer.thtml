@@ -8,8 +8,8 @@
 				<div class="green-block">
 					<p class="white-text">Name: {{ user.name }}</p>
 					<p class="white-text">Age: {{ user.age }}</p>
-					<p class="white-text">Medical conditions: {{ user.medical_conditions }}</p>
-					<p class="white-text">Current Medication: {{ user.medications }}</p>
+					<p class="white-text">Medical conditions: {{ user.medical_conditions|default("healthy") }}</p>
+					<p class="white-text">Current Medication: {{ user.medications|default("none") }}</p>
 				</div> {# This is the clear green block #}
 			</div>
 		</div>
@@ -27,7 +27,7 @@
 				<p>Medical Reminders:</p>
 			</div>
 			<div class="column right3">
-				<p><b>{{ user.reminder_count }}</b></p>
+				<p><b>{{ user.reminder_count|default(0) }}</b></p>
 			</div>
 		</div>
 		<div class="elderly-container-inner">
