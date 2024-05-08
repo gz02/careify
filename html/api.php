@@ -5,6 +5,13 @@ require_once("/var/www/private/config.php"); // db connection definitions
 
 require_once("validations.php");
 
+function render($template, $data)
+{
+	require_once("/var/www/private/lib/vendor/autoload.php"); // include twig
+	$twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader(__DIR__ . "/templates")); // set template dir
+	echo $twig->render($template, $data); // render
+}
+
 /* get id of carer by their name
 	*
 	* @param object $db  mysqli database connection object
@@ -15,12 +22,9 @@ require_once("validations.php");
 function get_carer_id(&$db, $carer_name): bool|int
 {	
 	$stmt = $db->prepare("
-		SELECT 
-			carer_id
-		FROM
-			carer_details
-		WHERE
-			LOWER(first_name) = LOWER(?)
+		SELECT carer_id
+		FROM carer_details
+		WHERE LOWER(first_name) = LOWER(?)
 	") or trigger_error($db->error, E_USER_ERROR);
 	$stmt->execute([$carer_name]) or trigger_error($stmt->error, E_USER_ERROR);
 	$result = $stmt->get_result();
@@ -42,9 +46,9 @@ function get_carer_id(&$db, $carer_name): bool|int
 function get_post_json(): array
 {
 	// POST can be empty, so empty array "?? []" in that case
-	$json_input = @json_decode(file_get_contents('php://input'), true);
-	if ($json_input !== false) { return $json_input ?? []; }
-	return $_POST ?? [];
+	$json_input = @json_decode(file_get_contents('php://input'), true); // read JSON POST from input
+	if ($json_input !== false) { return $json_input ?? []; } // JSON POST exists but empty, so return empty array
+	return $_POST ?? []; // POST is URL encoded
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "GET")
@@ -162,25 +166,15 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		
 		$stmt = $db->prepare("
-			SELECT
-				colour_theme,
-				text_size,
-				elderly_id
-			FROM
-				elderly_details
-			WHERE
-				elderly_id = ?
+			SELECT colour_theme, text_size, elderly_id
+			FROM elderly_details
+			WHERE elderly_id = ?
 		") or trigger_error($db->error, E_USER_ERROR);
-		$stmt->execute([
-			$_SESSION["elderly_id"]
-		]) or trigger_error($stmt->error, E_USER_ERROR);
-		$res = $stmt->get_result()->fetch_assoc();
-		
-		echo json_encode($res);
-		
+		$stmt->execute([$_SESSION["elderly_id"]]) or trigger_error($stmt->error, E_USER_ERROR);
+		echo json_encode($stmt->get_result()->fetch_assoc());
 		$stmt->close();
-		$db->close();
 		
+		$db->close();
 		http_response_code(200); exit;
 	}
 	
@@ -203,11 +197,9 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 			JOIN elderly_details e ON em.elderly_id = e.elderly_id
 			WHERE e.elderly_id = ?
 		") or trigger_error($db->error, E_USER_ERROR);
-		$stmt->execute([
-			$_SESSION["elderly_id"]
-		]) or trigger_error($stmt->error, E_USER_ERROR);
-		$result = $stmt->get_result();
-		echo json_encode($result->fetch_all(MYSQLI_ASSOC));
+		$stmt->execute([$_SESSION["elderly_id"]]) or trigger_error($stmt->error, E_USER_ERROR);
+		
+		echo json_encode($stmt->get_result()->fetch_all(MYSQLI_ASSOC));
 		$stmt->close();
 		$db->close();
 		
@@ -227,25 +219,12 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		
 		$stmt = $db->prepare("
-			SELECT
-				task_id AS id,
-				task_name AS name,
-				completed,
-				todo_date AS date,
-				todo_time AS time
-			FROM
-				elderly_tasks
-			WHERE
-				elderly_id = ?
+			SELECT task_id AS id, task_name AS name, completed, todo_date AS date, todo_time AS time
+			FROM elderly_tasks
+			WHERE elderly_id = ?
 		") or trigger_error($db->error, E_USER_ERROR);
-		$stmt->execute([
-			$_SESSION["elderly_id"]
-		]) or trigger_error($stmt->error, E_USER_ERROR);
-		$res = $stmt->get_result();
-		
-		require_once("/var/www/private/lib/vendor/autoload.php"); // include twig
-		$twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader(__DIR__ . "/templates")); // set template dir
-		echo $twig->render("todo.html", ["tasks" => $res->fetch_all(MYSQLI_ASSOC)]); // render
+		$stmt->execute([$_SESSION["elderly_id"]]) or trigger_error($stmt->error, E_USER_ERROR);
+		echo render("todo.html", ["tasks" => $stmt->get_result()->fetch_all(MYSQLI_ASSOC)]);
 
 		$stmt->close();
 		$db->close();
@@ -319,7 +298,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 			WHERE elderly_id = ?
 		") or trigger_error($db->error, E_USER_ERROR);
 		
-		foreach ($users as &$user)
+		foreach ($users as &$user) // update each user with additional info
 		{
 			$elderly_id = $user["elderly_id"];
 			
@@ -330,8 +309,8 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 			$user["medication"] = $stmt_medication->get_result()->fetch_all(MYSQLI_ASSOC);
 			
 			$stmt_moods->execute([$elderly_id]) or trigger_error($stmt_moods->error, E_USER_ERROR);
-			$moods = $stmt_moods->get_result()->fetch_all(MYSQLI_ASSOC);
-			$user["moods"] = [$moods[0]["mood1"], $moods[0]["mood2"], $moods[0]["mood3"]];
+			$moods = $stmt_moods->get_result()->fetch_all(MYSQLI_ASSOC)[0];
+			$user["moods"] = [$moods["mood1"], $moods["mood2"], $moods["mood3"]];
 			
 			$stmt_allergies->execute([$elderly_id]) or trigger_error($stmt_allergies->error, E_USER_ERROR);
 			$user["allergies"] = array_column($stmt_allergies->get_result()->fetch_all(MYSQLI_ASSOC), "name");
@@ -343,9 +322,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 			$user["reminder_count"] = $stmt_reminder_count->get_result()->fetch_array(MYSQLI_NUM)[0];
 		}
 		
-		require_once("/var/www/private/lib/vendor/autoload.php"); // include twig
-		$twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader(__DIR__ . "/templates")); // set template dir
-		echo $twig->render("user_block_for_carer.thtml", ["users" => $users]); // render
+		echo render("user_block_for_carer.thtml", ["users" => $users]);
 		
 		$stmt_em_contact->close();
 		$stmt_medication->close();
@@ -380,11 +357,8 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 			INNER JOIN emergency_contact_details ecd ON ed.emergency_contact_id = ecd.emergency_contact_id
 			WHERE ed.elderly_id = ?
 		") or trigger_error($db->error, E_USER_ERROR);
-		$stmt->execute([
-			$_SESSION["elderly_id"]
-		]) or trigger_error($stmt->error, E_USER_ERROR);
-		$result = $stmt->get_result();
-		echo json_encode($result->fetch_assoc());
+		$stmt->execute([$_SESSION["elderly_id"]]) or trigger_error($stmt->error, E_USER_ERROR);
+		echo json_encode($stmt->get_result()->fetch_assoc());
 		$stmt->close();
 		$db->close();
 		
@@ -414,20 +388,10 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		
 		$stmt = $db->prepare("
-			INSERT INTO
-				mood_ratings (
-					elderly_id,
-					mood
-				)
-			VALUES (
-				?,
-				?
-			)
+			INSERT INTO mood_ratings (elderly_id, mood)
+			VALUES (?, ?)
 		") or trigger_error($db->error, E_USER_ERROR);
-		$stmt->execute([
-			$_SESSION["elderly_id"],
-			$mood
-		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$stmt->execute([$_SESSION["elderly_id"], $mood]) or trigger_error($stmt->error, E_USER_ERROR);
 		$stmt->close();
 		$db->close();
 		
@@ -450,21 +414,8 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		
 		$stmt = $db->prepare("
-			INSERT INTO
-				elderly_tasks (
-					elderly_id,
-					task_name,
-					completed,
-					todo_date, 
-					todo_time
-				)
-			VALUES (
-				?,
-				?,
-				?,
-				?,
-				?
-			)
+			INSERT INTO elderly_tasks (elderly_id, task_name, completed, todo_date, todo_time)
+			VALUES (?, ?, ?, ?, ?)
 		") or trigger_error($db->error, E_USER_ERROR);
 		$stmt->execute([
 			$_SESSION["elderly_id"],
@@ -546,21 +497,8 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		
 		$stmt = $db->prepare("
-			INSERT INTO
-				contact_us (
-					first_name,
-					last_name,
-					phone_number,
-					email,
-					message
-				)
-			VALUES (
-				?,
-				?,
-				?,
-				?,
-				?
-			)
+			INSERT INTO contact_us (first_name, last_name, phone_number, email, message)
+			VALUES (?, ?, ?, ?, ?)
 		") or trigger_error($db->error, E_USER_ERROR);
 		$stmt->execute([
 			$first_name,
@@ -591,18 +529,11 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		
 		$stmt = $db->prepare("
-			UPDATE
-				elderly_tasks
-			SET
-				completed = true
-			WHERE
-				task_id = ?
-				AND elderly_id = ?
+			UPDATE elderly_tasks
+			SET completed = true
+			WHERE task_id = ? AND elderly_id = ?
 		") or trigger_error($db->error, E_USER_ERROR);
-		$stmt->execute([
-			$_POST["id"],
-			$_SESSION["elderly_id"]
-		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$stmt->execute([$_POST["id"], $_SESSION["elderly_id"]]) or trigger_error($stmt->error, E_USER_ERROR);
 		$stmt->close();
 		$db->close();
 		
@@ -623,16 +554,10 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		
 		$stmt = $db->prepare("
-			DELETE FROM
-				elderly_tasks
-			WHERE
-				task_id = ?
-				AND elderly_id = ?
+			DELETE FROM elderly_tasks
+			WHERE task_id = ? AND elderly_id = ?
 		") or trigger_error($db->error, E_USER_ERROR);
-		$stmt->execute([
-			$_POST["id"],
-			$_SESSION["elderly_id"]
-		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$stmt->execute([$_POST["id"], $_SESSION["elderly_id"]]) or trigger_error($stmt->error, E_USER_ERROR);
 		$stmt->close();
 		$db->close();
 		
@@ -655,25 +580,14 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$email = val_email($_POST["email"], "email is incorrect.");
 		
 		$stmt = $db->prepare("
-			SELECT
-				ep.elderly_id,
-				ep.hashed_pin,
-				pa.pin_attempts
-			FROM
-				elderly_pin ep
-			INNER JOIN
-				pin_attempts pa
-			ON
-				ep.elderly_id = pa.elderly_id
-			WHERE
-				ep.elderly_id IN (
-					SELECT
-						ed.elderly_id
-					FROM
-						elderly_details ed
-					WHERE
-						ed.email = ?
-				)
+			SELECT ep.elderly_id, ep.hashed_pin, pa.pin_attempts
+			FROM elderly_pin ep
+			INNER JOIN pin_attempts pa ON ep.elderly_id = pa.elderly_id
+			WHERE ep.elderly_id IN (
+				SELECT ed.elderly_id
+				FROM elderly_details ed
+				WHERE ed.email = ?
+			)
 		") or trigger_error($db->error, E_USER_ERROR);
 		$stmt->execute([$email]) or trigger_error($stmt->error, E_USER_ERROR);
 		$res = $stmt->get_result()->fetch_array(MYSQLI_ASSOC);
@@ -695,12 +609,9 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 			
 			// reset login attempts to 0
 			$stmt = $db->prepare("
-				UPDATE
-					pin_attempts
-				SET
-					pin_attempts = 0
-				WHERE
-					elderly_id = ?
+				UPDATE pin_attempts
+				SET pin_attempts = 0
+				WHERE elderly_id = ?
 			") or trigger_error($db->error, E_USER_ERROR);
 			$stmt->execute([$elderly_id]) or trigger_error($stmt->error, E_USER_ERROR);
 			$stmt->close();
@@ -710,12 +621,9 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		}
 		
 		$stmt = $db->prepare("
-			UPDATE
-				pin_attempts
-			SET
-				pin_attempts = pin_attempts + 1
-			WHERE
-				elderly_id = ?
+			UPDATE pin_attempts
+			SET pin_attempts = pin_attempts + 1
+			WHERE elderly_id = ?
 		") or trigger_error($db->error, E_USER_ERROR);
 		$stmt->execute([$elderly_id]) or trigger_error($stmt->error, E_USER_ERROR);
 		$stmt->close();
@@ -739,24 +647,15 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$email = val_email($_POST["email"], "email is incorrect.");
 		
 		$stmt = $db->prepare("
-			SELECT
-				cp.carer_id,
-				cp.hashed_password
-			FROM
-				carer_password cp
-			WHERE
-				cp.carer_id IN (
-					SELECT
-						cd.carer_id
-					FROM
-						carer_details cd
-					WHERE
-						cd.email = ?
-				)
+			SELECT cp.carer_id, cp.hashed_password
+			FROM carer_password cp
+			WHERE cp.carer_id IN (
+				SELECT cd.carer_id
+				FROM carer_details cd
+				WHERE cd.email = ?
+			)
 		") or trigger_error($db->error, E_USER_ERROR);
-		$stmt->execute([
-			$email
-		]) or trigger_error($stmt->error, E_USER_ERROR);
+		$stmt->execute([$email]) or trigger_error($stmt->error, E_USER_ERROR);
 		$res = $stmt->get_result()->fetch_array(MYSQLI_ASSOC);
 		$stmt->close();
 		$db->close();
@@ -826,25 +725,15 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$carer_id = get_carer_id($db, $carename);
 		
 		$stmt = $db->prepare("
-			INSERT INTO
-				emergency_contact_details (
-					first_name,
-					last_name,
-					phone_number
-				)
-			VALUES (
-				?,
-				?,
-				?
-			)
+			INSERT INTO emergency_contact_details (first_name, last_name, phone_number)
+			VALUES (?, ?, ?)
 		") or trigger_error($db->error, E_USER_ERROR);
 		$stmt->execute([$emfirstname, $emlastname, $emphone]) or trigger_error($stmt->error, E_USER_ERROR);
 		$emergency_contact_id = $stmt->insert_id;
 		$stmt->close();
 		
 		$stmt = $db->prepare("
-			INSERT INTO
-				elderly_details (
+			INSERT INTO elderly_details (
 					first_name,
 					last_name,
 					date_of_birth,
@@ -855,17 +744,7 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 					colour_theme,
 					text_size
 				)
-			VALUES (
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?,
-				?
-			)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 		") or trigger_error($db->error, E_USER_ERROR);
 		$stmt->execute([
 			$firstname,
@@ -882,15 +761,8 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$stmt->close();
 		
 		$stmt = $db->prepare("
-			INSERT INTO
-				elderly_pin (
-					elderly_id,
-					hashed_pin
-				)
-			VALUES (
-				?,
-				?
-			)
+			INSERT INTO elderly_pin (elderly_id, hashed_pin)
+			VALUES (?, ?)
 		") or trigger_error($db->error, E_USER_ERROR);
 		$stmt->execute([
 			$elderly_id,
@@ -899,33 +771,18 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		$stmt->close();
 		
 		$stmt = $db->prepare("
-			INSERT INTO
-				pin_attempts (
-					elderly_id,
-					pin_attempts
-				)
-			VALUES (
-				?,
-				0
-			)
+			INSERT INTO pin_attempts (elderly_id, pin_attempts)
+			VALUES (?, 0)
 		") or trigger_error($db->error, E_USER_ERROR);
 		$stmt->execute([$elderly_id]) or trigger_error($stmt->error, E_USER_ERROR);
 		$stmt->close();
 		
 		{ // allergies
 			$stmt = $db->prepare("
-				INSERT INTO
-					elderly_allergies (
-						elderly_id,
-						allergy_id
-					)
-				SELECT
-					?,
-					allergy_id
-				FROM
-					allergies
-				WHERE
-					allergy_name = ?
+				INSERT INTO elderly_allergies (elderly_id, allergy_id)
+				SELECT ?, allergy_id
+				FROM allergies
+				WHERE allergy_name = ?
 			") or trigger_error($db->error, E_USER_ERROR);
 			foreach ($allergies as $allergy => $val)
 			{
@@ -935,18 +792,10 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		}
 		{ // medical conditions
 			$stmt = $db->prepare("
-				INSERT INTO
-					elderly_medical_conditions (
-						elderly_id,
-						medical_condition_id
-					)
-				SELECT
-					?,
-					medical_condition_id
-				FROM
-					medical_conditions
-				WHERE
-					condition_name = ?
+				INSERT INTO elderly_medical_conditions (elderly_id, medical_condition_id)
+				SELECT ?, medical_condition_id
+				FROM medical_conditions
+				WHERE condition_name = ?
 			") or trigger_error($db->error, E_USER_ERROR);
 			foreach ($medical_conditions as $condition => $val)
 			{
@@ -956,18 +805,10 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		}
 		{ // medication
 			$stmt = $db->prepare("
-				INSERT INTO
-					elderly_medication (
-						elderly_id,
-						medication_id
-					)
-				SELECT
-					?,
-					medication_id
-				FROM
-					medication
-				WHERE
-					medication_name = ?
+				INSERT INTO elderly_medication (elderly_id, medication_id)
+				SELECT ?, medication_id
+				FROM medication
+				WHERE medication_name = ?
 			") or trigger_error($db->error, E_USER_ERROR);
 			foreach ($medication as $med => $val)
 			{
