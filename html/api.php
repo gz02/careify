@@ -232,11 +232,34 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 		http_response_code(200); exit;
 	}
 	
-	/*  mood list html formatted
+	/*  html formatted list of users and their details
 		*
-		* @param null GETall-mood
+		* @param null GETcarer-users
 		* 
-		* @return string  mood list
+		* @return string  HTML
+		*/
+	else if (isset($_GET["user-medication"]))
+	{
+		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
+		
+		$stmt_medication = $db->prepare("
+			SELECT m.medication_name, IFNULL(em.elderly_id, 0) as takes
+			FROM medication m
+			LEFT JOIN elderly_medication em ON em.medication_id = m.medication_id and em.elderly_id = ?
+		") or trigger_error($db->error, E_USER_ERROR);
+		$stmt_medication->execute([$_SESSION["elderly_id"] ?? 0]) or trigger_error($stmt_medication->error, E_USER_ERROR);
+		echo json_encode($stmt_medication->get_result()->fetch_all(MYSQLI_ASSOC));
+		
+		$stmt_medication->close();
+		$db->close();
+		
+		http_response_code(200); exit;
+	}
+	/*  html formatted list of users and their details
+		*
+		* @param null GETcarer-users
+		* 
+		* @return string  HTML
 		*/
 	else if (isset($_GET["carer-users"]))
 	{
