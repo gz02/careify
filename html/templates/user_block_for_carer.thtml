@@ -8,8 +8,18 @@
 				<div class="green-block">
 					<p class="white-text">Name: {{ user.name }}</p>
 					<p class="white-text">Age: {{ user.age }}</p>
-					<p class="white-text">Medical conditions: {{ user.medical_conditions|default("healthy") }}</p>
-					<p class="white-text">Current Medication: {{ user.medications|default("none") }}</p>
+					<p class="white-text">Allergies: {{ user.allergies|default("none")|join(", ") }}</p>
+					<p class="white-text">Medical conditions: {{ user.conditions|default("healthy")|join(", ") }}</p>
+					<p class="white-text">Current Medication: 
+						{% for med in user.medication|default("none") %}
+							<div>{{ med.name }} ({{ med.dosage }} {{ med.frequency }})</div>
+						{% endfor %}
+					</p>
+					<p class="white-text">Emergency contact: 
+						{{ user.em_contact.name }}
+						({{ user.em_contact.phone_number }},
+						{{ user.em_contact.email }})
+					</p>
 				</div> {# This is the clear green block #}
 			</div>
 		</div>

@@ -5,7 +5,6 @@ require_once("/var/www/private/config.php"); // db connection definitions
 
 require_once("validations.php");
 
-
 /* get id of carer by their name
 	*
 	* @param object $db  mysqli database connection object
@@ -266,52 +265,94 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
 		
 		$db = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME_CAREIFY) or trigger_error(mysqli_connect_errno(), E_USER_ERROR);
 		
-		$stmt = $db->prepare("
+		$stmt_users = $db->prepare("
+			SELECT elderly_id, CONCAT(first_name, \" \", last_name) AS name, age
+			FROM elderly_details
+		") or trigger_error($db->error, E_USER_ERROR);
+		$stmt_users->execute([]) or trigger_error($stmt_users->error, E_USER_ERROR);
+		$users = $stmt_users->get_result()->fetch_all(MYSQLI_ASSOC);
+		$stmt_users->close();
+		
+		$stmt_em_contact = $db->prepare("
+			SELECT CONCAT(ecd.first_name, \" \", ecd.last_name) AS name, ecd.phone_number, email
+			FROM elderly_details ed
+			JOIN emergency_contact_details ecd ON ed.emergency_contact_id = ecd.emergency_contact_id
+			WHERE ed.elderly_id = ?
+		") or trigger_error($db->error, E_USER_ERROR);
+		
+		$stmt_moods = $db->prepare("
 			SELECT
-				mr.elderly_id AS id, ed.age, emed.reminder_count, mc.medical_conditions, med.medications,
-				CONCAT(ed.first_name, \" \", ed.last_name) AS name,
 				MAX(CASE WHEN mr.rank = 1 THEN mr.mood END) AS mood1,
 				MAX(CASE WHEN mr.rank = 2 THEN mr.mood END) AS mood2,
 				MAX(CASE WHEN mr.rank = 3 THEN mr.mood END) AS mood3
 			FROM (
-					SELECT mr.*, ROW_NUMBER() OVER (PARTITION BY mr.elderly_id ORDER BY mr.rating_timestamp DESC) AS rank
-					FROM mood_ratings mr
-				) mr
-				
-			INNER JOIN elderly_details ed ON mr.elderly_id = ed.elderly_id
-			LEFT JOIN (
-					SELECT elderly_id, COUNT(*) as reminder_count
-					FROM elderly_medication
-					GROUP BY elderly_id
-			) emed ON emed.elderly_id = ed.elderly_id
-			LEFT JOIN (
-					SELECT emc.elderly_id, GROUP_CONCAT(mc.condition_name SEPARATOR \", \") AS medical_conditions
-					FROM medical_conditions mc
-					INNER JOIN elderly_medical_conditions emc ON mc.medical_condition_id = emc.medical_condition_id
-					GROUP BY emc.elderly_id
-			) mc ON mc.elderly_id = ed.elderly_id
-			LEFT JOIN (
-					SELECT em.elderly_id, GROUP_CONCAT(m.medication_name SEPARATOR \", \") AS medications
-					FROM elderly_medication em
-					INNER JOIN medication m ON em.medication_id = m.medication_id
-					GROUP BY em.elderly_id
-			) med ON med.elderly_id = ed.elderly_id
-			WHERE mr.rank <= 3
-			GROUP BY mr.elderly_id, ed.first_name, ed.last_name;
+				SELECT mr.*, ROW_NUMBER() OVER (PARTITION BY mr.elderly_id ORDER BY mr.rating_timestamp DESC) AS rank
+				FROM mood_ratings mr
+			) mr
+			WHERE mr.rank <= 3 AND mr.elderly_id = ?
 		") or trigger_error($db->error, E_USER_ERROR);
-		$stmt->execute([]) or trigger_error($stmt->error, E_USER_ERROR);
-		$users = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+		
+		$stmt_medication = $db->prepare("
+			SELECT m.medication_name AS name, em.dosage, em.frequency
+			FROM elderly_medication em
+			JOIN medication m ON em.medication_id = m.medication_id
+			WHERE em.elderly_id = ?
+		") or trigger_error($db->error, E_USER_ERROR);
+		
+		$stmt_allergies = $db->prepare("
+			SELECT a.allergy_name AS name
+			FROM elderly_allergies ea
+			JOIN allergies a ON ea.allergy_id = a.allergy_id
+			WHERE ea.elderly_id = ?
+		") or trigger_error($db->error, E_USER_ERROR);
+		
+		$stmt_conditions = $db->prepare("
+			SELECT mc.condition_name
+			FROM elderly_medical_conditions emc
+			JOIN medical_conditions mc ON emc.medical_condition_id = mc.medical_condition_id
+			WHERE emc.elderly_id = ?
+		") or trigger_error($db->error, E_USER_ERROR);
+		
+		$stmt_reminder_count = $db->prepare("
+			SELECT COUNT(*)
+			FROM elderly_medication
+			WHERE elderly_id = ?
+		") or trigger_error($db->error, E_USER_ERROR);
 		
 		foreach ($users as &$user)
 		{
-			$user["moods"] = [$user["mood1"], $user["mood2"], $user["mood3"]];
+			$elderly_id = $user["elderly_id"];
+			
+			$stmt_em_contact->execute([$elderly_id]) or trigger_error($stmt_em_contact->error, E_USER_ERROR);
+			$user["em_contact"] = $stmt_em_contact->get_result()->fetch_assoc();
+			
+			$stmt_medication->execute([$elderly_id]) or trigger_error($stmt_medication->error, E_USER_ERROR);
+			$user["medication"] = $stmt_medication->get_result()->fetch_all(MYSQLI_ASSOC);
+			
+			$stmt_moods->execute([$elderly_id]) or trigger_error($stmt_moods->error, E_USER_ERROR);
+			$moods = $stmt_moods->get_result()->fetch_all(MYSQLI_ASSOC);
+			$user["moods"] = [$moods[0]["mood1"], $moods[0]["mood2"], $moods[0]["mood3"]];
+			
+			$stmt_allergies->execute([$elderly_id]) or trigger_error($stmt_allergies->error, E_USER_ERROR);
+			$user["allergies"] = array_column($stmt_allergies->get_result()->fetch_all(MYSQLI_ASSOC), "name");
+			
+			$stmt_conditions->execute([$elderly_id]) or trigger_error($stmt_conditions->error, E_USER_ERROR);
+			$user["conditions"] = array_column($stmt_conditions->get_result()->fetch_all(MYSQLI_ASSOC), "condition_name");
+			
+			$stmt_reminder_count->execute([$elderly_id]) or trigger_error($stmt_reminder_count->error, E_USER_ERROR);
+			$user["reminder_count"] = $stmt_reminder_count->get_result()->fetch_array(MYSQLI_NUM)[0];
 		}
 		
 		require_once("/var/www/private/lib/vendor/autoload.php"); // include twig
 		$twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader(__DIR__ . "/templates")); // set template dir
 		echo $twig->render("user_block_for_carer.thtml", ["users" => $users]); // render
 		
-		$stmt->close();
+		$stmt_em_contact->close();
+		$stmt_medication->close();
+		$stmt_moods->close();
+		$stmt_allergies->close();
+		$stmt_conditions->close();
+		$stmt_reminder_count->close();
 		$db->close();
 		
 		http_response_code(200); exit;
