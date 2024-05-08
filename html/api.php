@@ -626,7 +626,7 @@ else if ($_SERVER["REQUEST_METHOD"] === "POST")
 		
 		$elderly_id = $res["elderly_id"];
 		
-		if (password_verify($pin, $res["hashed_pin"]) ?? null) // check password hash matches
+		if (password_verify($pin, $res["hashed_pin"] ?? null)) // check password hash matches
 		{
 			$_SESSION["elderly_id"] = $elderly_id; // save user id for session
 			
